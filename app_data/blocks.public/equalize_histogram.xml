@@ -1,0 +1,108 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='6003' id=''>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Equalizes the histogram of a grayscale image.
+
+The method convert the image to grayscale if needed.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Equalize histogram</label>
+	<input  id='1' type='cv::Mat' />
+	<output id='1' type='cv::Mat' />
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Equalizes the histogram</description>
+	<treegroup>Histograms</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void equalizeHistogram( const cv::Mat *in1, cv::Mat *out)
+{
+	if( in1->channels() > 1)
+	{
+		std::vector< cv::Mat > bgr_planes;
+		cv::split( *in1, bgr_planes );
+		cv::Mat tmp[3];
+		for( unsigned int i = 0 ; i < in1->channels() ; ++i )
+		{
+			tmp[i] = cv::Mat(in1->size(), CV_8UC1);
+			cv::equalizeHist( bgr_planes[i], tmp[i] );
+		}
+		*out = cv::Mat( in1->size(), CV_8UC3 );
+		cv::merge( tmp, 3, *out );
+	}
+	else
+	{
+		*out = cv::Mat(in1->size(), CV_8UC1);
+		cv::equalizeHist( *in1, *out );
+	}
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+equalizeHistogram( _INPUT1_, _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

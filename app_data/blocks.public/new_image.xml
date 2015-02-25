@@ -1,0 +1,108 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='501' id=''>
+		<property name='_PARAM1_' value='600' desc='width'/>
+		<property name='_PARAM2_' value='800' desc='height'/>
+		<property name='_PARAM3_' value='CV_8UC1' desc='depth and channels'/>
+		<property name='_PARAM4_' value='0' desc='color'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Create new image.
+Parameter 1 (int) : image width (in pixels).
+Parameter 2 (int) : image height (in pixels).
+Parameter 3 (constant) :  depth and channel count in format
+	CV_(bit count)(Unsigned int or Signed int or Float)C(channel count)
+	Examples :
+		CV_8UC1  -> 8 bits unsigned int, one channel
+		CV_8UC3  -> 8 bits unsigned int, three channels
+		CV_16SC1 -> 16 bits signed int, one channel
+		CV_32UC3 -> 32 bits unsigned int, three channels
+		CV_32FC1 -> 32 bits float, one channel
+		CV_64FC2 -> 64 bits float, two channels
+Parameter 4 (vector) : BGRA color (1 to 4 values comma separated).
+    Examples: 255
+              135,236,14
+
+Output 1 : new image.
+	</help>
+
+	<!-- block description -->	
+
+	<label>New image</label>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Create new image</description>
+	<treegroup>Items</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void newImage( int w, int h, int type, const cv::Scalar& color, cv::Mat *out)
+{
+	*out = cv::Mat( h, w, type, color);
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+newImage( _PARAM1_, _PARAM2_, _PARAM3_, cv::Scalar(_PARAM4_), _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

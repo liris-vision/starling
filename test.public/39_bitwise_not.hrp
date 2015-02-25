@@ -1,0 +1,74 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="80.0" y="44.0"/>
+	</block>
+	<block type="1" id="7">
+		<position x="529.0" y="39.0"/>
+	</block>
+	<block type="3024" id="14">
+		<position x="305.0" y="44.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="1" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/lena_288x288.jpg" />
+	</block>
+  <block id="7" type="1">
+		<property desc="file name" name="_PARAM1_" type="filename" value="test.tmp/39_output.png" />
+	</block>
+  <block id="14" type="3024">
+    </block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="14" input="1"/>
+</outputs>
+</block>
+<block type="1" id="7">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="3024" id="14">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="7" input="1"/>
+</outputs>
+</block>
+</network>
+</harpia>

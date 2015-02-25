@@ -1,0 +1,67 @@
+
+Starling depends on Python, GTK+, g++ (Visual C++ 2010 on Windows), and OpenCV.
+
+This file gives instructions to install and launch Starling on Linux and Windows OSs.
+
+
+1) LINUX
+--------
+
+* Install dependencies *
+------------------------
+
+On Ubuntu 11.10 amd64
+  $ sudo aptitude install libcv-dev libhighgui-dev libcvaux-dev
+  $ sudo aptitude install libavcodec-extra-53
+  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
+
+On Ubuntu 12.04 amd64
+  $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
+  $ sudo aptitude install libavcodec-extra-53
+  $ sudo aptitude install python-gnome2 python-pyorbit python-glade2 python-pygoocanvas
+  $ sudo aptitude install python-opencv
+
+On Ubuntu 14.04 amd64
+  $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
+  $ sudo aptitude install libavcodec-extra-54
+  $ sudo aptitude install python-gnome2 python-pyorbit python-glade2 python-pygoocanvas
+  $ sudo aptitude install python-opencv
+
+On Fedora 20 (64 bits)
+  $ sudo yum install opencv opencv-devel
+  $ sudo yum install gcc-c++
+  $ sudo yum install pygoocanvas opencv-python
+
+
+* Run Starling *
+----------------
+
+In a terminal, run commands:
+  $ cd path_to_starling_directory
+  $ ./starling.py
+
+
+2) WINDOWS Seven
+----------------
+
+* Install dependencies *
+------------------------
+
+- install 32 bits python interpreter 2.7.3 
+  from http://www.python.org/download
+
+- install PyGTK for Windows using all-in-one installer
+  http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.24/pygtk-all-in-one-2.24.2.win32-py2.6.msi 
+
+- install OpenCV 2.x from opencv.org
+
+- install Visual C++ 2010 (Express version is sufficient).
+
+
+* Run Starling *
+----------------
+
+In a terminal, run commands:
+  $ cd path_to_starling_directory
+  $	path_to_python_2.7.3\python.exe starling.py
+  

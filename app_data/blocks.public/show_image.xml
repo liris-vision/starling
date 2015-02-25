@@ -1,0 +1,139 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='2' id=''>
+		<property name='_PARAM1_' value='block_BLOCKID_' desc='window name'/>
+		<property name='_SCALING_' value='Auto' desc='scaling' type='selector' values='None;Auto;Manual'/>
+		<property name='_SCALINGMIN_' value='0' desc='scaling min'/>
+		<property name='_SCALINGMAX_' value='255' desc='scaling max'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Display an image in an independant window. The image can optionnaly be scaled to improve visualization.
+
+Parameters:
+ - window name (string): the title of the window where the image will be displayed.
+ - scaling (string): one of the following scaling method:
+    -- None: no scaling is done, the image is displayed as it is.
+	-- Auto: the image is scaled between its min and max pixel values.
+	-- Manual: the image is scaled between min and max values given by the user.
+ - scaling min (float): min value used for scaling if scaling method is 'Manual'. 
+ - scaling max (float): max value used for scaling if scaling method is 'Manual'. 
+
+Inputs/Outputs:
+ - input1: image to be displayed.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Show image</label>
+	<input id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/show.png</icon>
+	<color>50:100:200:150</color>
+	<description>Display image</description>
+	<treegroup>Input-Output</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void showImage( const char* windowName, const std::string& scaling, float minValue, float maxValue, const cv::Mat *in)
+{
+	cv::Mat img;
+
+	if( in == NULL || ( in->cols == 0 && in->rows == 0 ) )
+	{
+		// invalid image, display empty image
+		const int w = 200;
+		const int h = 100;
+		img = cv::Mat( h, w, CV_8UC3, cv::Scalar(0));
+		cv::line( img, cv::Point( 0, 0), cv::Point( w-1, h-1), cv::Scalar(0,0,255), 2);
+		cv::line( img, cv::Point( 0, h-1), cv::Point( w-1, 0), cv::Scalar(0,0,255), 2);
+	}
+	else if( scaling == "Auto" )
+	{
+		// scale image between its min and max values
+		// convert input data to float
+		in->convertTo( img, CV_32F);
+		// normalized in [0,1] to display float image
+		cv::normalize( img, img, 1.0, 0.0, cv::NORM_MINMAX);
+	}
+	else if( scaling == "Manual" )
+	{
+		in->copyTo(img);
+		// scale image between the user defined min and max
+		// truncate pixel values to [minValue, maxValue]
+		cv::min( img, maxValue, img);
+		cv::max( img, minValue, img);
+		// scale values so that [minValue, maxValue] becomes [0,1]
+		in->convertTo( img, CV_32F, 1/(maxValue-minValue), -minValue/(maxValue-minValue));
+	}
+	else
+	{
+		// display input image as it is
+		img = *in;
+	}
+
+	cv::imshow( windowName, img);
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+showImage( "_PARAM1_ (ESC to stop, SPACE to pause)", "_SCALING_", _SCALINGMIN_, _SCALINGMAX_, _INPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

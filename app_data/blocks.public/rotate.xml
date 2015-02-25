@@ -1,0 +1,112 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3026' id=''>
+		<property name='_ANGLE_' value='20' desc='rotation angle'/>
+		<property name='_SCALE_' value='1' desc='scale'/>
+		<property name='_INTERPOLATION_' value='cv::INTER_LINEAR' desc='interpolation method' type='selector' values='cv::INTER_NEAREST;cv::INTER_LINEAR;cv::INTER_AREA;cv::INTER_CUBIC;cv::INTER_LANCZOS4'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Rotates an image using an affine transformation.
+
+Parameters:
+ - angle (double): rotation angle in degrees.
+ - scale (double): isotropic scale factor.
+ - interpolation (constant): interpolation method as follows:
+    INTER_NEAREST = a nearest-neighbor interpolation
+    INTER_LINEAR = a bilinear interpolation
+    INTER_AREA = resampling using pixel area relation
+    INTER_CUBIC = a bicubic interpolation over 4x4 pixel neighborhood
+    INTER_LANCZOS4 = a Lanczos interpolation over 8x8 pixel neighborhood
+
+Inputs/Ouputs:
+ - input1: input image.
+ - output1: rotated image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Rotate</label>
+    <input id='1' type='cv::Mat' desc='input image'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Rotates an image.</description>
+    <treegroup>Image transformations</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvRotate( const cv::Mat *in, double angle, double scale, int interpolation, cv::Mat *out)
+{
+	if( in == NULL )
+		return;
+
+	cv::Point2f center( in->cols/2.0f, in->rows/2.0f);
+	cv::Mat rotation = cv::getRotationMatrix2D( center, angle, scale);
+
+	cv::warpAffine( *in, *out, rotation, in->size(), interpolation);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvRotate( _INPUT1_, _ANGLE_, _SCALE_, _INTERPOLATION_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

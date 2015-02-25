@@ -1,0 +1,94 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='7004' id=''>
+		<property name='_PARAM1_' value='128.' desc='Threshold value max'/>
+		<property name='_PARAM2_' value='ADAPTIVE_THRESH_MEAN_C' desc='Adaptive thresholding' type='selector' values='ADAPTIVE_THRESH_MEAN_C;ADAPTIVE_THRESH_GAUSSIAN_C'/>
+		<property name='_PARAM3_' value='THRESH_BINARY' desc='Thresholding type' type='selector' values='THRESH_BINARY;THRESH_BINARY_INV'/>
+		<property name='_PARAM4_' value='3' desc='Block size'/>
+		<property name='_PARAM5_' value='0' desc='Constant subtract'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Applies an adaptive threshold to a matrix.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Adaptive threshold</label>
+	<input  id='1' type='cv::Mat' />
+	<output id='1' type='cv::Mat' />
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Adaptative threshold</description>
+	<treegroup>Image transformations</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void adaptiveThresholding( const cv::Mat src, cv::Mat& dst, double maxVal, int method, int thresholdType, int blockSize, double C )
+{
+	cv::adaptiveThreshold( src, dst, maxVal, method, thresholdType, blockSize, C );
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+adaptiveThresholding( *_INPUT1_, *_OUTPUT1_, _PARAM1_, cv::_PARAM2_, cv::_PARAM3_, _PARAM4_, _PARAM5_ );
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

@@ -1,0 +1,155 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='11' id=''>
+		<property name='_PARAM1_' value='output.mpeg' type='filename' desc='filename'/>
+		<property name='_PARAM2_' value='DIVX' desc='codec' type='selector' values='PIM1;MJPG;MP42;DIV3;DIVX;U263;I263;FLV1'/>
+		<property name='_PARAM3_' value='25.0' desc='frame rate'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Save images to video file.
+Parameter 1 (string) : video file name.
+Parameter 2 (string) : video codec
+                       PIM1 = MPEG-1 codec
+                       MJPG = motion-jpeg codec (does not work well)
+                       MP42 = MPEG-4.2 codec
+                       DIV3 = MPEG-4.3 codec
+                       DIVX = MPEG-4 codec
+                       U263 = H263 codec
+                       I263 = H263I codec
+                       FLV1 = FLV1 codec 
+Parameter 3 (float) : frames per second.
+
+Output 1 : input image.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Save video</label>
+	<input id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/save.png</icon>
+	<color>50:100:200:150</color>
+	<description>Save images to video file</description>
+	<treegroup>Input-Output</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+/**
+ * Encapsulate cv::VideoWriter class to made it easier to use.
+ */
+class EasyVideoWriter
+{
+public:
+	EasyVideoWriter( const char* filename, const char *codec, double fps = 30.0) 
+	{
+		fileName = filename;
+		fourcc = CV_FOURCC( codec[0], codec[1], codec[2], codec[3]);
+		frameRate = fps;
+		isOpened = false;
+	}
+
+	bool writeFrame(const cv::Mat &img)
+	{
+		if( ! isOpened )
+		{
+			isOpened = vidWriter.open( fileName, fourcc, frameRate, img.size(), true);
+			if( ! isOpened )
+			{
+				printf( "Failed to open video writer for %s file.\n", fileName);
+				return false;
+			}
+		}
+
+		vidWriter << img;
+		return true;
+	}
+
+protected:
+	const char *fileName;
+	int fourcc;
+	double frameRate;
+	bool isOpened;
+	cv::VideoWriter vidWriter;
+};
+
+/**
+ * Save one frame to video file.
+ */
+bool saveToVideo( EasyVideoWriter *writer, const cv::Mat *in)
+{
+	bool success = false;
+
+	if( in )
+		success = writer->writeFrame(*in);
+
+	return success;
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+EasyVideoWriter videoWriter_block_BLOCKID_( "_PARAM1_", "_PARAM2_", _PARAM3_);
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+if( ! saveToVideo( &videoWriter_block_BLOCKID_, _INPUT1_) )
+{
+	printf("Failed to write frame to video file.\n");
+	break;
+}
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

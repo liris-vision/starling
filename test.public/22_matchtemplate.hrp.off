@@ -1,0 +1,77 @@
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="30.0" y="-5.0"/>
+	</block>
+	<block type="1" id="4">
+		<position x="423.0" y="11.0"/>
+	</block>
+	<block type="605" id="6">
+		<position x="219.0" y="7.0"/>
+	</block>
+	<block type="0" id="7">
+		<position x="32.0" y="100.0"/>
+	</block>
+</GcState>
+<properties>
+  <block type="00" id="1">
+    <property name="type" value="file"/>
+		<property name="filename" value="resource/pivert_599x424.jpg"/>
+    <property name="place" value="server"/>
+    <property name="camera" value="-1"/>
+		<property name="size" value="640x480"/>
+    <property name="video_name" value=""/>
+		<property name="frameRate" value="20.0"/>
+  </block>
+  <block type="00" id="7">
+    <property name="type" value="file"/>
+		<property name="filename" value="resource/pivert_part.png"/>
+    <property name="place" value="server"/>
+    <property name="camera" value="-1"/>
+		<property name="size" value="640x480"/>
+    <property name="video_name" value=""/>
+		<property name="frameRate" value="20.0"/>
+  </block>
+  <block type="01" id="4">
+        <property name="filename" value="22_output.png"/>
+        <property name="filetype" value="png"/>
+      </block>
+  <block type="605" id="6">
+        <property name="method" value="CV_TM_SQDIFF"/>
+				<property name="scaleFactor" value="6"/>
+      </block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="6" input="1"/>
+</outputs>
+</block>
+<block type="0" id="7">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="6" input="2"/>
+</outputs>
+</block>
+<block type="1" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="605" id="6">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="4" input="1"/>
+</outputs>
+</block>
+</network>
+</harpia>

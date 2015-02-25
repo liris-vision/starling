@@ -1,0 +1,95 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="18.0" y="37.0"/>
+	</block>
+	<block type="1" id="5">
+		<position x="372.0" y="38.0"/>
+	</block>
+	<block type="14" id="6">
+		<position x="207.0" y="38.0"/>
+	</block>
+	<block type="801" id="7">
+		<position x="34.0" y="133.0"/>
+	</block>
+</GcState>
+<properties>
+  <block type="0" id="1">
+	<!-- parameters MUST be in right order -->	
+	<property name="_PARAM1_" value="resource/lena_288x288.jpg"/>
+	</block>
+  <block type="801" id="7">
+		<!-- parameters MUST be in right order -->	
+		<property name="_PARAM1_" value="20"/>
+		<property name="_PARAM2_" value="40"/>
+		<property name="_PARAM3_" value="100"/>
+		<property name="_PARAM4_" value="30"/>
+	</block>
+  <block type="14" id="6">
+		<!-- parameters MUST be in right order -->	
+		<property name="_PARAM1_" value="219, 196,184"/>
+	</block>
+  <block type="1" id="5">
+		<!-- parameters MUST be in right order -->	
+		<property name="_PARAM1_" value="test.tmp/05_output.png"/>
+    </block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="6" input="1"/>
+</outputs>
+</block>
+<block type="801" id="7">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="6" input="2"/>
+</outputs>
+</block>
+<block type="1" id="5">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="14" id="6">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="5" input="1"/>
+</outputs>
+</block>
+</network>
+</harpia>

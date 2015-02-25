@@ -1,0 +1,131 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='25' id=''>
+		<property name='_POSITIONX_' value='2' desc='position X'/>
+		<property name='_POSITIONY_' value='20' desc='position Y'/>
+		<property name='_FONTSCALE_' value='0.6' desc='font scale'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Draws frame count on image.
+
+Parameters:
+ - positionX (int) : horizontal position in pixels,
+ - positionY (int) : vertical position in pixels,
+ - textSize (float) : text font scale.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Draws frame count</label>
+	<input id='1' type='cv::Mat'/>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Draws frame count on image.</description>
+	<treegroup>Miscellaneous</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+class DrawImageCount
+{
+public:
+	DrawImageCount( int _posx, int _posy, float _fontScale)
+	{
+		posx = _posx;
+		posy = _posy;
+		fontScale = _fontScale;
+		counter = 1;
+	}
+
+	~DrawImageCount(void)  { };
+
+	void draw(const cv::Mat *in, cv::Mat *out)
+	{
+		if( (! in) || in->empty() )
+			return;
+
+		// build text
+		snprintf( buffer, sizeof(buffer), "%d", counter);
+
+		// draw text on image
+		in->copyTo(*out);
+		cv::putText( *out, buffer, cv::Point( posx, posy), CV_FONT_HERSHEY_SIMPLEX, fontScale, cv::Scalar(0,0,255));
+
+		counter++;
+	}
+		
+protected:
+	int posx;
+	int posy;
+	float fontScale;
+	int counter;
+	char buffer[15];
+};
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+DrawImageCount drawCount_block_BLOCKID_( _POSITIONX_, _POSITIONY_, _FONTSCALE_);
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+drawCount_block_BLOCKID_.draw( _INPUT1_, _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>
+
+

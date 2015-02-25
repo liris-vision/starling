@@ -1,0 +1,106 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2013 Mathieu Barnachon (mathieu.barnachon@liris.cnrs.fr), LIRIS (liris.cnrs.fr)
+#            2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="6000" id="1">
+		<position x="420.0" y="108.0"/>
+	</block>
+	<block type="6001" id="2">
+		<position x="279.0" y="106.0"/>
+	</block>
+	<block type="0" id="4">
+		<position x="4.0" y="107.0"/>
+	</block>
+	<block type="3008" id="5">
+		<position x="146.0" y="109.0"/>
+	</block>
+	<block type="1" id="6">
+		<position x="576.0" y="107.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="4" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/pivert_599x424.jpg" />
+	</block>
+  <block id="1" type="6000">
+		<property desc="horizontal scale" name="_SCALE_" value="8" />
+		<property desc="height" name="_HEIGHT_" value="300" />
+	</block>
+  <block id="2" type="6001">
+		<property desc="bins number" name="_PARAM1_" value="32" />
+		<property desc="range" name="_PARAM2_" value="256" />
+	</block>
+  <block id="5" type="3008">
+		<property desc="conversion code" name="_CONVERSION_" type="selector" value="CV_BGR2GRAY" values="CV_BGR2GRAY;CV_GRAY2BGR;CV_BGR2RGB;CV_RGB2BGR;CV_BGR2XYZ;CV_RGB2XYZ;CV_XYZ2BGR;CV_XYZ2RGB;CV_BGR2YCrCb;CV_RGB2YCrCb;CV_YCrCb2BGR;CV_YCrCb2RGB;CV_BGR2HSV;CV_RGB2HSV;CV_HSV2BGR;CV_HSV2RGB;CV_BGR2HLS;CV_RGB2HLS;CV_HLS2BGR;CV_HLS2RGB;CV_BGR2Lab;CV_RGB2Lab;CV_Lab2BGR;CV_Lab2RGB;CV_BGR2Luv;CV_RGB2Luv;CV_Luv2BGR;CV_Luv2RGB" />
+		<property desc="number of channels" name="_DSTCN_" value="0" />
+    </block>
+  <block id="6" type="1">
+		<property desc="file name" name="_PARAM1_" type="filename" value="test.tmp/79_output.png" />
+	</block>
+  </properties>
+<network>
+<block type="0" id="4">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="5" input="1"/>
+</outputs>
+</block>
+<block type="6000" id="1">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="6" input="1"/>
+</outputs>
+</block>
+<block type="6001" id="2">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="1" input="1"/>
+</outputs>
+</block>
+<block type="3008" id="5">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="2" input="1"/>
+</outputs>
+</block>
+<block type="1" id="6">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+</network>
+</harpia>

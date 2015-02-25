@@ -1,0 +1,113 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='5015' id=''>
+		<property name='_SVMDETECTOR_' value='cv::HOGDescriptor::getDefaultPeopleDetector()' desc='SVM detector'/>
+        <property name='_HITTHRESHOLD_' value='0' desc='hit threshold'/>
+        <property name='_WINSTRIDE_' value='cv::Size()' desc='window stride'/>
+        <property name='_PADDING_' value='cv::Size()' desc='padding'/>
+        <property name='_SCALE0_' value='1.05' desc='scale factor'/>
+        <property name='_GROUPTHRESHOLD_' value='2' desc='group threshold'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Histogram of Oriented Gradients ([Dalal2005]) object detector. The detected objects are returned as a list of rectangles.
+
+Parameters:	
+ - SVM detector (vector(float)): coefficients for the linear SVM classifier.
+ - hit threshold (double): threshold for the distance between features and SVM classifying plane. See HOGDescriptor::detect() for details.
+ - window stride (cv::Size): window stride. It must be a multiple of block stride.
+ - padding (cv::Size): mock parameter to keep the CPU interface compatibility. It must be (0,0).
+ - scale factor (double): coefficient of the detection window increase.
+ - group threshold (int): coefficient to regulate the similarity threshold. When detected, some objects can be covered by many rectangles. 0 means not to perform grouping.
+
+Inputs/outputs:
+ - input1: input image.
+ - output1 : object detection list.
+	</help>
+
+    <!-- block description -->    
+
+    <label>HOGDescriptor</label>
+    <input id='1' type='cv::Mat'/>
+	<output id='1' type='std::vector&lt;cv::Rect&gt;'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>HOG descriptor</description>
+    <treegroup>Detection</treegroup>
+    
+    <!-- informations for code generation -->    
+
+	<includepath path='' />
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void hogDescriptorDetectMultiScale( const cv::HOGDescriptor *hog, const cv::Mat *in, std::vector<cv::Rect> *out1, double hitThreashold, const cv::Size& winStride, const cv::Size& padding, double scale0, int groupThreshold)
+{
+	if( (! in) || (! in->data) )
+		return;
+
+	// run classifier
+	hog->detectMultiScale( *in, *out1, hitThreashold, winStride, padding, scale0, groupThreshold);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+cv::CascadeClassifier haarCascade_BLOCKID_("_FILENAME_");
+cv::HOGDescriptor hog_BLOCKID_;
+hog_BLOCKID_.setSVMDetector(_SVMDETECTOR_);
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+hogDescriptorDetectMultiScale( &hog_BLOCKID_, _INPUT1_, _OUTPUT1_, _HITTHRESHOLD_, _WINSTRIDE_, _PADDING_, _SCALE0_, _GROUPTHRESHOLD_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+

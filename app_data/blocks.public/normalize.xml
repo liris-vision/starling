@@ -1,0 +1,112 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3028' id=''>
+		<property name='_ALPHA_' value='0' desc='alpha'/>
+		<property name='_BETA_' value='1' desc='beta'/>
+		<property name='_NORM_TYPE_' value='cv::NORM_MINMAX' desc='normalization type' type='selector' values='cv::NORM_MINMAX;cv::NORM_INF;cv::NORM_L1;cv::NORM_L2'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Normalizes the norm or value range of an array.
+
+The function scales and shifts the input array elements so that 
+   norm(output) = alpha
+when normalization type is NORM_INF, NORM_L1, or NORM_L2; or so that
+   min(output) = alpha and max(output) = beta
+when normalization is NORM_MINMAX.
+
+Parameters:
+ - alpha (double): norm value to normalize to or the lower range boundary in case of the range nor-
+malization.
+ - beta (double): upper range boundary in case of the range normalization; it is not used for the norm normalization.
+ - normalization type (constant): normalization type. 
+
+Inputs/Ouputs:
+ - input1: input image.
+ - output1: transformed image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Normalize</label>
+    <input id='1' type='cv::Mat' desc='input image'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Normalize image.</description>
+    <treegroup>Image transformations</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvNormalize( const cv::Mat *in, double alpha, double beta, int normType, cv::Mat *out)
+{
+	if( in == NULL )
+		return;
+	
+	cv::normalize( *in, *out, alpha, beta, normType);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvNormalize( _INPUT1_, _ALPHA_, _BETA_, _NORM_TYPE_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+

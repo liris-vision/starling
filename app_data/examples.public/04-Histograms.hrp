@@ -1,0 +1,148 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="11.0" y="53.0"/>
+	</block>
+	<block type="6001" id="2">
+		<position x="172.0" y="53.0"/>
+	</block>
+	<block type="6000" id="3">
+		<position x="323.0" y="54.0"/>
+	</block>
+	<block type="2" id="4">
+		<position x="485.0" y="54.0"/>
+	</block>
+	<block type="3008" id="5">
+		<position x="152.0" y="155.0"/>
+	</block>
+	<block type="6001" id="6">
+		<position x="303.0" y="156.0"/>
+	</block>
+	<block type="6000" id="7">
+		<position x="448.0" y="157.0"/>
+	</block>
+	<block type="2" id="8">
+		<position x="598.0" y="156.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="1" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/pivert_599x424.jpg" />
+	</block>
+  <block id="2" type="6001">
+		<property desc="bins number" name="_PARAM1_" value="32" />
+		<property desc="range" name="_PARAM2_" value="256" />
+	</block>
+  <block id="3" type="6000">
+		<property desc="horizontal scale" name="_SCALE_" value="10" />
+		<property desc="height" name="_HEIGHT_" value="300" />
+	</block>
+  <block id="4" type="2">
+		<property desc="window name" name="_PARAM1_" value="Histogram of color image" />
+	</block>
+  <block id="5" type="3008">
+		<property desc="conversion code" name="_CONVERSION_" type="selector" value="CV_BGR2GRAY" values="CV_BGR2GRAY;CV_GRAY2BGR;CV_BGR2RGB;CV_RGB2BGR;CV_BGR2XYZ;CV_RGB2XYZ;CV_XYZ2BGR;CV_XYZ2RGB;CV_BGR2YCrCb;CV_RGB2YCrCb;CV_YCrCb2BGR;CV_YCrCb2RGB;CV_BGR2HSV;CV_RGB2HSV;CV_HSV2BGR;CV_HSV2RGB;CV_BGR2HLS;CV_RGB2HLS;CV_HLS2BGR;CV_HLS2RGB;CV_BGR2Lab;CV_RGB2Lab;CV_Lab2BGR;CV_Lab2RGB;CV_BGR2Luv;CV_RGB2Luv;CV_Luv2BGR;CV_Luv2RGB" />
+		<property desc="number of channels" name="_DSTCN_" value="0" />
+    </block>
+  <block id="6" type="6001">
+		<property desc="bins number" name="_PARAM1_" value="32" />
+		<property desc="range" name="_PARAM2_" value="256" />
+	</block>
+  <block id="7" type="6000">
+		<property desc="horizontal scale" name="_SCALE_" value="10" />
+		<property desc="height" name="_HEIGHT_" value="300" />
+	</block>
+  <block id="8" type="2">
+		<property desc="window name" name="_PARAM1_" value="Histogram of gray image" />
+	</block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="2" input="1"/>
+<output id="1" inBlock="5" input="1"/>
+</outputs>
+</block>
+<block type="6001" id="2">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="3" input="1"/>
+</outputs>
+</block>
+<block type="6000" id="3">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="4" input="1"/>
+</outputs>
+</block>
+<block type="2" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+</outputs>
+</block>
+<block type="3008" id="5">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="6" input="1"/>
+</outputs>
+</block>
+<block type="6001" id="6">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="7" input="1"/>
+</outputs>
+</block>
+<block type="6000" id="7">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="8" input="1"/>
+</outputs>
+</block>
+<block type="2" id="8">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+</outputs>
+</block>
+</network>
+</harpia>

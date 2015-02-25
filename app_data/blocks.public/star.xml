@@ -1,0 +1,98 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='5007' id=''>
+		<property name='_PARAM1_' value='16' desc='max size'/>
+		<property name='_PARAM2_' value='30' desc='response threshold'/>
+		<property name='_PARAM3_' value='10' desc='line threshold projected'/>
+		<property name='_PARAM4_' value='8' desc='line threshold binarized'/>
+		<property name='_PARAM5_' value='5' desc='suppress non max size'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+The STAR detector.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Compute STAR</label>
+	<input  id='1' type='cv::Mat' />
+	<output id='1' type='std::vector &lt; cv::KeyPoint &gt;'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Compute STAR from image</description>
+	<treegroup>Features</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+#include <vector>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/features2d/features2d.hpp>
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void computeSTAR(const cv::StarFeatureDetector& star, const cv::Mat *in1, std::vector< cv::KeyPoint > *out1)
+{
+	star.detect( *in1, *out1);
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+cv::StarFeatureDetector star_block_BLOCKID_(_PARAM1_, _PARAM2_, _PARAM3_, _PARAM4_, _PARAM5_ );
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+computeSTAR( star_block_BLOCKID_, _INPUT1_, _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

@@ -1,0 +1,102 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='6' id=''>
+		<property name='_FILE_NAME_' value='data.xml' type='filename' desc='file name'/>
+		<property name='_RECORD_NAME_' value='noname' desc='record name'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Read a matrix from a file using OpenCV persistent features cv::FileStorage.
+
+XML and YAML file formats are supported. Several matrices can be saved in the same file, each record is identified by a name.
+
+Parameters:
+ - file name (string): output file name ; the extension (.xml, .yml or .yaml) determines the file format.
+ - record name (string): record identifier. 
+
+Inputs/outputs:
+ - output1: read matrix.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Read matrix</label>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Read matrix from file</description>
+	<treegroup>Input-Output</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void readMatrix( const char *fileName, const char *recordName, cv::Mat *out)
+{
+    cv::FileStorage fs( fileName, cv::FileStorage::READ);
+    fs[recordName] >> *out;
+	fs.release();
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+readMatrix( "_FILE_NAME_", "_RECORD_NAME_", _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>
+

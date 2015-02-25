@@ -1,0 +1,108 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='6004' id=''>
+		<property name='_MIN_PIX_VAL_' value='20' desc='min pixel value'/>
+		<property name='_MAX_PIX_VAL_' value='80' desc='max pixel value'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Apply an histogram calibration on an image, between a min and a max pixel value.
+
+Parameters:
+ - min pixel value (int): minimum pixel value ; pixels with value less than min are set to 0
+ - max pixel value (int): maximum pixel value ; pixels with value greater than max are set to 255
+
+Inputs/Outputs:
+ - input1: input image (1 channel, 8 bits).
+ - output1: transformed image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Calibrate histogram</label>
+    <input id='1' type='cv::Mat' desc='input image'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Apply histogram calibration.</description>
+    <treegroup>Histograms</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvCalibrateHistogram( const cv::Mat *in, double minPixVal, double maxPixVal, cv::Mat *out)
+{
+	if( in == NULL )
+		return;
+	
+	float scale = 255 / (maxPixVal-minPixVal);
+	float offset = - 255*minPixVal / (maxPixVal-minPixVal);
+	cv::Mat tmp;
+	threshold( *in, tmp, minPixVal-1, 0.0, cv::THRESH_TOZERO);
+	threshold( tmp, tmp, maxPixVal, 0.0, cv::THRESH_TRUNC);
+	tmp.convertTo( *out, -1, scale, offset);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvCalibrateHistogram( _INPUT1_, _MIN_PIX_VAL_, _MAX_PIX_VAL_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+

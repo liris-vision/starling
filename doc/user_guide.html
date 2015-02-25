@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Starling user guide</title>
+	</head>
+
+	<body>
+
+<h1 style="text-align:center">Starling user guide</h1>
+
+<h2>Introduction</h2>
+
+<p>Starling is a tool for graphically building image and video processing, by connecting several elementary blocks.</p>
+
+<table style="border-style:none">
+	<tr>
+		<td>
+			<img src="user_guide/main_window.png" width="500"/>
+		</td>
+		<td>
+			<table style="border-style:none">
+			<tr>
+				<td>
+				<img src="user_guide/show_1.png"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="user_guide/show_2.png"/> 
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<p>At run time, the block graph is converted into C++ code, which is compiled and executed. The two windows on the right in above illustration, are produced by the C++ generated program.</p>
+
+<p>Starling is to be considered as a fast prototyping tool that produces C++ examples of using OpenCV and LIRIS-VISION features.
+
+<h2>Build a workflow</h2>
+
+<p>Use the toolbox located on the left side of the screen to select a block. Drag'n Drop it on the white canvas to start a processing chain.</p>
+
+<img src="user_guide/dragndrop_block.jpg" width="300"/>
+
+<p>Blocks may have inputs and/or outputs. Clicking on one output (at the right side of the block) will initiate a connector; clicking on an input (left side of the block) will confirm it.</p>
+
+<table style="border-style:none">
+	<tr>
+		<td>
+			<img src="user_guide/initiate_connection.jpg"/>
+		</td>
+		<td width="200">
+		</td>
+		<td>
+			<img src="user_guide/confirm_connection.jpg"/>
+		</td>
+	</tr>
+</table>
+
+<p>Outputs and inputs are of a given type (e.g. image, point, rectangle, integer). Connections are only possible between ports of the same type.</p>
+
+<p>`Information flow` is propagated through blocks starting from the `source` blocks (blocks without inputs). A block with all its required inputs connected to `flowing` connectors will have flow. Blocks with flow are indicated by black border.</p>
+
+<p>Red border means that the block hasn't the `information flow`, because one required input is missing. Blocks without `information flow` won't be processed.</p>
+
+<img src="user_guide/information_flow.jpg" width="500"/>
+			
+
+<p>In the top of the block selection toolbox, there is a search field (Ctrl+F). Enter the name of an operation to quickly find it.</p>
+
+<p>The LIRIS-VISION modules are available in the left panel, under the `Liris-Vision` item.<p>
+
+<img src="user_guide/lirisvision.jpg" width="300"/>
+
+<h2>Change block parameters values</h2>
+
+<p>To view one block's properties, click twice on the block. This will open a new window with some indications about the block parameters, its inputs and ouputs. The values of the parameters can be changed here. Click OK button to confirm.<p>
+
+<img src="user_guide/block_properties.jpg" width="300"/>
+
+<h2>Run the workflow</h2>
+
+<p>When the workflow is built, click the Run button (or press F9) to execute it. The workflow is then translated in C++ code, compiled, and executed. Compilation errors appears in the console.</p> 
+
+<p>When viewing a live feed (video from files or streams), click the Stop button (or press ESC key) to exit, or SPACE key to pause (make sure the video output window is selected).</p>
+
+<h2>Get the C++ code</h2>
+
+<p>Click the "View C code" button (or press F11 key) to open an editor containing the C++ code corresponding to the last executed workflow.</p>
+
+<table style="border-style:none">
+	<tr>
+		<td>
+			<img src="user_guide/workflow.jpg" width="300"/>
+		</td>
+		<td width="20">
+		</td>
+		<td>
+			<img src="user_guide/source_code.jpg" width="300"/>
+		</td>
+	</tr>
+</table>
+
+<h2>Miscellaneous</h2>
+
+<p>Useful examples can be accessed within the Examples menu:</p>
+
+<img src="user_guide/examples.png" width="500"/>
+<br>
+<br>
+
+<p>The configuration of Starling can be changed through the preferences window. It is accessible by the 'Edit > Preferences' menu option.</p>
+<img src="user_guide/preferences_window.png" width="500"/>
+<p>
+The configuration parameters are:<br>
+- the LIRIS-VISION base directory (to use LIRIS-VISION blocks),<br>
+- informations on the OpenCV library to use,<br>
+- informations on other libraries to use,<br>
+- the places to search for local blocks.
+</p>
+<p>Paths can be absolute or relative. Relative paths are relative to Starling directory.</p>
+<p>The preferences are saved in an xml file named '.starling.conf', in the user's home directory. Use the '-c' option at start up to use another configuration file.</p>
+
+<br>
+<br>
+<br>
+
+<!-- <h2>FAQ</h2> -->
+

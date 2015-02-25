@@ -1,0 +1,99 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='21' id=''>
+		<property name='_RADIUS_' value='1' desc='Radius'/>
+		<property name='_COLOR_' value='255,255,255' desc='Color'/>
+		<property name='_THICKNESS_' value='1' desc='Thickness'/>
+		<property name='_LINETYPE_' value='8' desc='Line Type' type='selector' values='8;4;CV_AA'/>
+		<property name='_SHIFT_' value='0' desc='Shift'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Draws a circle on an image.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Draw circle</label>
+	<input id='1' type='cv::Mat'/>
+	<input id='2' type='cv::Point'/>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Draws a circle</description>
+	<treegroup>Miscellaneous</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void drawCircle( const cv::Mat *in1, const cv::Point *in2, cv::Mat *out, int radius, const cv::Scalar& color, int thickness, int lineType, int shift)
+{
+	if( (! in1) || (! in1->data) )
+		return;
+	
+	in1->copyTo(*out); 
+	cv::circle( *out, *in2, radius, color, thickness, lineType, shift);
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+drawCircle( _INPUT1_, _INPUT2_, _OUTPUT1_, _RADIUS_, cv::Scalar(_COLOR_), _THICKNESS_, _LINETYPE_, _SHIFT_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

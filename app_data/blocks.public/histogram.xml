@@ -1,0 +1,122 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2013 Mathieu Barnachon (mathieu.barnachon@liris.cnrs.fr), LIRIS (liris.cnrs.fr)
+#            2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='6001' id=''>
+		<property name='_PARAM1_' value='256' desc='bins number'/>
+		<property name='_PARAM2_' value='256' desc='range'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Compute histograms of one image.
+
+Parameters:
+ - bins number (int): number of histogram bins,
+ - range (int): maximum pixel value + 1.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Histogram</label>
+	<input  id='1' type='cv::Mat' />
+	<output id='1' type='cv::MatND'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Compute histogram from one image</description>
+	<treegroup>Histograms</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void computeHist( const cv::Mat *in1, cv::MatND *out1, int size, int maxPixVal)
+{
+	if( in1->channels() == 1 )
+	{
+		int channels[] = {0};
+		int histSize[] = {size};
+		float range[] = {0, maxPixVal};
+		const float* ranges[] = {range};
+		cv::Mat bw_hist;
+		cv::calcHist( in1, 1, 0, cv::Mat(), bw_hist, 1, histSize, ranges, true, false );
+		*out1 = cv::MatND( bw_hist.rows, bw_hist.cols, CV_32FC3 );
+		cv::merge( &bw_hist, 1, *out1);
+	}
+	else
+	{
+		int channels[] = {0,1,2};
+		int histSize[] = {size,size,size};
+		float range[] = {0, maxPixVal};
+		const float* ranges[] = {range, range, range};
+		std::vector< cv::Mat > bgr_planes;
+		cv::split( *in1, bgr_planes );
+		cv::Mat b_hist, g_hist, r_hist;
+		cv::calcHist( &bgr_planes[0], 1, 0, cv::Mat(), b_hist, 1, histSize, ranges, true, false );
+		cv::calcHist( &bgr_planes[1], 1, 0, cv::Mat(), g_hist, 1, histSize, ranges, true, false );
+		cv::calcHist( &bgr_planes[2], 1, 0, cv::Mat(), r_hist, 1, histSize, ranges, true, false );
+		cv::Mat s_hists[] = {b_hist, g_hist, r_hist};
+		*out1 = cv::MatND( b_hist.rows, b_hist.cols, CV_32FC3 );
+		cv::merge( s_hists, 3, *out1);
+	}
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+computeHist( _INPUT1_, _OUTPUT1_, _PARAM1_, _PARAM2_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

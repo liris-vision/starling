@@ -1,0 +1,99 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3009' id=''>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Divides a multi-channel array into several single-channel arrays.
+    </help>
+
+    <!-- block description -->    
+
+    <label>Split</label>
+    <input id='1' type='cv::Mat'/>
+    <output id='1' type='cv::Mat' desc='channel 1'/>
+    <output id='2' type='cv::Mat' desc='channel 2'/>
+    <output id='3' type='cv::Mat' desc='channel 3'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Split to single-channel arrays</description>
+    <treegroup>Pixelwise operations on arrays</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvSplit( const cv::Mat *in1, cv::Mat *out1, cv::Mat *out2, cv::Mat *out3)
+{
+	std::vector<cv::Mat> planes;
+	cv::split( *in1, planes);
+
+	*out1 = planes[0];
+
+	if( planes.size() >= 2 )
+		*out2 = planes[1];
+
+	if( planes.size() >= 3 )
+		*out3 = planes[2];
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvSplit( _INPUT1_, _OUTPUT1_, _OUTPUT2_, _OUTPUT3_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+

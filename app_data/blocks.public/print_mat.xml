@@ -1,0 +1,118 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='3' id=''>
+		<property name='_PARAM1_' value='default' desc='Printing mode' type='selector' values='default;python;csv;numpy;C'/>
+		<property name='_PARAM2_' value='stdout' desc='Output mode' type='selector' values='stdout;file'/>
+		<property name='_PARAM3_' value='out.txt' type='filename' desc='Output file'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Print a matrix.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Print matrix</label>
+	<input id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Print a matrix according to format</description>
+	<treegroup>Input-Output</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+#include <iostream>
+#include <fstream>
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void printMat( const cv::Mat *in, const char *printingMode, const char *outputMode, const char *outputFile)
+{
+	std::streambuf * buf;
+	std::ofstream output_file;
+	std::string output = outputMode;
+	// Use the file to write the matrix.
+	if( output == "file" )
+	{
+		output_file.open( outputFile );
+		if( !output_file.is_open() )
+		{
+			std::cerr << "Unable to open \"" << outputFile << "\" to write matrice." << std::endl;
+		}
+		std::cout << "Writing in \"" << outputFile << "\" file." << std::endl;
+		buf = output_file.rdbuf();
+	}
+	// Use default stdout to print the matrix.
+	else if( output == "stdout" )
+	{
+		buf = std::cout.rdbuf();
+	}
+	std::ostream out( buf );
+
+	std::string cv_format = printingMode;
+	if( cv_format != "default" )
+		out << format(*in, printingMode) << std::endl;
+	else
+		out << *in << std::endl;
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+printMat( _INPUT1_, "_PARAM1_", "_PARAM2_", "_PARAM3_");
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>
