@@ -1,0 +1,96 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="500" id="2">
+		<position x="22.0" y="62.0"/>
+	</block>
+	<block type="11" id="8">
+		<position x="631.0" y="62.0"/>
+	</block>
+	<block type="3010" id="12">
+		<position x="456.0" y="35.0"/>
+	</block>
+	<block type="5013" id="13">
+		<position x="186.0" y="61.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="2" type="500">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/kth_walkingd1_person01.mpg" />
+	</block>
+  <block id="8" type="11">
+		<property desc="filename" name="_PARAM1_" type="filename" value="test.tmp/50_output.mpeg" />
+		<property desc="codec" name="_PARAM2_" type="selector" value="DIVX" values="PIM1;MJPG;MP42;DIV3;DIVX;U263;I263;FLV1" />
+		<property desc="frame rate" name="_PARAM3_" value="25.0" />
+	</block>
+  <block id="12" type="3010">
+    </block>
+  <block id="13" type="5013">
+        <property desc="length of the history" name="_HISTORY_" value="500" />
+        <property desc="threshold" name="_VARTHRESHOLD_" value="4.0f*4.0f" />
+        <property desc="shadow detection" name="_SHADOWDETECTION_" value="true" />
+        <property desc="learning rate" name="_LEARNINGRATE_" value="-1" />
+    </block>
+  </properties>
+<network>
+<block type="500" id="2">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="13" input="1"/>
+</outputs>
+</block>
+<block type="11" id="8">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="3010" id="12">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+<input id="3"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="8" input="1"/>
+</outputs>
+</block>
+<block type="5013" id="13">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="12" input="1"/>
+<output id="1" inBlock="12" input="2"/>
+<output id="1" inBlock="12" input="3"/>
+</outputs>
+</block>
+</network>
+</harpia>

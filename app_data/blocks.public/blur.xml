@@ -1,0 +1,93 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3011' id=''>
+        <property name='_KSIZE_' value='cv::Size(3,3)' desc='kernel size'/>
+        <property name='_ANCHOR_' value='cv::Point(-1,-1)' desc='anchor point'/>
+        <property name='_BORDERTYPE_' value='cv::BORDER_DEFAULT' desc='border extrapolation' type='selector' values='cv::BORDER_REPLICATE;cv::BORDER_CONSTANT;cv::BORDER_REFLECT;cv::BORDER_REFLECT_101;cv::BORDER_WRAP;cv::BORDER_TRANSPARENT;cv::BORDER_DEFAULT;cv::BORDER_ISOLATED'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Blurs an image using the normalized box filter.
+
+Ksize (cv::Size): blurring kernel size.
+Anchor (cv::Point): anchor point ; default value cv::Point(-1,-1) means that the anchor is at the kernel center.
+BorderType (symbolic cst): border mode used to extrapolate pixels outside of the image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Blur</label>
+    <input id='1' type='cv::Mat'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Blurs</description>
+    <treegroup>Filtering</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+cv::blur( *(_INPUT1_), *(_OUTPUT1_), _KSIZE_, _ANCHOR_, _BORDERTYPE_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+

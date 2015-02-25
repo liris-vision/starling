@@ -1,0 +1,105 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="5000" id="18">
+		<position x="475.0" y="30.0"/>
+	</block>
+	<block type="0" id="19">
+		<position x="21.0" y="33.0"/>
+	</block>
+	<block type="2" id="20">
+		<position x="661.0" y="29.0"/>
+	</block>
+	<block type="5002" id="25">
+		<position x="314.0" y="115.0"/>
+	</block>
+	<block type="3008" id="26">
+		<position x="157.0" y="116.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="19" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/lena_288x288.jpg" />
+	</block>
+  <block id="18" type="5000">
+		<property desc="Color of keypoints" name="_PARAM1_" value="cv::Scalar::all(-1)" />
+	</block>
+  <block id="20" type="2">
+		<property desc="window name" name="_PARAM1_" value="_BLOCKID_" />
+	</block>
+  <block id="25" type="5002">
+		<property desc="threshold intensity" name="_PARAM1_" value="10" />
+		<property desc="non maximal suppression" name="_PARAM2_" value="true" />
+	</block>
+  <block id="26" type="3008">
+		<property desc="conversion code" name="_CONVERSION_" type="selector" value="CV_BGR2GRAY" values="CV_BGR2GRAY;CV_GRAY2BGR;CV_BGR2RGB;CV_RGB2BGR;CV_BGR2XYZ;CV_RGB2XYZ;CV_XYZ2BGR;CV_XYZ2RGB;CV_BGR2YCrCb;CV_RGB2YCrCb;CV_YCrCb2BGR;CV_YCrCb2RGB;CV_BGR2HSV;CV_RGB2HSV;CV_HSV2BGR;CV_HSV2RGB;CV_BGR2HLS;CV_RGB2HLS;CV_HLS2BGR;CV_HLS2RGB;CV_BGR2Lab;CV_RGB2Lab;CV_Lab2BGR;CV_Lab2RGB;CV_BGR2Luv;CV_RGB2Luv;CV_Luv2BGR;CV_Luv2RGB" />
+		<property desc="number of channels" name="_DSTCN_" value="0" />
+    </block>
+  </properties>
+<network>
+<block type="0" id="19">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="18" input="1"/>
+<output id="1" inBlock="26" input="1"/>
+</outputs>
+</block>
+<block type="5000" id="18">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="20" input="1"/>
+</outputs>
+</block>
+<block type="2" id="20">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+</outputs>
+</block>
+<block type="5002" id="25">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="18" input="2"/>
+</outputs>
+</block>
+<block type="3008" id="26">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="25" input="1"/>
+</outputs>
+</block>
+</network>
+</harpia>

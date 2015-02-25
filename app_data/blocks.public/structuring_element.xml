@@ -1,0 +1,95 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3002' id=''>
+        <property name='_SHAPE_' value='cv::MORPH_RECT' desc='shape' type='selector' values='cv::MORPH_RECT;cv::MORPH_ELLIPSE;cv::MORPH_CROSS'/>
+        <property name='_SIZE_' value='cv::Size(3,3)' desc='size'/>
+        <property name='_ANCHOR_' value='cv::Point(-1,-1)' desc='anchor'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Returns a structuring element of the specified size and shape for morphological operations.
+
+Shape (symbolic cst) : element shape.
+Size (cv::Size) : size of the structuring element.
+Anchor (cv::Point) : anchor position within the element.
+    </help>
+
+    <!-- block description -->    
+
+    <label>New structuring element</label>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Structuring element for morphological operations</description>
+    <treegroup>Items</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void getStructuringElement( int shape, const cv::Size& ksize, const cv::Point& anchor, cv::Mat *out)
+{
+	*out = cv::getStructuringElement( shape, ksize, anchor);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+getStructuringElement( _SHAPE_, _SIZE_, _ANCHOR_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

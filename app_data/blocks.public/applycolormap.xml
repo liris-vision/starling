@@ -1,0 +1,100 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3027' id=''>
+		<property name='_COLORMAP_' value='cv::COLORMAP_RAINBOW' desc='color map' type='selector' values='cv::COLORMAP_AUTUMN;cv::COLORMAP_BONE;cv::COLORMAP_JET;cv::COLORMAP_WINTER;cv::COLORMAP_RAINBOW;cv::COLORMAP_OCEAN;cv::COLORMAP_SUMMER;cv::COLORMAP_SPRING;cv::COLORMAP_COOL;cv::COLORMAP_HSV;cv::COLORMAP_PINK;cv::COLORMAP_HOT'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Applies a colormap on a given image.
+
+Parameters:
+ - color map (constant)
+
+Inputs/Ouputs:
+ - input1: input image.
+ - output1: colored image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Apply colormap</label>
+    <input id='1' type='cv::Mat' desc='input image'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Apply a colormap.</description>
+    <treegroup>Image transformations</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvApplyColorMap( const cv::Mat *in, int colormap, cv::Mat *out)
+{
+	if( in == NULL )
+		return;
+
+	cv::applyColorMap( *in, *out, colormap);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvApplyColorMap( _INPUT1_, _COLORMAP_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

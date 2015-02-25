@@ -1,0 +1,69 @@
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="38.0" y="82.0"/>
+	</block>
+	<block type="602" id="2">
+		<position x="223.0" y="65.0"/>
+	</block>
+	<block type="1" id="4">
+		<position x="449.0" y="73.0"/>
+	</block>
+</GcState>
+<properties>
+  <block type="00" id="1">
+    <property name="type" value="file"/>
+		<property name="filename" value="resource/pivert_599x424.jpg"/>
+    <property name="place" value="server"/>
+    <property name="camera" value="-1"/>
+		<property name="size" value="640x480"/>
+    <property name="video_name" value=""/>
+		<property name="frameRate" value="20.0"/>
+  </block>
+  <block type="602" id="2">
+		<property name="dpSel" value="2"/>
+		<property name="distSel" value="50"/>
+		<property name="threshSel" value="100"/>
+		<property name="qualySel" value="90"/>
+		<property name="minX" value="0"/>
+		<property name="maxX" value="500"/>
+		<property name="minY" value="0"/>
+		<property name="maxY" value="500"/>
+		<property name="minRad" value="0"/>
+		<property name="maxRad" value="500"/>
+		<property name="numOfCircs" value="1"/>
+		<property name="criteria" value="pos"/>
+		<property name="disDraw" value="no"/>
+	</block>
+  <block type="01" id="4">
+        <property name="filename" value="20_output.png"/>
+        <property name="filetype" value="png"/>
+      </block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="2" input="1"/>
+</outputs>
+</block>
+<block type="602" id="2">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="2" inBlock="4" input="1"/>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="1" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+</network>
+</harpia>

@@ -1,0 +1,106 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3024' id=''>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Inverts every bit of an array.
+
+Inputs/Ouputs:
+ - input1: input array.
+ - input2: optional operation mask, 8-bit single channel array, that specifies elements of the output array to be changed.
+ - output1: output array that has the same size and type as the input array.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Bitwise not</label>
+    <input id='1' type='cv::Mat' desc='input image'/>
+    <input id='2' type='cv::Mat' desc='mask (optional)' optional='true'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Bitwise not</description>
+    <treegroup>Pixelwise operations on arrays</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvBitwiseNot( const cv::Mat *in1, const cv::Mat *in2, cv::Mat *out)
+{
+	if( in1 == NULL )
+		return;
+
+	if( in2 == NULL )
+	{
+		// no mask provided
+		cv::bitwise_not( *in1, *out);
+	}
+	else
+	{
+		cv::bitwise_not( *in1, *out, *in2);
+	}
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvBitwiseNot( _INPUT1_, _INPUT2_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

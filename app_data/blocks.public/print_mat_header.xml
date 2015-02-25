@@ -1,0 +1,128 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='4' id=''>
+		<property name='_TITLE_' value='block_BLOCKID_' desc='title'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Print cv::Mat header in terminal.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Print Mat header</label>
+	<input id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Print cv::Mat header</description>
+	<treegroup>Input-Output</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path='' />
+
+	<library name='' />
+
+	<librarypath path='' />
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void printMatHeader( const char* title, const cv::Mat *in1)
+{
+	printf( "%s header:\n", title);
+	printf( " rows = %d\n", in1->rows);
+	printf( " cols = %d\n", in1->cols);
+	
+	const char *depthStr = NULL;
+	switch( in1->depth() )
+	{
+		case CV_8U :
+			depthStr = "CV_8U";
+			break;
+
+		case CV_8S :
+			depthStr = "CV_8S";
+			break;
+
+		case CV_16U :
+			depthStr = "CV_16U";
+			break;
+
+		case CV_16S :
+			depthStr = "CV_16S";
+			break;
+
+		case CV_32S :
+			depthStr = "CV_32S";
+			break;
+
+		case CV_32F :
+			depthStr = "CV_32F";
+			break;
+
+		case CV_64F :
+			depthStr = "CV_64F";
+			break;
+
+		default: 
+			depthStr = "unknown";
+	}
+	printf( " depth = %s\n", depthStr);
+	printf( " channels = %d\n", in1->channels());
+}
+		]]>
+	</functions>
+
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+printMatHeader( "_TITLE_", _INPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+</properties>
+

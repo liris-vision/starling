@@ -1,0 +1,109 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='5011' id=''>
+		<property name='_COLOR_' value='0,255,0' desc='Color (B,G,R)'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Draw object detections on an image.
+
+Inputs/outputs:
+ - input1: image.
+ - input2: object detections.
+ - output1: image with detections.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Draw object detections</label>
+	<input  id='1' type='cv::Mat' desc='image'/>
+	<input  id='2' type='std::vector&lt;cv::Rect&gt;' desc='object detections'/>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/liris.png</icon>
+	<color>50:100:200:150</color>
+	<description>Draw object detections</description>
+	<treegroup>Miscellaneous</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path='' />
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void lvDrawObjectDetections( const cv::Mat *in1, const std::vector<cv::Rect> *in2, cv::Mat *out1, const cv::Scalar& color)
+{
+	if( (! in1) || (! in1->data) )
+		return;
+
+	in1->copyTo(*out1);
+
+	if( ! in2 )
+		return;
+
+	for( int i = 0; i < in2->size(); i++)
+	{
+		// draw bounding box on input image
+		const cv::Rect& box = in2->at(i);
+		cv::rectangle( *out1, box, color, 2);
+	}
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+lvDrawObjectDetections( _INPUT1_, _INPUT2_, _OUTPUT1_, cv::Scalar(_COLOR_));
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

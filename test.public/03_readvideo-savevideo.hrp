@@ -1,0 +1,62 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="500" id="1">
+		<position x="20.0" y="20.0"/>
+	</block>
+	<block type="11" id="3">
+		<position x="206.0" y="20.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="1" type="500">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/kth_walkingd1_person01.mpg" />
+	</block>
+  <block id="3" type="11">
+		<property desc="filename" name="_PARAM1_" type="filename" value="test.tmp/03_output.mpeg" />
+		<property desc="codec" name="_PARAM2_" value="DIVX" />
+		<property desc="frame rate" name="_PARAM3_" value="25.0" />
+	</block>
+  </properties>
+<network>
+<block type="500" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="3" input="1"/>
+</outputs>
+</block>
+<block type="11" id="3">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+</network>
+</harpia>

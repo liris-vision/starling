@@ -1,0 +1,96 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='802' id=''>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Crop image.
+
+Output 1: cropped image.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Crop image</label>
+	<input id='1' type='cv::Mat'/>
+	<input id='2' type='cv::Rect'/>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/cropImage.png</icon>
+	<color>50:100:200:150</color>
+	<description>Crop image</description>
+	<treegroup>Image transformations</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void cropImage( const cv::Mat *in1, const cv::Rect *in2, cv::Mat *out)
+{
+	if( (! in1) || (! in1->data) )
+		return;
+	
+	cv::Mat imgROI = (*in1)(*in2);
+	imgROI.copyTo(*out); 
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+cropImage( _INPUT1_, _INPUT2_, _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

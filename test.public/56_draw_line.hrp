@@ -1,0 +1,107 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="0" id="2">
+		<position x="22.0" y="46.0"/>
+	</block>
+	<block type="22" id="3">
+		<position x="23.0" y="219.0"/>
+	</block>
+	<block type="1" id="4">
+		<position x="348.0" y="48.0"/>
+	</block>
+	<block type="24" id="5">
+		<position x="190.0" y="47.0"/>
+	</block>
+	<block type="22" id="6">
+		<position x="24.0" y="141.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="2" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/lena_288x288.jpg" />
+	</block>
+  <block id="3" type="22">
+		<property desc="X coordinate" name="_PARAM1_" value="190" />
+		<property desc="Y coordinate" name="_PARAM2_" value="150" />
+	</block>
+  <block id="6" type="22">
+		<property desc="X coordinate" name="_PARAM1_" value="50" />
+		<property desc="Y coordinate" name="_PARAM2_" value="10" />
+	</block>
+  <block id="4" type="1">
+		<property desc="file name" name="_PARAM1_" type="filename" value="test.tmp/56_output.png" />
+	</block>
+  <block id="5" type="24">
+		<property desc="Color" name="_COLOR_" value="255,0,255" />
+		<property desc="Thickness" name="_THICKNESS_" value="2" />
+		<property desc="Line Type" name="_LINETYPE_" type="selector" value="8" values="8;4;CV_AA" />
+		<property desc="Shift" name="_SHIFT_" value="0" />
+	</block>
+  </properties>
+<network>
+<block type="0" id="2">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="5" input="1"/>
+</outputs>
+</block>
+<block type="22" id="3">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="5" input="3"/>
+</outputs>
+</block>
+<block type="22" id="6">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="5" input="2"/>
+</outputs>
+</block>
+<block type="1" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="24" id="5">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+<input id="3"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="4" input="1"/>
+</outputs>
+</block>
+</network>
+</harpia>

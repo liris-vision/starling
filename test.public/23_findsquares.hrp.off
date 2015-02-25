@@ -1,0 +1,60 @@
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="55.0" y="63.0"/>
+	</block>
+	<block type="1" id="4">
+		<position x="439.0" y="72.0"/>
+	</block>
+	<block type="608" id="10">
+		<position x="240.0" y="49.0"/>
+	</block>
+</GcState>
+<properties>
+  <block type="00" id="1">
+    <property name="type" value="file"/>
+		<property name="filename" value="resource/shapes.png"/>
+    <property name="place" value="server"/>
+    <property name="camera" value="-1"/>
+		<property name="size" value="640x480"/>
+    <property name="video_name" value=""/>
+		<property name="frameRate" value="20.0"/>
+  </block>
+  <block type="01" id="4">
+        <property name="filename" value="23_output.png"/>
+        <property name="filetype" value="png"/>
+      </block>
+  <block type="608" id="10">
+		<property name="enMin" value="True"/>
+		<property name="enMax" value="True"/>
+		<property name="maxVal" value="30000"/>
+		<property name="minVal" value="1000"/>
+	</block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="10" input="1"/>
+</outputs>
+</block>
+<block type="1" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="608" id="10">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="2" inBlock="4" input="1"/>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+</network>
+</harpia>

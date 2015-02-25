@@ -1,0 +1,103 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='604' id=''>
+		<property name='_PARAM1_' value='CV_INTER_LINEAR' desc='interpolation method' type='selector' values='CV_INTER_NEAREST;CV_INTER_LINEAR;CV_INTER_AREA;CV_INTER_CUBIC;CV_INTER_LANCZOS4'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Resize image.
+Parameter 1 (constant): interpolation method as follows
+    CV_INTER_NEAREST = a nearest-neighbor interpolation
+    CV_INTER_LINEAR = a bilinear interpolation
+    CV_INTER_AREA = resampling using pixel area relation
+    CV_INTER_CUBIC = a bicubic interpolation over 4x4 pixel neighborhood
+    CV_INTER_LANCZOS4 = a Lanczos interpolation over 8x8 pixel neighborhood
+
+Output 1: resized image.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Resize image</label>
+	<input id='1' type='cv::Mat'/>
+	<input id='2' type='cv::Rect' desc='new size'/>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/resize.png</icon>
+	<color>50:100:200:150</color>
+	<description>Resize image</description>
+	<treegroup>Image transformations</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void resizeImage( int interpolation, const cv::Mat *in1, const cv::Rect *in2, cv::Mat *out)
+{
+	if( (! in1) || (! in1->data) )
+		return;
+	
+	*out = cv::Mat( in2->height, in2->width, in1->type());
+	cv::resize( *in1, *out, out->size(), 0.0, 0.0, interpolation);	
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+resizeImage( _PARAM1_, _INPUT1_, _INPUT2_, _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

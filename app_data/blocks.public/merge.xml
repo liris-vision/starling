@@ -1,0 +1,103 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3010' id=''>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Creates one multichannel array out of several single-channel ones.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Merge</label>
+    <input id='1' type='cv::Mat' desc='channel 1'/>
+    <input id='2' type='cv::Mat' desc='channel 2'/>
+    <input id='3' type='cv::Mat' desc='channel 3'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Merge to one multichannel array</description>
+    <treegroup>Pixelwise operations on arrays</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvMerge( const cv::Mat *in1, const cv::Mat *in2, const cv::Mat *in3, cv::Mat *out)
+{
+	if( in1 == NULL || ( in1->cols == 0 && in1->rows == 0 ) )
+		return;
+
+	std::vector<cv::Mat> planes;
+	planes.push_back(*in1);
+
+	if( in2 != NULL )
+		planes.push_back(*in2);
+		
+	if( in3 != NULL )
+		planes.push_back(*in3);
+
+	cv::merge( planes, *out);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvMerge( _INPUT1_, _INPUT2_, _INPUT3_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

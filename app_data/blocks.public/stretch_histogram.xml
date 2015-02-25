@@ -1,0 +1,113 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='6005' id=''>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Stretch the image histogram over the available dynamic range.
+
+Parameters: no parameters.
+
+Inputs/Ouputs:
+ - input1: input image (1 channel, 8 bits).
+ - output1: transformed image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Stretch histogram</label>
+    <input id='1' type='cv::Mat' desc='input image'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Stretch image histogram.</description>
+    <treegroup>Histograms</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvStretchHistogram( const cv::Mat *in, cv::Mat *out)
+{
+	if( in == NULL )
+		return;
+	
+	if( in->type() != CV_8UC1 )
+	{
+		std::cout << "Error: image must be 1 channel, 8 bits." << std::endl;
+		return;
+	}
+	
+	// find histogram min/max values
+	double minPixVal;
+	double maxPixVal;
+	cv::minMaxLoc( *in, &minPixVal, &maxPixVal);
+
+	// stretch histogram
+	float scale = 255 / (maxPixVal-minPixVal);
+	float offset = - 255*minPixVal / (maxPixVal-minPixVal);
+	cv::convertScaleAbs( *in, *out, scale, offset);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvStretchHistogram( _INPUT1_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+

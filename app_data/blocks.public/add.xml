@@ -1,0 +1,115 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3017' id=''>
+    	<!-- ddepth parameter is unavailable on opencv 2.1
+        <property name='_DDEPTH_' value='-1' desc='destination depth' type='selector' values='-1;CV_8U;CV_8S;CV_16U;CV_16S;CV_32S;CV_32F;CV_64F'/>
+		-->
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Calculates the per-element sum of two arrays, or of an array and a scalar.
+
+Parameters:
+ - destination depth (int / symbolic cst): optional depth of the output array ; -1 for same depth as input.
+
+Inputs/Ouputs:
+ - input1: first input array or a scalar.
+ - input2: second input array of same size and same number of channels as input1, or a scalar.
+ - input3: optional operation mask - 8-bit single channel array, that specifies elements of the output array to be changed.
+ - output1: output array that has the same size and number of channels as the input array(s); the depth is defined by destination depth or input1/input2.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Add</label>
+    <input id='1' type='cv::Mat' desc='source 1'/>
+    <input id='2' type='cv::Mat' desc='source 2'/>
+    <input id='3' type='cv::Mat' desc='mask (optional)' optional='true'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Add</description>
+    <treegroup>Pixelwise operations on arrays</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void lvAdd( const cv::Mat *in1, const cv::Mat *in2, const cv::Mat *in3, cv::Mat *out )
+{
+	if( in1 == NULL || in2 == NULL )
+		return;
+
+	if( in3 == NULL )
+	{
+		// no mask provided
+		cv::add( *in1, *in2, *out);
+	}
+	else
+	{
+		cv::add( *in1, *in2, *out, *in3);
+	}
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+lvAdd( _INPUT1_, _INPUT2_, _INPUT3_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+

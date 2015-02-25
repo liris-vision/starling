@@ -1,0 +1,133 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='12' id=''>
+		<property name='_PATTERN_' value='image-%04d.png' desc='file name pattern' type='filename'/>
+		<property name='_INDEXMIN_' value='1' desc='index min'/>
+		<property name='_INDEXMAX_' value='50' desc='index max'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Save images to files sequence.
+
+Parameters:
+ - pattern (string) : image files name pattern in "C printf" format ; must contain a %nnd statement, which will be replaced by a counter value varying from index min to index max ; example: image-%04d.png,
+ - indexMin (int) : index minimum value,
+ - indexMax (int) : index maximum value.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Save images sequence</label>
+	<input id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/save.png</icon>
+	<color>50:100:200:150</color>
+	<description>Save images to file sequence</description>
+	<treegroup>Input-Output</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+class SaveImagesSequence
+{
+public:
+	SaveImagesSequence( const char* _fileNamePattern, int _indexMin, int _indexMax)
+	{
+		fileNamePattern = _fileNamePattern;
+		indexMin = _indexMin;
+		indexMax = _indexMax;
+		counter = indexMin;
+	}
+
+	~SaveImagesSequence(void)  { };
+
+	bool write(const cv::Mat *img)
+	{
+		if( (! img) || (! img->data) )
+			return false;
+		
+		// build file name
+		snprintf( fileName, sizeof(fileName), fileNamePattern, counter);
+
+		// write image to file
+		cv::imwrite( fileName, *img);
+
+		// check if counter has reached max value
+		counter++;
+		if( counter > indexMax )
+			return false;
+		
+		return true;
+	}
+		
+protected:
+	const char *fileNamePattern;
+	int indexMin;
+	int indexMax;
+	int counter;
+	char fileName[1024];
+};
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+SaveImagesSequence imgSeq_block_BLOCKID_( "_PATTERN_", _INDEXMIN_, _INDEXMAX_);
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+if( ! imgSeq_block_BLOCKID_.write(_INPUT1_) )
+	goOn = false;
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

@@ -1,0 +1,73 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="48.0" y="58.0"/>
+	</block>
+	<block type="1" id="4">
+		<position x="366.0" y="59.0"/>
+	</block>
+	<block type="3027" id="5">
+		<position x="204.0" y="60.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="1" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/seq-0018.jpg" />
+	</block>
+  <block id="4" type="1">
+		<property desc="file name" name="_PARAM1_" type="filename" value="test.tmp/59_output.png" />
+	</block>
+  <block id="5" type="3027">
+		<property desc="color map" name="_COLORMAP_" type="selector" value="cv::COLORMAP_JET" values="cv::COLORMAP_AUTUMN;cv::COLORMAP_BONE;cv::COLORMAP_JET;cv::COLORMAP_WINTER;cv::COLORMAP_RAINBOW;cv::COLORMAP_OCEAN;cv::COLORMAP_SUMMER;cv::COLORMAP_SPRING;cv::COLORMAP_COOL;cv::COLORMAP_HSV;cv::COLORMAP_PINK;cv::COLORMAP_HOT" />
+    </block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="5" input="1"/>
+</outputs>
+</block>
+<block type="1" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+</outputs>
+</block>
+<block type="3027" id="5">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="4" input="1"/>
+</outputs>
+</block>
+</network>
+</harpia>

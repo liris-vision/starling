@@ -1,0 +1,103 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="42.0" y="160.0"/>
+	</block>
+	<block type="501" id="2">
+		<position x="43.0" y="33.0"/>
+	</block>
+	<block type="604" id="3">
+		<position x="383.0" y="33.0"/>
+	</block>
+	<block type="30" id="4">
+		<position x="206.0" y="161.0"/>
+	</block>
+	<block type="1" id="5">
+		<position x="578.0" y="33.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="1" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/starling_640x480.jpg" />
+	</block>
+  <block id="2" type="501">
+		<property desc="width" name="_PARAM1_" value="600" />
+		<property desc="height" name="_PARAM2_" value="800" />
+		<property desc="depth and channels" name="_PARAM3_" value="CV_8UC1" />
+	</block>
+  <block id="3" type="604">
+		<property desc="interpolation method" name="_PARAM1_" type="selector" value="CV_INTER_LINEAR" values="CV_INTER_NEAREST;CV_INTER_LINEAR;CV_INTER_AREA;CV_INTER_CUBIC;CV_INTER_LANCZOS4" />
+	</block>
+  <block id="4" type="30">
+	</block>
+  <block id="5" type="1">
+		<property desc="file name" name="_PARAM1_" type="filename" value="test.tmp/45_output.png" />
+	</block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="4" input="1"/>
+</outputs>
+</block>
+<block type="501" id="2">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="3" input="1"/>
+</outputs>
+</block>
+<block type="604" id="3">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="5" input="1"/>
+</outputs>
+</block>
+<block type="30" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="3" input="2"/>
+</outputs>
+</block>
+<block type="1" id="5">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+</network>
+</harpia>

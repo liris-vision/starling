@@ -1,0 +1,160 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2013 Mathieu Barnachon (mathieu.barnachon@liris.cnrs.fr), LIRIS (liris.cnrs.fr)
+#            2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='6000' id=''>
+		<property name='_SCALE_' value='2.0' desc='horizontal scale'/>
+		<property name='_HEIGHT_' value='300' desc='height'/>
+		<property name='_LEGEND_COLOR_' value='128,128,128' desc='Legend color (B,G,R)'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Draw histogram.
+
+Parameters:
+ - horizontal scale (float): horizontal scale,
+ - height (int): output image height in pixels.
+ - legend color (B, G, R): color of legend and axes.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Draw histogram</label>
+	<input  id='1' type='cv::MatND' />
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Draw histogram on one image</description>
+	<treegroup>Histograms</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void showHist( const cv::MatND *in1, float scale, int height, const cv::Scalar& legendColor, cv::Mat *out1 )
+{
+	int lh = 25; // legend height in pixels
+
+	const int nbbins = in1->rows;
+	cv::Mat hist;
+	cv::normalize( *in1, hist, 0, height - 5, cv::NORM_MINMAX);
+	*out1 = cv::Mat( height + lh, nbbins * scale, CV_8UC3, cv::Scalar(0,0,0));
+	int w = out1->cols;
+	int h = out1->rows;
+
+	// draw legend
+	cv::line( *out1, cv::Point(0, height), cv::Point(w, height), legendColor);
+	cv::line( *out1, cv::Point(0, 0), cv::Point(0, height + 5), legendColor);
+	cv::line( *out1, cv::Point(w/4, 0), cv::Point(w/4, height + 5), legendColor);
+	cv::line( *out1, cv::Point(w/2, 0), cv::Point(w/2, height + 5), legendColor);
+	cv::line( *out1, cv::Point(3*w/4, 0), cv::Point(3*w/4, height + 5), legendColor);
+	cv::line( *out1, cv::Point(w-1, 0), cv::Point(w-1, height + 5), legendColor);
+	int fontFace = CV_FONT_HERSHEY_SIMPLEX;
+	double fontScale = 0.6;
+	char buffer[255];
+	snprintf( buffer, sizeof(buffer), "%d", nbbins - 1);
+	int baseLine;
+	cv::Size textSz = cv::getTextSize( buffer, fontFace, fontScale, 1, &baseLine);
+	cv::putText( *out1, buffer, cv::Point( w - 5 - textSz.width, height + 5 + textSz.height), fontFace, fontScale, legendColor);
+	cv::putText( *out1, "0", cv::Point( 5, height + 5 + textSz.height), fontFace, fontScale, legendColor);
+
+	// draw histogram
+	if( in1->channels() == 1 )
+	{
+		for( int i = 0 ; i < nbbins ; ++i)
+		{
+			int y = round(hist.at<float>(i));
+			cv::rectangle( *out1, 
+					cv::Point( i * scale, height - y),
+					cv::Point(  (i+1) * scale, height),
+					cv::Scalar(0,255,0), CV_FILLED );
+		}
+	}
+	else
+	{
+		cv::Mat blue  = cv::Mat::zeros( height + lh, nbbins * scale, CV_8UC1 );
+		cv::Mat green = cv::Mat::zeros( height + lh, nbbins * scale, CV_8UC1 );
+		cv::Mat red   = cv::Mat::zeros( height + lh, nbbins * scale, CV_8UC1 );
+		for( int i = 0 ; i < nbbins ; ++i )
+		{
+			cv::Vec3i pt1 = hist.at<cv::Vec3f>(i);
+			cv::rectangle( blue, 
+					cv::Point( i * scale, height - pt1[0]),
+					cv::Point( (i+1) * scale, height),
+					cv::Scalar(255,0,0), CV_FILLED );
+			cv::rectangle( green, 
+					cv::Point( i * scale, height - pt1[1]),
+					cv::Point( (i+1) * scale, height),
+					cv::Scalar(255,0,0), CV_FILLED );
+			cv::rectangle( red, 
+					cv::Point( i * scale, height - pt1[2]),
+					cv::Point( (i+1) * scale, height),
+					cv::Scalar(255,0,0), CV_FILLED );
+		}
+		cv::Mat color_hist[] = {blue,green,red};
+		cv::Mat tmp_hist;
+		cv::merge( color_hist, 3, tmp_hist);
+		tmp_hist.copyTo( *out1, tmp_hist); // copy histogram above legend
+	}
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+showHist( _INPUT1_, _SCALE_, _HEIGHT_, cv::Scalar(_LEGEND_COLOR_), _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

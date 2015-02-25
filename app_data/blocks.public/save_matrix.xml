@@ -1,0 +1,102 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='5' id=''>
+		<property name='_FILE_NAME_' value='data.xml' type='filename' desc='file name'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Save a matrix or an image to a file using OpenCV persistent features cv::FileStorage.
+
+Matrix can be saved in XML or YAML format.
+
+Parameter(s):
+ - file name (string): output file name ; the extension (.xml, .yml or .yaml) determines the file format.
+
+Inputs/outputs:
+ - input1: input image.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Save matrix</label>
+	<input id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/save.png</icon>
+	<color>50:100:200:150</color>
+	<description>Save matrix to file</description>
+	<treegroup>Input-Output</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void saveMatrix( const cv::Mat *in, const char *fileName)
+{
+	if( (! in) || (! in->data) )
+		return;
+		
+    cv::FileStorage fs( fileName, cv::FileStorage::WRITE);
+    fs << "noname" << *in;
+	fs.release();
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+saveMatrix( _INPUT1_, "_FILE_NAME_");
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

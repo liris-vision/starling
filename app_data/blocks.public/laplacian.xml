@@ -1,0 +1,96 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3016' id=''>
+        <property name='_DDEPTH_' value='-1' desc='destination depth' type='selector' values='-1;CV_8U; CV_16U;CV_16S;CV_32F;CV_64F'/>
+        <property name='_KSIZE_' value='1' desc='aperture size'/>
+        <property name='_SCALE_' value='1' desc='scale'/>
+        <property name='_DELTA_' value='0' desc='delta'/>
+        <property name='_BORDERTYPE_' value='cv::BORDER_DEFAULT' desc='border extrapolation' type='selector' values='cv::BORDER_REPLICATE;cv::BORDER_CONSTANT;cv::BORDER_REFLECT;cv::BORDER_REFLECT_101;cv::BORDER_WRAP;cv::BORDER_TRANSPARENT;cv::BORDER_DEFAULT;cv::BORDER_ISOLATED'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Calculates the Laplacian of an image.
+
+ - Destination depth (int / symbolic cst): desired depth of the destination image.
+ - Aperture size (int): aperture size used to compute the second-derivative filters. See getDerivKernels() for details. The size must be positive and odd.
+ - Scale (double): optional scale factor for the computed Laplacian values. By default, no scaling is applied. See getDerivKernels() for details.
+ - Delta (double): optional delta value that is added to the results prior to storing them in destination.
+ - BorderType (symbolic cst): pixel extrapolation method (see borderInterpolate() for details).
+	</help>
+
+    <!-- block description -->    
+
+    <label>Laplacian</label>
+    <input id='1' type='cv::Mat'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Laplacian</description>
+    <treegroup>Filtering</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+cv::Laplacian( *(_INPUT1_), *(_OUTPUT1_), _DDEPTH_, _KSIZE_, _SCALE_, _DELTA_, _BORDERTYPE_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

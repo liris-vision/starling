@@ -1,0 +1,109 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='3004' id=''>
+        <property name='_ANCHOR_' value='cv::Point(-1,-1)' desc='anchor'/>
+        <property name='_ITERATIONS_' value='1' desc='iterations'/>
+        <property name='_BORDERTYPE_' value='cv::BORDER_CONSTANT' desc='border extrapolation' type='selector' values='cv::BORDER_CONSTANT;cv::BORDER_REPLICATE;cv::BORDER_REFLECT;cv::BORDER_REFLECT_101;cv::BORDER_WRAP'/>
+        <property name='_BORDERVALUE_' value='cv::morphologyDefaultBorderValue()' desc='border value'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Dilates an image by using a specific structuring element.
+
+Parameters:
+- Anchor (cv::Point) : anchor position within the kernel.
+- Iterations (int) : number of iterations.
+- Border extrapolation (symbolic cst) : border pixel extrapolation method.
+- Border value (cv::Scalar) : border value in case of a constant border.
+
+Inputs/outputs:
+- input1: image to process
+- input2: structuring element (use "New structuring element" block)
+- output1: processed image
+    </help>
+
+    <!-- block description -->    
+
+    <label>Dilate</label>
+    <input id='1' type='cv::Mat' desc='image to dilate'/>
+    <input id='2' type='cv::Mat' desc='kernel (structuring element)'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Dilate</description>
+    <treegroup>Filtering</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void dilate( const cv::Point& anchor, int iterations, int borderType, const cv::Scalar& borderValue, const cv::Mat *in1, const cv::Mat *in2, cv::Mat *out)
+{
+	if( (! in1) || (! in1->data) || (! in2) || (! in2->data) )
+		return;
+	
+	cv::dilate( *in1, *out, *in2, anchor, iterations, borderType, borderValue);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+dilate( _ANCHOR_, _ITERATIONS_, _BORDERTYPE_, _BORDERVALUE_, _INPUT1_, _INPUT2_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+

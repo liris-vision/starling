@@ -1,0 +1,94 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='5002' id=''>
+		<property name='_PARAM1_' value='10' desc='threshold intensity'/>
+		<property name='_PARAM2_' value='true' desc='non maximal suppression'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Detects corners using the FAST algorithm.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Compute FAST</label>
+	<input  id='1' type='cv::Mat' />
+	<output id='1' type='std::vector &lt; cv::KeyPoint &gt;'/>
+	<isstream>false</isstream>
+	<icon>images/opencv.png</icon>
+	<color>50:100:200:150</color>
+	<description>Compute ORB from image</description>
+	<treegroup>Features</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+#include <vector>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/features2d/features2d.hpp>
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void computeFAST( const cv::Mat *in1, std::vector< cv::KeyPoint > *out1, int threshold, bool nonmaxSuppr)
+{
+	cv::FAST( *in1, *out1, threshold, nonmaxSuppr);
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+computeFAST( _INPUT1_, _OUTPUT1_, _PARAM1_, _PARAM2_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

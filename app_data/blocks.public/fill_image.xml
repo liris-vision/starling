@@ -1,0 +1,100 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+
+	<!-- legacy block parameters -->	
+
+	<block type='9' id=''>
+		<property name='_PARAM1_' value='128' desc='color'/>
+	</block>
+
+	<!-- help -->	
+
+	<help>
+Fill image pixels with color.
+Parameter 1 (vector) : BGRA color (1 to 4 values comma separated).
+	Example:
+		255
+		135, 236, 14
+
+Output 1: colored image.
+	</help>
+
+	<!-- block description -->	
+
+	<label>Fill image</label>
+	<input id='1' type='cv::Mat'/>
+	<output id='1' type='cv::Mat'/>
+	<isstream>false</isstream>
+	<icon>images/fill.png</icon>
+	<color>50:100:200:150</color>
+	<description>Fill image with color</description>
+	<treegroup>Image transformations</treegroup>
+	
+	<!-- informations for code generation -->	
+
+	<includepath path=''/>
+
+	<library name=''/>
+
+	<librarypath path=''/>
+
+	<includes>
+		<![CDATA[
+		]]>
+	</includes>
+
+	<functions>
+		<![CDATA[
+void fillImage( const cv::Scalar& s, const cv::Mat *in, cv::Mat *out)
+{
+	if( in )
+	{
+		in->copyTo(*out); 
+		out->setTo(s);
+	}
+}
+		]]>
+	</functions>
+	
+	<initializations>
+		<![CDATA[
+		]]>
+	</initializations>
+
+	<processings>
+		<![CDATA[
+fillImage( cv::Scalar(_PARAM1_), _INPUT1_, _OUTPUT1_);
+		]]>
+	</processings>
+
+	<cleanings>
+		<![CDATA[
+		]]>
+	</cleanings>
+
+</properties>

@@ -1,0 +1,104 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='5013' id=''>
+        <property name='_HISTORY_' value='500' desc='length of the history'/>
+        <property name='_VARTHRESHOLD_' value='4.0f*4.0f' desc='threshold'/>
+        <property name='_SHADOWDETECTION_' value='true' desc='shadow detection'/>
+        <property name='_LEARNINGRATE_' value='-1' desc='learning rate'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Gaussian Mixture-based Background/Foreground Segmentation Algorithm.
+
+Implements the Gaussian mixture model background subtraction described in:
+
+ - Z.Zivkovic, Improved adaptive Gausian mixture model for background subtraction, International Conference Pattern Recognition, UK, August, 2004, http://www.zoranz.net/Publications/zivkovic2004ICPR.pdf. The code is very fast and performs also shadow detection. Number of Gausssian components is adapted per pixel.
+ - Z.Zivkovic, F. van der Heijden, Efficient Adaptive Density Estimapion per Image Pixel for the Task of Background Subtraction, Pattern Recognition Letters, vol. 27, no. 7, pages 773-780, 2006. The algorithm similar to the standard Stauffer and Grimson algorithm with additional selection of the number of the Gaussian components based on: Z.Zivkovic, F.van der Heijden, Recursive unsupervised learning of finite mixture models, IEEE Trans. on Pattern Analysis and Machine Intelligence, vol.26, no.5, pages 651-656, 2004.
+
+Parameters:	
+ - history (int): length of the history.
+ - varThreshold (float) : threshold on the squared Mahalanobis distance to decide whether it is well described by the background model (see Cthr??). This parameter does not affect the background update. A typical value could be 4 sigma, that is, varThreshold=4*4=16; (see Tb??).
+ - shadowDetection (bool) : parameter defining whether shadow detection should be enabled (true or false).
+ - learningRate (double): learning rate.
+
+Inputs/outputs:
+ - input1: input image.
+ - output1: foreground mask as an 8-bit binary image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>BackgroundSubtractorMOG2</label>
+    <input id='1' type='cv::Mat'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>BackgroundSubtractorMOG2</description>
+    <treegroup>Motion analysis and object tracking</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+cv::BackgroundSubtractorMOG2 backgroundSubMOG2_BLOCKID_(_HISTORY_, _VARTHRESHOLD_, _SHADOWDETECTION_);
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+backgroundSubMOG2_BLOCKID_( *(_INPUT1_), *(_OUTPUT1_), _LEARNINGRATE_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+

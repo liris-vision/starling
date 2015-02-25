@@ -1,0 +1,76 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="3014" id="1">
+		<position x="225.0" y="35.0"/>
+	</block>
+	<block type="0" id="2">
+		<position x="26.0" y="35.0"/>
+	</block>
+	<block type="1" id="4">
+		<position x="421.0" y="34.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="2" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/pivert_599x424.jpg" />
+	</block>
+  <block id="1" type="3014">
+        <property desc="threshold" name="_THRESHOLD_" value="122" />
+        <property desc="maximum value" name="_MAXVAL_" value="255" />
+        <property desc="type" name="_THRESHTYPE_" type="selector" value="cv::THRESH_BINARY" values="cv::THRESH_BINARY;cv::THRESH_BINARY_INV;cv::THRESH_TRUNC;cv::THRESH_TOZERO;cv::THRESH_TOZERO_INV" />
+    </block>
+  <block id="4" type="1">
+		<property desc="file name" name="_PARAM1_" type="filename" value="test.tmp/18_output.png" />
+	</block>
+  </properties>
+<network>
+<block type="0" id="2">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="1" input="1"/>
+</outputs>
+</block>
+<block type="3014" id="1">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="4" input="1"/>
+</outputs>
+</block>
+<block type="1" id="4">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+</network>
+</harpia>

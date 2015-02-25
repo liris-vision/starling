@@ -1,0 +1,94 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+<harpia>
+<GcState>
+	<block type="0" id="1">
+		<position x="23.0" y="33.0"/>
+	</block>
+	<block type="1" id="2">
+		<position x="405.0" y="43.0"/>
+	</block>
+	<block type="3001" id="3">
+		<position x="237.0" y="40.0"/>
+	</block>
+	<block type="3002" id="4">
+		<position x="23.0" y="164.0"/>
+	</block>
+</GcState>
+<properties>
+  <block id="1" type="0">
+		<property desc="file name" name="_PARAM1_" type="filename" value="resource/pivert_599x424.jpg" />
+	</block>
+  <block id="4" type="3002">
+        <property desc="shape" name="_SHAPE_" type="selector" value="cv::MORPH_RECT" values="cv::MORPH_RECT;cv::MORPH_ELLIPSE;cv::MORPH_CROSS" />
+        <property desc="size" name="_SIZE_" value="cv::Size(3,3)" />
+        <property desc="anchor" name="_ANCHOR_" value="cv::Point(-1,-1)" />
+    </block>
+  <block id="2" type="1">
+		<property desc="file name" name="_PARAM1_" type="filename" value="test.tmp/11_output.png" />
+	</block>
+  <block id="3" type="3001">
+        <property desc="operation" name="_OPERATION_" type="selector" value="cv::MORPH_OPEN" values="cv::MORPH_OPEN;cv::MORPH_CLOSE;cv::MORPH_GRADIENT;cv::MORPH_TOPHAT;cv::MORPH_BLACKHAT" />
+        <property desc="anchor" name="_ANCHOR_" value="cv::Point(-1,-1)" />
+        <property desc="iterations" name="_ITERATIONS_" value="1" />
+        <property desc="border extrapolation" name="_BORDERTYPE_" type="selector" value="cv::BORDER_CONSTANT" values="cv::BORDER_CONSTANT;cv::BORDER_REPLICATE;cv::BORDER_REFLECT;cv::BORDER_REFLECT_101;cv::BORDER_WRAP" />
+        <property desc="border value" name="_BORDERVALUE_" value="cv::morphologyDefaultBorderValue()" />
+    </block>
+  </properties>
+<network>
+<block type="0" id="1">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="3" input="1"/>
+</outputs>
+</block>
+<block type="3002" id="4">
+<inputs>
+</inputs>
+<outputs>
+<output id="1" inBlock="3" input="2"/>
+</outputs>
+</block>
+<block type="1" id="2">
+<inputs>
+<input id="1"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="--" input="--"/>
+</outputs>
+</block>
+<block type="3001" id="3">
+<inputs>
+<input id="1"/>
+<input id="2"/>
+</inputs>
+<outputs>
+<output id="1" inBlock="2" input="1"/>
+</outputs>
+</block>
+</network>
+</harpia>
