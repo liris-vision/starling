@@ -1,5 +1,5 @@
 # starling
-Starling is a graphical tool to build simple computer-vision applications.
+Starling is a graphical tool to build simple computer-vision applications, developped by the [IMAGINE](http://liris.cnrs.fr/imagine), R3AM(http://liris.cnrs.fr/r3am/index_en.html) and [SAARA](http://liris.cnrs.fr/saara/doku.php) teams of the [LIRIS laboratory](http://liris.cnrs.fr).
 
 Starling provides an easy to use graphical environment to experiment computer vision, and to generate C++ code examples of vision algorithms use. It relies on the OpenCV library (www.opencv.org).
 
