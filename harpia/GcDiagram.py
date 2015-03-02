@@ -348,6 +348,9 @@ class GcDiagram( goocanvas.Canvas ):
 				Network += "<outputs>\n"
 				t_dConnectedOuts = {}
 				for t_oConnector in self.m_oConnectors.values():
+					if t_oConnector.toBlock == -1:
+						# skip connector in progress
+						continue
 					if t_oConnector.fromBlock == self.m_oBlocks[t_oBlockIdx].GetId() and (self.m_oBlocks[t_oConnector.toBlock].GetState() or a_bKeepNonFlowing):
 						Network += '<output id="' + str(t_oConnector.fromBlockOut+1) + '" inBlock="' + str(t_oConnector.toBlock) + '" input="' + str(t_oConnector.toBlockIn+1) + '"/>\n' #+1 pois o range eh de 0..x (precisamos do id 1...x+1)
 						t_dConnectedOuts[t_oConnector.fromBlockOut] = 1
