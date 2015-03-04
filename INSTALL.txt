@@ -18,13 +18,13 @@ On Ubuntu 11.10 amd64
 On Ubuntu 12.04 amd64
   $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
   $ sudo aptitude install libavcodec-extra-53
-  $ sudo aptitude install python-gnome2 python-pyorbit python-glade2 python-pygoocanvas
+  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
   $ sudo aptitude install python-opencv
 
 On Ubuntu 14.04 amd64
   $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
   $ sudo aptitude install libavcodec-extra-54
-  $ sudo aptitude install python-gnome2 python-pyorbit python-glade2 python-pygoocanvas
+  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
   $ sudo aptitude install python-opencv
 
 On Fedora 20 (64 bits)
