@@ -43,7 +43,6 @@ import signal
 import time
 from glob import glob
 
-from GladeWindow import GladeWindow
 import xmltree
 
 import commands
@@ -57,11 +56,9 @@ import GcdConnector
 import GcdBlock
 import GcDiagram
 
-from update import Update
-
-
 import s2iSessionManager
 import TipOfTheDay
+import about
 
 import lvExtensions
 import codegenerator
@@ -83,17 +80,17 @@ BLOCK_SIZE_X = 100
 BLOCK_SIZE_Y = 50
 
 ## Main window
-class S2iHarpiaFrontend( GladeWindow ):
+class S2iHarpiaFrontend():
 	"""
-	Implements the main window frontend functionalities. Its derived from GladeWindow.
-	This class connects all the signals in the harpia frontend main window and implements their functions.
+	Implements the main window frontend functionalities.
+	This class connects all the signals in the main window and implements their functions.
 	"""
 
 	#----------------------------------------------------------------------
 
 	def __init__( self, userFiles, batchModeOn, experimentalMode):
 		"""
-		Constructor. Initializes the GladeWindow object for signal connecting, creates a dictionary for the Blocks and BlocksProperties and loads the configurations.
+		Constructor. Initializes the GUI, connects the GTK signals, creates a dictionary for the Blocks and BlocksProperties and loads the configurations.
 		"""
 	
 		gobject.threads_init()
@@ -104,7 +101,7 @@ class S2iHarpiaFrontend( GladeWindow ):
 		self.exampleMenuItens = []
 		
 		self.m_sDataDir = os.environ['HARPIA_DATA_DIR']
-		filename = self.m_sDataDir+'glade/harpia_gui-1.0.glade'
+		UIFilename = self.m_sDataDir+'gui/frontend.xml'
 
 		widget_list = [
 			'HarpiaFrontend',          'SearchEntry',          'SearchButton',
@@ -136,13 +133,18 @@ class S2iHarpiaFrontend( GladeWindow ):
 			'on_DebugMenuBar_activate'
 			]
 
-		top_window = 'HarpiaFrontend'
+		topWindowName = 'HarpiaFrontend'
 		
-		# Initializes the Gladewindow
-		GladeWindow.__init__(self, filename, top_window, widget_list, handlers)
-		
-		#self.top_window.maximize() #asking politely to maximize out app =]
-		#self.top_window.resize(900, 700)
+		# Initializes the GUI
+		builder = gtk.Builder()
+		builder.add_from_file(UIFilename)
+		builder.connect_signals(self)
+		self.gtkTopWindow = builder.get_object(topWindowName)
+
+		# build widgets list
+		self.widgets = {}
+		for w in widget_list:
+			self.widgets[w] = builder.get_object(w)
 		
 		self.widgets['HarpiaFrontend'].set_icon_from_file(self.m_sDataDir+"images/starling.jpg")
 
@@ -205,6 +207,18 @@ class S2iHarpiaFrontend( GladeWindow ):
 
 	def __del__(self):
 		pass
+
+	#----------------------------------------------------------------------
+
+	def show(self, center=1):
+		"""
+		Display the top_window widget
+		"""
+		if center:
+			self.gtkTopWindow.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+		else:
+			self.gtkTopWindow.set_position(gtk.WIN_POS_NONE)
+		self.gtkTopWindow.show()
 
 	#---------------------------------------------------------------------- 
 
@@ -447,9 +461,8 @@ class S2iHarpiaFrontend( GladeWindow ):
 		"""
 		Callback function called when AboutMenuBar is activated. Loads the about window.
 		"""
-		from harpia import about
-		About = about.About()
-		About.show( center=0 )
+		self.about = about.About()
+		self.about.show()
 
 	#----------------------------------------------------------------------
 

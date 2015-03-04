@@ -30,47 +30,46 @@
 #
 #----------------------------------------------------------------------
 
-# Imported class GladeWindow
-from harpia.GladeWindow import GladeWindow
-
 import os
+import gtk
 
 ## Implements the about window in the Frontend.
-class About( GladeWindow ):
+class About():
 	"""
 		The class implements the functionalities for showing the window and handles the singnals.
 		Allow the user to see information about the Harpia Project.
-		
 	"""
 	#----------------------------------------------------------------------
 
 	def __init__( self ):
 		"""
-			Sets the Glade file where the about window is defined and Connects the
-			signals and its handlers through GladeWindow __init__
+			Build the window UI.
     	"""
-			
-		## Get the file with the about window
 		self.m_sDataDir = os.environ['HARPIA_DATA_DIR']
-		filename = self.m_sDataDir+'glade/about.glade'
-		## The widget list
-		widget_list = [
-        	    'about',
-	            'harpia_name',
-        	    'about_s2i_logo',
-	            'about_finep_logo'
-        	    ]
-		handlers = [            ]
-		# The top three widget
-		top_window = 'about'
-		
-		# Starts the Glade Window
-		GladeWindow.__init__(self, filename, top_window, widget_list, handlers)
-		# Set the Icons and logos
-		#----------------------------------------------------------------------
+		UIFilename = self.m_sDataDir+'gui/about.xml'
+		windowName = 'about'
+	
+		# build gtk window
+		builder = gtk.Builder()
+		builder.add_from_file(UIFilename)
+		self.gtkWindow = builder.get_object(windowName)
+
+	#----------------------------------------------------------------------
+
 	def __del__(self):
-		pass
+		# destroy the GTK window
+		self.gtkWindow.destroy()
+
 	#---------------------------------------------------------------------- 
 
+	def show(self):
+		"""
+		Display the GTK window
+		"""
+		self.gtkWindow.show()
+
+	#---------------------------------------------------------------------- 
+
+# Debugging
 #About = About()
-#About.show( center=0 )
+#About.show()
