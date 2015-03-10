@@ -34,6 +34,8 @@ import GcdConnector
 import gtk
 import sys
 import time
+import tempfile
+import shutil
 
 from exceptions import AttributeError
 
@@ -85,6 +87,7 @@ class GcDiagram( goocanvas.Canvas ):
 		self.root_add(goocanvas.Rect(width=canvasWidth, height=canvasHeight, pointer_events=goocanvas.EVENTS_ALL, stroke_color='gray')) 
 
 		self.m_sFilename = None
+		self.createWorkingDir()
 		
 		self.m_sErrorLog = ""
 
@@ -401,7 +404,6 @@ class GcDiagram( goocanvas.Canvas ):
 		self.m_oConnectors = {}
 		self.m_oCurrConnector = None
 		self.m_nSessionId = 0
-		self.m_sDirName = ''
 		self.m_nBlockCountId = 1   # next block id
 		self.m_nConnectorCountId = 1   # next connector id
 		self.SetSessionManager(None)
@@ -670,12 +672,31 @@ class GcDiagram( goocanvas.Canvas ):
 	def GetIDBackendSession(self):
 		return self.m_nSessionId
 	
-	def SetDirName(self, dirName):
+	def setDirName(self, dirName):
+		"""
+		Set working dir name.
+		"""
 		self.m_sDirName = dirName
 
-	def GetDirName(self):
+	def getDirName(self):
+		"""
+		Get working dir name.
+		"""
 		return self.m_sDirName
+
+	def removeDir(self):
+		"""
+		Remove working dir.
+		"""
+		shutil.rmtree(self.getDirName())
 	
+	def createWorkingDir(self):
+		"""
+		Create working dir.
+		"""
+		dirName = tempfile.mkdtemp(prefix='starling_')
+		self.setDirName(dirName)
+
 	def Export2Png(self, filepath="diagrama.png"):
 		(x,y,t_nWidth,t_nHeight,t_nDepth) = self.window.get_geometry()
 		
