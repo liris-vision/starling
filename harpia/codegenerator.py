@@ -539,13 +539,8 @@ def runProject():
 	p = None
 	if compileResult == 0:
 		print 'Running ... (press ESC to stop, SPACE to pause)'
-		wdir = lvExtensions.getWorkingDir()
 		execPath = os.path.abspath(runFileName)
 		currentDir = os.getcwd()
-		if wdir:
-			# change to working dir
-			currentDir = os.getcwd()
-			os.chdir(wdir)
 		p = runSubprocess(execPath)
 		os.chdir(currentDir)
 	return p

@@ -68,7 +68,6 @@ def main(argv):
 	argParser = argparse.ArgumentParser()
 	argParser.add_argument('-b', '--batch', help='turn batch mode on', action='store_true')
 	argParser.add_argument('-e', '--experimental', help='active experimental blocks', action='store_true')
-	argParser.add_argument('-d', '--dir', help='set working directory')
 	argParser.add_argument('-c', '--config-file', help='configuration file')
 	args, unknown = argParser.parse_known_args()
 	userFiles = unknown
@@ -76,8 +75,6 @@ def main(argv):
 		batchMode = True
 	if args.experimental:
 		experimentalMode = True
-	if args.dir:
-		lvExtensions.setWorkingDir(os.path.abspath(args.dir))
 	if args.config_file:
 		lvExtensions.setConfigurationFileName(os.path.abspath(args.config_file))
 	

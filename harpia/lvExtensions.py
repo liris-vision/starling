@@ -47,7 +47,7 @@ lirisvisionDir = '../..'
 if os.name == "nt":
 	lirisvisionDir = '..\\..'
 
-workingDir = ''
+workingDirsPlace = '' # the place (directory) where temporary working directories are created 
 user_guide_filename = os.path.normpath('doc/user_guide.html')
 developer_guide_filename = os.path.normpath('doc/developer_guide.html')
 configurationFileName = os.path.expanduser('~/.starling.conf')
@@ -284,19 +284,22 @@ def getAbsolutePath(path):
 #----------------------------------------------------------------------
 
 """
-Set working directory.
+Set working directory place.
 """
-def setWorkingDir(wdir):
-	global workingDir
-	workingDir = wdir
+def setWorkingDirsPlace(wdir):
+	global workingDirsPlace
+	if wdir:
+		workingDirsPlace = getAbsolutePath(wdir)
+	else:
+		workingDirsPlace = '' 
 
 #----------------------------------------------------------------------
 
 """
 Get working directory.
 """
-def getWorkingDir():
-	return workingDir
+def getWorkingDirsPlace():
+	return workingDirsPlace
 
 #----------------------------------------------------------------------
 
@@ -531,6 +534,7 @@ def saveConfiguration():
 	config += '\t<compilerOptions>' + unicode(compilerOptions) + '</compilerOptions>\n'
 	config += '\t<linkerOptions>' + unicode(linkerOptions) + '</linkerOptions>\n'
 	config += '\t<localModulesDirs>' + unicode(localModulesDirs) + '</localModulesDirs>\n'
+	config += '\t<workingDirsPlace>' + unicode(workingDirsPlace) + '</workingDirsPlace>\n'
 	config += '</starlingConfiguration>\n'
 
 	# save configuration to file
@@ -555,6 +559,7 @@ def loadConfiguration():
 	global compilerOptions
 	global linkerOptions
 	global localModulesDirs
+	global workingDirsPlace
 
 	if not os.path.exists(configurationFileName):
 		print 'Failed to read configuration file \'' + configurationFileName + '\'.'
@@ -581,4 +586,5 @@ def loadConfiguration():
 	linkerOptions = tree.getText('./linkerOptions') or ''
 
 	localModulesDirs = tree.getText('./localModulesDirs') or ''
+	workingDirsPlace = tree.getText('./workingDirsPlace') or ''
 
