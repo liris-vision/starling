@@ -129,7 +129,7 @@
 	</tr>
 </table>
 
-<h2>Miscellaneous</h2>
+<h2>Run examples</h2>
 
 <p>Useful examples can be accessed within the Examples menu:</p>
 
@@ -137,14 +137,17 @@
 <br>
 <br>
 
+<h2>Change configuration</h2>
+
 <p>The configuration of Starling can be changed through the preferences window. It is accessible by the 'Edit > Preferences' menu option.</p>
 <img src="user_guide/preferences_window.png" width="500"/>
 <p>
 The configuration parameters are:<br>
 - the LIRIS-VISION base directory (to use LIRIS-VISION blocks),<br>
 - informations on the OpenCV library to use,<br>
-- informations on other libraries to use,<br>
-- the places to search for local blocks.
+- informations on other libraries to use (for blocks that depends on libraries other than OpenCV),<br>
+- the places to search for extra block descriptions,<br>
+- the place where temporary working directories are created.
 </p>
 <p>Paths can be absolute or relative. Relative paths are relative to Starling directory.</p>
 <p>The preferences are saved in an xml file named '.starling.conf', in the user's home directory. Use the '-c' option at start up to use another configuration file.</p>
