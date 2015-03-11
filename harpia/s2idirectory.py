@@ -57,9 +57,9 @@ def loadBlocks():
 	lvExtensions.addBlocksFromDir(block, 'blocks.private', True)
 
 	# add local blocks
-	localModulesDirs = lvExtensions.getLocalModulesDirs().split(';')
-	localModulesDirs = filter(lambda f: f != '', localModulesDirs)
-	for localDir in localModulesDirs:
+	localBlocksDirs = lvExtensions.getLocalBlocksDirs().split(';')
+	localBlocksDirs = filter(lambda f: f != '', localBlocksDirs)
+	for localDir in localBlocksDirs:
 		lvExtensions.addBlocksFromDir(block, localDir)
 
 	# add experimental blocks

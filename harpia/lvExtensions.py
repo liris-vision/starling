@@ -57,7 +57,7 @@ compilerOptions = ''
 linkerOptions = ''
 
 # directories where local blocks are stored (string list separated by ";")
-localModulesDirs = ''
+localBlocksDirs = ''
 
 # OpenCV directories
 # values are lists of strings separated by ";"
@@ -491,19 +491,19 @@ def getLinkerOptions():
 #----------------------------------------------------------------------
 
 """
-Set local modules directories
+Set local blocks directories
 """
-def setLocalModulesDirs(dirsNames):
-	global localModulesDirs
-	localModulesDirs = dirsNames.strip(';')
+def setLocalBlocksDirs(dirsNames):
+	global localBlocksDirs
+	localBlocksDirs = dirsNames.strip(';')
 
 #----------------------------------------------------------------------
 
 """
-Get local modules directories
+Get local blocks directories
 """
-def getLocalModulesDirs():
-	return localModulesDirs
+def getLocalBlocksDirs():
+	return localBlocksDirs
 
 #----------------------------------------------------------------------
 
@@ -533,7 +533,7 @@ def saveConfiguration():
 	config += '\t<otherLibraries>' + unicode(otherLibraries) + '</otherLibraries>\n'
 	config += '\t<compilerOptions>' + unicode(compilerOptions) + '</compilerOptions>\n'
 	config += '\t<linkerOptions>' + unicode(linkerOptions) + '</linkerOptions>\n'
-	config += '\t<localModulesDirs>' + unicode(localModulesDirs) + '</localModulesDirs>\n'
+	config += '\t<localBlocksDirs>' + unicode(localBlocksDirs) + '</localBlocksDirs>\n'
 	config += '\t<workingDirsPlace>' + unicode(workingDirsPlace) + '</workingDirsPlace>\n'
 	config += '</starlingConfiguration>\n'
 
@@ -558,7 +558,7 @@ def loadConfiguration():
 	global otherLibraries
 	global compilerOptions
 	global linkerOptions
-	global localModulesDirs
+	global localBlocksDirs
 	global workingDirsPlace
 
 	if not os.path.exists(configurationFileName):
@@ -585,6 +585,6 @@ def loadConfiguration():
 	compilerOptions = tree.getText('./compilerOptions') or ''
 	linkerOptions = tree.getText('./linkerOptions') or ''
 
-	localModulesDirs = tree.getText('./localModulesDirs') or ''
+	localBlocksDirs = tree.getText('./localBlocksDirs') or ''
 	workingDirsPlace = tree.getText('./workingDirsPlace') or ''
 

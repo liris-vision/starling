@@ -84,7 +84,7 @@ class PreferencesWindow():
 
 		self.newHSeparator(vbox)
 		self.newTitle(vbox, 'Miscalleneous:')
-		self.newEntry(vbox, entries, 'localModulesDirs', ' - block sources', lvExtensions.getLocalModulesDirs(), 'List of directories separated by \';\', containing blocks definition')
+		self.newEntry(vbox, entries, 'localBlocksDirs', ' - block sources', lvExtensions.getLocalBlocksDirs(), 'List of directories separated by \';\', containing blocks definition')
 		self.newEntry(vbox, entries, 'workingDirsPlace', ' - working directories place', lvExtensions.getWorkingDirsPlace(), 'An existent directory where temporary working directories are created')
 
 		# Build options
@@ -167,11 +167,11 @@ class PreferencesWindow():
 		lvExtensions.setOtherLibraries(entries['otherLibraries'].get_text())
 		lvExtensions.setCompilerOptions(entries['compilerOptions'].get_text())
 		lvExtensions.setLinkerOptions(entries['linkerOptions'].get_text())
-		lvExtensions.setLocalModulesDirs(entries['localModulesDirs'].get_text())
+		lvExtensions.setLocalBlocksDirs(entries['localBlocksDirs'].get_text())
 		lvExtensions.setWorkingDirsPlace(entries['workingDirsPlace'].get_text())
 		# save to config file
 		lvExtensions.saveConfiguration()
-		# reload blocks in case local modules directory has changed
+		# reload blocks in case local blocks directory has changed
 		self.mainWindow.on_Reload_blocks_clicked()
 		self.window.destroy()
 
