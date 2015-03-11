@@ -127,7 +127,7 @@ class S2iHarpiaFrontend():
 			'on_ZoomDefaultToolBar_clicked',   'on_Preferences_clicked',
 			'on_Export_clicked',               'on_CloseMenuBar_activate',
 			'on_UpdateToolBar_clicked',        'on_tip_activate',
-			'on_reset_tip_activate',           'on_user_guide_activate',
+			'on_user_guide_activate',
 			'on_developer_guide_activate',     'on_Reload_blocks_clicked',
 			'on_UndoMenuBar_activate',         'on_RedoMenuBar_activate',
 			'on_DebugMenuBar_activate'
@@ -346,12 +346,16 @@ class S2iHarpiaFrontend():
 	#----------------------------------------------------------------------
 
 	def on_tip_activate(self, *args):
+		# enable tip display
+		tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
+		tipOfTheDayWind.GenerateBlankConf()
+		# display tip
 		tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
 		tipOfTheDayWind.run()
 	
-	def on_reset_tip_activate(self, *args):
-		tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
-		tipOfTheDayWind.GenerateBlankConf()
+	#ELrm def on_reset_tip_activate(self, *args):
+	#ELrm 	tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
+	#ELrm 	tipOfTheDayWind.GenerateBlankConf()
 
 	def on_user_guide_activate(self, *args):
 		lvExtensions.openDocumentation('user')

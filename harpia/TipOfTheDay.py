@@ -73,9 +73,7 @@ class TipOfTheDay(gtk.MessageDialog): #, Observable):
 					self.showTips = False
 					return
 
-				gtk.MessageDialog.__init__(self, None, gtk.DIALOG_MODAL,
-																		gtk.MESSAGE_INFO, gtk.BUTTONS_NONE,
-																		"Harpia")
+				gtk.MessageDialog.__init__(self, None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO, gtk.BUTTONS_NONE, "Starling")
 				self.set_title(_("Tip of the Day"))
 
 				self.connect("response", self.__on_closeBtn)
