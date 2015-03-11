@@ -183,8 +183,8 @@ class S2iHarpiaFrontend():
 			self.openFile(userFiles[0])
 			# run project
 			self.on_ProcessToolBar_clickedIneer()
-			# quit
-			#self.on_QuitMenuBar_activate()
+			# release resources and quit
+			self.on_QuitMenuBar_activate()
 			#self.top_window.emit("destroy")
 			#gtk.window().emit("destroy")
 		else:
@@ -656,7 +656,8 @@ class S2iHarpiaFrontend():
 				t_lsProcessChain = []#lista pra n precisar ficar copiando prum lado e pro otro o xml inteiro
 				t_lsProcessChain.append(t_oProcessXML.toString())
 				
-				t_Sm = s2iSessionManager.s2iSessionManager()
+				workingDir = t_oGcDiagram.getDirName()
+				t_Sm = s2iSessionManager.s2iSessionManager(workingDir)
 				
 				## pegando o novo ID (criado pela s2iSessionManager) e passando para o s2idiagram
 				self.m_oGcDiagrams[ t_nPage ].SetSessionManager(t_Sm)
@@ -666,8 +667,6 @@ class S2iHarpiaFrontend():
 				self.m_oGcDiagrams[ t_nPage ].SetErrorLog('')
 				t_bEverythingOk = True
 				t_Sm.NewInstance(self.batchModeOn, t_lsProcessChain)
-				if not self.batchModeOn:
-					self.m_oGcDiagrams[t_nPage].SetDirName(t_Sm.m_sDirName)
 					
 		#falta pegar o retorno!!!!!!
 		self.UpdateStatus(7)
@@ -706,7 +705,7 @@ class S2iHarpiaFrontend():
 			return
 
 		# open C code in text editor 
-		codegenerator.editSourceCode(self.m_oGcDiagrams[t_nPage].GetDirName())
+		codegenerator.editSourceCode(self.m_oGcDiagrams[t_nPage].getDirName())
 
 	def on_CodeToolBar_clicked(self, *args):
 		self.widgets['ProcessToolBar'].set_sensitive(False)
@@ -1065,6 +1064,7 @@ class S2iHarpiaFrontend():
 
 		if self.m_oGcDiagrams.has_key(t_nCurrentTabIndex):
 			self.m_oGcDiagrams[t_nCurrentTabIndex].stopSubProcess()
+			self.m_oGcDiagrams[t_nCurrentTabIndex].removeDir()
 			del self.m_oGcDiagrams[t_nCurrentTabIndex]
 
 		t_oGcDiagrams = {}

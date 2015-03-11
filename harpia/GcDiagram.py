@@ -34,11 +34,15 @@ import GcdConnector
 import gtk
 import sys
 import time
+import tempfile
+import os
+import shutil
 
 from exceptions import AttributeError
 
 import xmltree
 import s2idirectory
+import lvExtensions
 
 UNDO_LEVELS_CNT = 20
 
@@ -85,6 +89,7 @@ class GcDiagram( goocanvas.Canvas ):
 		self.root_add(goocanvas.Rect(width=canvasWidth, height=canvasHeight, pointer_events=goocanvas.EVENTS_ALL, stroke_color='gray')) 
 
 		self.m_sFilename = None
+		self.createWorkingDir()
 		
 		self.m_sErrorLog = ""
 
@@ -401,7 +406,6 @@ class GcDiagram( goocanvas.Canvas ):
 		self.m_oConnectors = {}
 		self.m_oCurrConnector = None
 		self.m_nSessionId = 0
-		self.m_sDirName = ''
 		self.m_nBlockCountId = 1   # next block id
 		self.m_nConnectorCountId = 1   # next connector id
 		self.SetSessionManager(None)
@@ -670,12 +674,42 @@ class GcDiagram( goocanvas.Canvas ):
 	def GetIDBackendSession(self):
 		return self.m_nSessionId
 	
-	def SetDirName(self, dirName):
+	def setDirName(self, dirName):
+		"""
+		Set working dir name.
+		"""
 		self.m_sDirName = dirName
 
-	def GetDirName(self):
+	def getDirName(self):
+		"""
+		Get working dir name.
+		"""
 		return self.m_sDirName
+
+	def removeDir(self):
+		"""
+		Remove working dir.
+		"""
+		shutil.rmtree(self.getDirName())
 	
+	def createWorkingDir(self):
+		"""
+		Create working dir.
+		"""
+		dirNamePattern = 'starling_'
+		fullPattern = dirNamePattern
+		workingDirsPlace = lvExtensions.getWorkingDirsPlace()
+		if workingDirsPlace:
+			fullPattern = os.path.join(workingDirsPlace, dirNamePattern)
+		try:
+			# try to use the given directories place 
+			dirName = tempfile.mkdtemp(prefix=fullPattern)
+		except:
+			# if it failed use the standard place
+			print 'Warning: failed to create temporary working directory in \'' + workingDirsPlace + '\'. Using default location.'
+			dirName = tempfile.mkdtemp(prefix=dirNamePattern)
+		self.setDirName(dirName)
+
 	def Export2Png(self, filepath="diagrama.png"):
 		(x,y,t_nWidth,t_nHeight,t_nDepth) = self.window.get_geometry()
 		

@@ -382,7 +382,7 @@ int main(void)
 Save code to file.
 """
 def saveCode(sourceCode):
-	print 'Save code to file ...'
+	print 'Save code to file \'' + os.path.abspath(codeFileName) + '\''
 	codeFile = open(codeFileName, 'w')
 	codeFile.write(sourceCode)
 	codeFile.close()
@@ -431,7 +431,7 @@ def createMakefile():
 
 	# create makefiles
 
-	print 'Create Makefiles ...'
+	print 'Create Makefiles'
 
 	# Windows ...
 
@@ -518,7 +518,7 @@ def runProject():
 		runFileName = winRunFileName
 
 	# compiling
-	print 'Compiling ...'
+	print 'Compiling in \'' + os.getcwd() + '\' ...'
 	p = subprocess.Popen(compileCmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	compileOutput = p.communicate()[0]
 	compileResult = p.returncode
@@ -539,13 +539,8 @@ def runProject():
 	p = None
 	if compileResult == 0:
 		print 'Running ... (press ESC to stop, SPACE to pause)'
-		wdir = lvExtensions.getWorkingDir()
 		execPath = os.path.abspath(runFileName)
 		currentDir = os.getcwd()
-		if wdir:
-			# change to working dir
-			currentDir = os.getcwd()
-			os.chdir(wdir)
 		p = runSubprocess(execPath)
 		os.chdir(currentDir)
 	return p
@@ -589,7 +584,7 @@ def monitoringThread(process):
 Build and run image processing diagram.
 Returns running subprocess.
 """
-def buildAndRunProject(dirName, processingChainFileName):
+def buildAndRunProject(processingChainFileName):
 	sourceCode = generateCode(processingChainFileName)
 	saveCode(sourceCode)
 	createMakefile()

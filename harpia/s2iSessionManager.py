@@ -34,7 +34,6 @@ import time
 import sys
 import os
 import subprocess
-import tempfile
 import xmltree
 import glib
 import gtk
@@ -42,40 +41,17 @@ import gtk
 import codegenerator
 
 class s2iSessionManager:
-	m_sSessionId = 0
-	m_sDirName = ""  # full path tmp dir
 	
-	HARPIARESPONSE="""
-<harpiamessage>
-    <session value="88"/>
-	<version value="88"/>
-	<commands>
-		<command name="newsession">
-			<param name="status">completed</param>
-			<param name="session">666</param>
-			<param name="block"></param>
-			<param name="output"></param>
-			<param name="data"></param>
-		</command>
-	</commands>
-</harpiamessage>
-"""
-	
-	m_sOldPath = ""
-	
-	def __init__(self):
+	def __init__(self, workingDir):
 		self.m_sSessionId = str(time.time())
+		self.m_sDirName = workingDir  # full path tmp dir
 		self.m_sOldPath = os.path.realpath(os.curdir)
 		self.subProcess = None
 
 	def close(self):
 		#print 's2iSessionManager.close'
 		self.killSubProcess()
-	
-	def MakeDir(self):
-		self.m_sDirName = tempfile.mkdtemp(prefix='starling_')
-		return
-	
+
 	def StoreXML(self , a_lsXML = ["<harpia></harpia>"]):
 		#try:
 		os.chdir(self.m_sDirName)
@@ -92,7 +68,7 @@ class s2iSessionManager:
 		#changes dir...
 		os.chdir(self.m_sDirName)
 		print
-		self.subProcess = codegenerator.buildAndRunProject(self.m_sDirName, 'processingChain.xml')
+		self.subProcess = codegenerator.buildAndRunProject('processingChain.xml')
 		if batchModeOn:
 			# batch mode: wait end of subprocess
 			try:
@@ -128,14 +104,7 @@ class s2iSessionManager:
 		while gtk.events_pending():
 			gtk.main_iteration()
 
-	def ReturnResponse(self ):
-		t_oResponse = xmltree.xmlTree()
-		t_oResponse.fromString(self.HARPIARESPONSE)
-		assert t_oResponse.isValid(), 'invalid xml string: %r'
-		return t_sResponse
-	
 	def NewInstance(self , batchModeOn, a_lsXML = ["<harpia></harpia>"]):
-		self.MakeDir()
 		self.StoreXML(a_lsXML)
 		self.RunProject(batchModeOn)
 		return

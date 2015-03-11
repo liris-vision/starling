@@ -80,11 +80,12 @@ class PreferencesWindow():
 		# Other libraries names
 		self.newEntry(vbox, entries, 'otherLibraries', ' - libraries names', lvExtensions.getOtherLibraries(), 'List of names separated by \';\'')
 
-		# Local module directories
+		# Miscalleneous
 
 		self.newHSeparator(vbox)
-		self.newTitle(vbox, 'Local block sources:')
-		self.newEntry(vbox, entries, 'localModulesDirs', ' - local directories', lvExtensions.getLocalModulesDirs(), 'List of paths separated by \';\'')
+		self.newTitle(vbox, 'Miscalleneous:')
+		self.newEntry(vbox, entries, 'localModulesDirs', ' - block sources', lvExtensions.getLocalModulesDirs(), 'List of directories separated by \';\', containing blocks definition')
+		self.newEntry(vbox, entries, 'workingDirsPlace', ' - working directories place', lvExtensions.getWorkingDirsPlace(), 'An existent directory where temporary working directories are created')
 
 		# Build options
 
@@ -167,6 +168,7 @@ class PreferencesWindow():
 		lvExtensions.setCompilerOptions(entries['compilerOptions'].get_text())
 		lvExtensions.setLinkerOptions(entries['linkerOptions'].get_text())
 		lvExtensions.setLocalModulesDirs(entries['localModulesDirs'].get_text())
+		lvExtensions.setWorkingDirsPlace(entries['workingDirsPlace'].get_text())
 		# save to config file
 		lvExtensions.saveConfiguration()
 		# reload blocks in case local modules directory has changed
