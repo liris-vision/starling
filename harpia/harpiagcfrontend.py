@@ -641,10 +641,10 @@ class S2iHarpiaFrontend():
 	def on_ProcessToolBar_clickedIneer(self):
 		t_nPage = self.widgets['WorkArea'].get_current_page()
 		t_bIsLive = False
-		if self.m_oGcDiagrams.has_key( t_nPage ) :
+		if self.m_oGcDiagrams.has_key(t_nPage) :
 			self.UpdateStatus(0)
 
-			t_oGcDiagram = self.m_oGcDiagrams[ t_nPage ]
+			t_oGcDiagram = self.m_oGcDiagrams[t_nPage]
 			t_oProcessXML = xmltree.xmlTree()
 			t_oProcessXML.fromString("<harpia>" + str(t_oGcDiagram.GetProcessChain()) + "</harpia>")
 			assert t_oProcessXML.isValid(), 'invalid process chain: %r'
@@ -660,11 +660,11 @@ class S2iHarpiaFrontend():
 				t_Sm = s2iSessionManager.s2iSessionManager(workingDir)
 				
 				## pegando o novo ID (criado pela s2iSessionManager) e passando para o s2idiagram
-				self.m_oGcDiagrams[ t_nPage ].SetSessionManager(t_Sm)
-				self.m_oGcDiagrams[ t_nPage ].SetIDBackendSession(t_Sm.m_sSessionId)
+				t_oGcDiagram.SetSessionManager(t_Sm)
+				t_oGcDiagram.SetIDBackendSession(t_Sm.m_sSessionId)
 				
 				#step sempre sera uma lista.. primeiro elemento eh uma mensagem, segundo eh o erro.. caso exista erro.. passar para o s2idiagram tb!
-				self.m_oGcDiagrams[ t_nPage ].SetErrorLog('')
+				t_oGcDiagram.SetErrorLog('')
 				t_bEverythingOk = True
 				t_Sm.NewInstance(self.batchModeOn, t_lsProcessChain)
 					
