@@ -835,24 +835,14 @@ class S2iHarpiaFrontend():
 			t_oDialog.add_filter(t_oFilter)
 			
 			t_oResponse = t_oDialog.run()
-			
 			filename = t_oDialog.get_filename()
 			
-			if not filename.endswith(".png"):
+			if filename and not filename.endswith(".png"):
 				filename += ".png"
 			t_oDialog.destroy()
 			
-			
-			while gtk.events_pending():
-				gtk.main_iteration(False)
-			
-			if t_oResponse == gtk.RESPONSE_OK:
-				del t_oResponse
-				del t_oDialog
-				while gtk.events_pending():
-					gtk.main_iteration(False)
+			if t_oResponse == gtk.RESPONSE_OK and filename:
 				t_oGcDiagram.Export2Png(filename)
-
 	
 	#----------------------------------------------------------------------
 
