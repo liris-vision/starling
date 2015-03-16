@@ -548,6 +548,7 @@ def saveConfiguration():
 Load configuration from file
 """
 def loadConfiguration():
+	global lirisvisionDir
 	global opencvIncludeDirs
 	global opencvLibrariesDirs
 	global opencvDllDirs
