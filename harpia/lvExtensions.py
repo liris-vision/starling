@@ -31,6 +31,7 @@
 import re
 import subprocess
 import os
+import sys
 import glob
 import tempfile
 
@@ -239,9 +240,12 @@ def runEditor(fileNamesList):
 		# windows
 		cmd = ["notepad.exe"]
 	else:
-		# linux
-		#cmd = ["gedit"]
-		cmd = ["xdg-open"]
+		if sys.platform != 'darwin' :
+			# linux
+			#cmd = ["gedit"]
+			cmd = ["xdg-open"]
+		else:
+			cmd = ['open']
 	cmd.extend(fileNamesList)
 	subprocess.Popen(cmd)
 
@@ -263,9 +267,12 @@ def openDocumentation(doc):
 		cmd = ['start', filename]
 		subprocess.Popen(cmd, shell=True)
 	else:
-		# linux
-		cmd = ['xdg-open', filename]
-		subprocess.Popen(cmd)
+		if sys.platform != 'darwin' :
+			# linux
+			cmd = ['xdg-open', filename]
+			subprocess.Popen(cmd)
+		else:
+			subprocess.Popen(['open', filename])
 
 #----------------------------------------------------------------------
 
