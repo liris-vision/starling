@@ -491,11 +491,12 @@ def createMakefile():
 	for libName in libraries:
 		makeFileEntry += ' -l' + libName
 
-	if libraryPaths :
-		makeFileEntry += ' -Xlinker -rpath="'
-		for libDir in libraryPaths:
-			makeFileEntry += libDir + ':'
-		makeFileEntry += '"'
+	if sys.platform != 'darwin' :
+		if libraryPaths :
+			makeFileEntry += ' -Xlinker -rpath="'
+			for libDir in libraryPaths:
+				makeFileEntry += libDir + ':'
+			makeFileEntry += '"'
 
 	makeFileEntry += '\n'
 
