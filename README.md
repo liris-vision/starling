@@ -10,4 +10,4 @@ It's a fork of the [Harpia project](http://s2i.das.ufsc.br/harpia/en/home.html).
 
 It can also be used for OpenCV experimenting and learning.
 
-Starling runs on Linux and Windows.
+Starling runs on Linux, MacOS and Windows.
