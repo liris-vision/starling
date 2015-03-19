@@ -281,10 +281,9 @@ Get absolute path.
 Relative path are relative to Starling directory.
 """
 def getAbsolutePath(path):
-	if os.path.isabs(path):
-		return path
-		# path is already absolute
-	path = runDir + '/' + path
+	if not os.path.isabs(path):
+		# make an absolute path
+		path = runDir + '/' + path
 	path = os.path.normpath(path)
 	return path
 
