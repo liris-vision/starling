@@ -86,7 +86,7 @@ cd "$(dirname "$0")"
 cd ..
 
 TESTTMP="test.tmp"
-TESTLIST="test.p*/*.hrp"  # test.public & test.private
+TESTLIST="test.*/*.hrp"  # test.public & test.private
 
 PYTHONPATH="python"
 WINOS="off"

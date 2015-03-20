@@ -49,11 +49,6 @@ class PreferencesWindow():
 		vbox = gtk.VBox(False, 5)
 		self.window.add(vbox)
 
-		# LIRIS-VISION configuration
-
-		self.newTitle(vbox, 'LIRIS-VISION configuration:')
-		self.newEntry(vbox, entries, 'lirisvisionDir', ' - LIRIS-VISION directory', lvExtensions.getLirisvisionDir(), 'Path to directory')
-
 		# OpenCV configuration
 
 		self.newHSeparator(vbox)
@@ -156,7 +151,6 @@ class PreferencesWindow():
 
 	def buttonOkClicked(self, widget, entries):
 		# update global variables 
-		lvExtensions.setLirisvisionDir(entries['lirisvisionDir'].get_text())
 		lvExtensions.setOpencvIncludeDirs(entries['openCVIncludeDirs'].get_text())
 		lvExtensions.setOpencvLibrariesDirs(entries['openCVLibrariesDirs'].get_text())
 		lvExtensions.setOpencvDllDirs(entries['openCVDllDirs'].get_text())

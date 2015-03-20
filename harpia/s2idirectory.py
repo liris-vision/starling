@@ -55,6 +55,7 @@ def loadBlocks():
 	# add standard blocks
 	lvExtensions.addBlocksFromDir(block, 'blocks.public', True)
 	lvExtensions.addBlocksFromDir(block, 'blocks.private', True)
+	lvExtensions.addBlocksFromDir(block, 'blocks.extra', True)
 
 	# add local blocks
 	localBlocksDirs = lvExtensions.getLocalBlocksDirs().split(';')

@@ -410,10 +410,6 @@ def createMakefile():
 	libraries = lvExtensions.getOtherLibraries().split(';') + libraries
 	dllPaths = lvExtensions.getOtherDllDirs().split(';') + dllPaths
 
-	# add extra include path
-
-	includePaths.insert(0, lvExtensions.getLirisvisionDir())
-
 	# remove empty strings from paths and libs list
 
 	includePaths = filter(lambda f: f != '', includePaths)
@@ -421,11 +417,8 @@ def createMakefile():
 	libraries = filter(lambda f: f != '', libraries)
 	dllPaths = filter(lambda f: f != '', dllPaths)
 
-	# replace _LV_DIR_ keyword in include and library paths
-	# then convert relative paths to absolute paths
-	includePaths = [p.replace('_LV_DIR_',lvExtensions.getLirisvisionDir()) for p in includePaths]	
+	# convert relative paths to absolute paths
 	includePaths = [lvExtensions.getAbsolutePath(p) for p in includePaths]	
-	libraryPaths = [p.replace('_LV_DIR_',lvExtensions.getLirisvisionDir()) for p in libraryPaths]	
 	libraryPaths = [lvExtensions.getAbsolutePath(p) for p in libraryPaths]	
 	dllPaths = [lvExtensions.getAbsolutePath(p) for p in dllPaths]	
 

@@ -44,10 +44,6 @@ runDir = os.path.abspath(os.getcwd())
 
 harpia_data_dir = 'app_data/'
 
-lirisvisionDir = '../..'
-if os.name == "nt":
-	lirisvisionDir = '..\\..'
-
 workingDirsPlace = '' # the place (directory) where temporary working directories are created 
 user_guide_filename = os.path.normpath('doc/user_guide.html')
 developer_guide_filename = os.path.normpath('doc/developer_guide.html')
@@ -69,7 +65,7 @@ opencvDllDirs = ''
 opencvLibraries = 'opencv_core;opencv_imgproc;opencv_highgui;opencv_ml;opencv_video;opencv_features2d;opencv_calib3d;opencv_objdetect;opencv_contrib;opencv_legacy;opencv_flann'
 if os.name == "nt":
 	# default values for Windows
-	opencvDir = lirisvisionDir + '\\External\\opencv-2.4.8'
+	opencvDir = '..\\External\\opencv-2.4.8'
 	opencvIncludeDirs = opencvDir + '\\build\\include;' + opencvDir + '\\build\\include\\opencv'
 	opencvLibrariesDirs = opencvDir + '\\build\\x86\\vc10\\lib'
 	opencvDllDirs = opencvDir + '\\build\\x86\\vc10\\bin'
@@ -281,10 +277,9 @@ Get absolute path.
 Relative path are relative to Starling directory.
 """
 def getAbsolutePath(path):
-	if os.path.isabs(path):
-		return path
-		# path is already absolute
-	path = runDir + '/' + path
+	if not os.path.isabs(path):
+		# make an absolute path
+		path = runDir + '/' + path
 	path = os.path.normpath(path)
 	return path
 
@@ -307,23 +302,6 @@ Get working directory.
 """
 def getWorkingDirsPlace():
 	return workingDirsPlace
-
-#----------------------------------------------------------------------
-
-"""
-Set LIRIS-VISION directory
-"""
-def setLirisvisionDir(dirName):
-	global lirisvisionDir
-	lirisvisionDir = dirName
-
-#----------------------------------------------------------------------
-
-"""
-Get LIRIS-VISION directory
-"""
-def getLirisvisionDir():
-	return lirisvisionDir
 
 #----------------------------------------------------------------------
 
@@ -529,7 +507,6 @@ Save configuration to file
 def saveConfiguration():
 	config = '<?xml version="1.0" encoding="UTF-8"?>\n'
 	config += '<starlingConfiguration>\n'
-	config += '\t<lirisvisionDir>' + unicode(lirisvisionDir) + '</lirisvisionDir>\n'
 	config += '\t<opencvIncludeDirs>' + unicode(opencvIncludeDirs) + '</opencvIncludeDirs>\n'
 	config += '\t<opencvLibrariesDirs>' + unicode(opencvLibrariesDirs) + '</opencvLibrariesDirs>\n'
 	config += '\t<opencvDllDirs>' + unicode(opencvDllDirs) + '</opencvDllDirs>\n'
@@ -555,7 +532,6 @@ def saveConfiguration():
 Load configuration from file
 """
 def loadConfiguration():
-	global lirisvisionDir
 	global opencvIncludeDirs
 	global opencvLibrariesDirs
 	global opencvDllDirs
@@ -577,8 +553,6 @@ def loadConfiguration():
 	
 	tree = xmltree.xmlTree()
 	tree.load(configurationFileName)
-
-	lirisvisionDir = tree.getText('./lirisvisionDir') or ''
 
 	opencvIncludeDirs = tree.getText('./opencvIncludeDirs') or ''
 	opencvLibrariesDirs = tree.getText('./opencvLibrariesDirs') or ''
