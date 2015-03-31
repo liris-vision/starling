@@ -76,6 +76,20 @@ function diff2()
 	fi
 }
 
+# kill the running test process
+function killTestProcess()
+{
+	if [ "$OS" = "Windows_NT" ]
+	then
+		# Windows
+		"$PYTHONPATH" tools/killbyname.py "source_code.exe"
+	else
+		# Linux & MacOS
+		"$PYTHONPATH" tools/killbyname.py "executable"
+	fi
+}
+
+
 OSTYPE="$(getOSType)"
 echo "OS type is '$OSTYPE'"
 
@@ -188,36 +202,39 @@ do
 		echo "- run test ..."
 		OUTPUTFILE="/tmp/testoutput"
 		"$PYTHONPATH" ./starling.py -b $t >"$OUTPUTFILE" 2>&1 &
-		testpid="$!"
 
-		# wait some time, then stop test
-		sleep 6
-		#xdotool key "Escape"
-		kill $testpid
-
-		# get execution status
-		wait $testpid
-		teststatus=$?
+		# wait some time then kill the test process
+		sleep 5
+		killTestProcess
+		killStatus="$?"
 
 		# check for execution error
-		if [ "$teststatus" != 0 ]
+		if [ "$killStatus" = 2 ]
 		then
-			# something goes wrong during test execution
-			echo "- execution error detected !"
+			# several Starling execution detected
+			echo "- an instance of Starling is running and prevents the correct execution of this test !"
 			result="FAILED"
-		else
+		elif [ "$killStatus" = 1 ]
+		then
+			# the test was not executed or failed early during execution
+
 			# check test output for compilation error
-			echo "- look for compilation error"
 			errors="$(grep 'COMPILATION FAILED' "$OUTPUTFILE")" 
-			if [ -z "$errors" ]
+			if [ -n "$errors" ]
 			then
-				# no run error, test succeeded
-				result="succeeded"
-			else
-				# run errors, test failed
+				# compilation error, test failed
+				echo "- there was compilation error(s)"
 				cat "$OUTPUTFILE"
 				result="FAILED"
+			else
+				# compilation ok, so this is an execution error
+				echo "- no compilation error"
+				echo "- the test stopped prematurely ; execution error detected !"
+				result="FAILED"
 			fi
+		else
+			# no compilation nor run error, test succeeded
+			result="succeeded"
 		fi
 	fi
 
