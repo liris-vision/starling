@@ -89,7 +89,7 @@ def kill(pid):
 		os.kill(pid, signal.SIGTERM)
 	elif os.name == 'nt':
 		# Windows 7
-		os.system('taskkill /PID ' + str(pid))
+		os.system('taskkill /F /PID ' + str(pid))
 
 
 def main(argv):
