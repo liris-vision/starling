@@ -76,7 +76,7 @@ Inputs/Ouputs:
 
     <functions>
         <![CDATA[
-void lvSubstract( const cv::Mat *in1, const cv::Mat *in2, const cv::Mat *in3, cv::Mat *out )
+void lvSubtract( const cv::Mat *in1, const cv::Mat *in2, const cv::Mat *in3, cv::Mat *out )
 {
 	if( in1 == NULL || in2 == NULL )
 		return;
@@ -101,7 +101,7 @@ void lvSubstract( const cv::Mat *in1, const cv::Mat *in2, const cv::Mat *in3, cv
 
     <processings>
         <![CDATA[
-lvSubstract( _INPUT1_, _INPUT2_, _INPUT3_, _OUTPUT1_);
+lvSubtract( _INPUT1_, _INPUT2_, _INPUT3_, _OUTPUT1_);
         ]]>
     </processings>
 
