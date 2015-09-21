@@ -3,6 +3,8 @@ Starling is a graphical tool to build simple computer-vision applications, devel
 
 Starling provides an easy to use graphical environment to experiment computer vision, and to generate C++ code examples of vision algorithms use. It relies on the [OpenCV library](www.opencv.org).
 
+![GUI](https://github.com/liris-vision/starling/blob/master/doc/user_guide/gui.png)
+
 It's a fork of the [Harpia project](http://s2i.das.ufsc.br/harpia/en/home.html). Main improvements from Harpia 1.1 are:
  - generates C++ code using OpenCV 2.x C++ API,
  - makes new module integration easier by adding just one xml file,
