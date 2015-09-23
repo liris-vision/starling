@@ -162,6 +162,10 @@ def main(argv):
 	Parse the command line arguments, then start the application.
 	"""
 
+	# set working directory to current script directory
+	os.chdir(os.path.dirname(os.path.realpath(sys.argv[0])))
+	lvExtensions.init()
+
 	# force locale to US to avoid (partial) translation of menus and buttons
 	locale.setlocale(locale.LC_ALL, 'C')
 

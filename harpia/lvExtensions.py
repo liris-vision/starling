@@ -39,48 +39,71 @@ import xmltree
 
 #----------------------------------------------------------------------
 
-# directory from which this program is run
-runDir = os.path.abspath(os.getcwd())  
+"""
+Init global variables.
+"""
+def init():
+	global compilerOptions
+	global configurationFileName
+	global developer_guide_filename
+	global harpia_data_dir
+	global linkerOptions
+	global localBlocksDirs
+	global opencvDir
+	global opencvDllDirs
+	global opencvIncludeDirs
+	global opencvLibraries
+	global opencvLibrariesDirs
+	global otherDllDirs
+	global otherIncludeDirs
+	global otherLibraries
+	global otherLibrariesDirs
+	global runDir
+	global user_guide_filename
+	global workingDirsPlace
 
-harpia_data_dir = 'app_data/'
+	# directory from which this program is run
+	runDir = os.path.abspath(os.getcwd())
 
-workingDirsPlace = '' # the place (directory) where temporary working directories are created 
-user_guide_filename = os.path.normpath('doc/user_guide.html')
-developer_guide_filename = os.path.normpath('doc/developer_guide.html')
-configurationFileName = os.path.expanduser('~/.starling.conf')
+	harpia_data_dir = 'app_data/'
 
-# options used to compile generated C++ code
-compilerOptions = ''
-linkerOptions = ''
+	workingDirsPlace = '' # the place (directory) where temporary working directories are created 
+	user_guide_filename = os.path.normpath('doc/user_guide.html')
+	developer_guide_filename = os.path.normpath('doc/developer_guide.html')
+	configurationFileName = os.path.expanduser('~/.starling.conf')
 
-# directories where local blocks are stored (string list separated by ";")
-localBlocksDirs = ''
+	# options used to compile generated C++ code
+	compilerOptions = ''
+	linkerOptions = ''
 
-# OpenCV directories
-# values are lists of strings separated by ";"
-# default values for Linux
-opencvIncludeDirs = '/usr/include/opencv'
-opencvLibrariesDirs = ''
-opencvDllDirs = ''
-opencvLibraries = 'opencv_core;opencv_imgproc;opencv_highgui;opencv_ml;opencv_video;opencv_features2d;opencv_calib3d;opencv_objdetect;opencv_contrib;opencv_legacy;opencv_flann'
-if os.name == "nt":
-	# default values for Windows
-	opencvDir = '..\\External\\opencv-2.4.8'
-	opencvIncludeDirs = opencvDir + '\\build\\include;' + opencvDir + '\\build\\include\\opencv'
-	opencvLibrariesDirs = opencvDir + '\\build\\x86\\vc10\\lib'
-	opencvDllDirs = opencvDir + '\\build\\x86\\vc10\\bin'
-	opencvLibraries =		'opencv_calib3d248;opencv_contrib248;opencv_core248;opencv_features2d248;opencv_flann248;opencv_gpu248;opencv_highgui248;opencv_imgproc248;opencv_legacy248;opencv_ml248;opencv_objdetect248;opencv_ocl248;opencv_photo248;opencv_stitching248;opencv_superres248;opencv_ts248;opencv_video248;opencv_videostab248'
-	
-# Other libraries directories and names
-# values are lists of strings separated by ";"
-# default values
-otherIncludeDirs = ''
-otherLibrariesDirs = ''
-otherDllDirs = ''
-otherLibraries = ''
-if os.name == "nt":
-	# default values for Windows
-	otherDllDirs = '..\\..\\External\\dlls'
+	# directories where local blocks are stored (string list separated by ";")
+	localBlocksDirs = ''
+
+	# OpenCV directories
+	# values are lists of strings separated by ";"
+	# default values for Linux
+	opencvIncludeDirs = '/usr/include/opencv'
+	opencvLibrariesDirs = ''
+	opencvDllDirs = ''
+	opencvLibraries = 'opencv_core;opencv_imgproc;opencv_highgui;opencv_ml;opencv_video;opencv_features2d;opencv_calib3d;opencv_objdetect;opencv_contrib;opencv_legacy;opencv_flann'
+	if os.name == "nt":
+		# default values for Windows
+		opencvDir = '..\\External\\opencv-2.4.8'
+		opencvIncludeDirs = opencvDir + '\\build\\include;' + opencvDir + '\\build\\include\\opencv'
+		opencvLibrariesDirs = opencvDir + '\\build\\x86\\vc10\\lib'
+		opencvDllDirs = opencvDir + '\\build\\x86\\vc10\\bin'
+		opencvLibraries =		'opencv_calib3d248;opencv_contrib248;opencv_core248;opencv_features2d248;opencv_flann248;opencv_gpu248;opencv_highgui248;opencv_imgproc248;opencv_legacy248;opencv_ml248;opencv_objdetect248;opencv_ocl248;opencv_photo248;opencv_stitching248;opencv_superres248;opencv_ts248;opencv_video248;opencv_videostab248'
+		
+	# Other libraries directories and names
+	# values are lists of strings separated by ";"
+	# default values
+	otherIncludeDirs = ''
+	otherLibrariesDirs = ''
+	otherDllDirs = ''
+	otherLibraries = ''
+	if os.name == "nt":
+		# default values for Windows
+		otherDllDirs = '..\\..\\External\\dlls'
 
 #----------------------------------------------------------------------
 
