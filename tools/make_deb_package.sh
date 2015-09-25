@@ -38,6 +38,9 @@ tmp_starling_dir="$tmp_pkg_dir/$target_starling_dir"
 target_modules_dir="/usr/local/liris-vision-modules_${major_version}.${minor_version}"
 tmp_modules_dir="$tmp_pkg_dir/$target_modules_dir"
 
+install_instructions_file="$(readlink -fm "$tmp_pkg_dir/../$package_name.README")"
+
+
 # export Starling local git repo content
 rm -rf "$tmp_pkg_dir"
 mkdir -p "$tmp_starling_dir"  &&  git archive master | tar -x -C "$tmp_starling_dir"
@@ -101,3 +104,24 @@ chmod 755 "$tmp_pkg_dir"/DEBIAN/prerm
 
 # build package
 fakeroot dpkg-deb --build "$tmp_pkg_dir"
+
+# generate installation instructions
+echo "
+             How to install $package_name package
+
+
+The easiest way to install the package and its dependencies is to use 'gdebi':
+  $ sudo aptitude install gdebi-core
+  $ sudo gdebi $package_name.deb
+    # install package and dependencies
+
+During installation some vision modules are compiled. All the files (from the package and compiled) are installed in '$target_starling_dir' and '$target_modules_dir' directories. 
+
+The Starling application is started by the script '$target_starling_dir/starling.py'. A link is added in '/usr/local/bin', so that it is possible to simply run the command 'starling'.
+
+To remove the package installed with gdebi:
+  $ aptitude purge $package_name
+" > "$install_instructions_file"
+
+echo "Installation instructions in '$install_instructions_file'"
+
