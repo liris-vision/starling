@@ -1131,8 +1131,9 @@ class S2iHarpiaFrontend():
 			if t_oGcDiagram.GetFilename() is not None:
 				try:
 					t_oGcDiagram.loadFromFile()
-				except ZeroDivisionError:
+				except AssertionError, ZeroDivisionError:
 					print "Failed to load " + fileName + "."
+					self.CloseCurrentTab()
 				else:
 					print fileName + " successfully loaded."
 					t_nCurrentPage = self.widgets['WorkArea'].get_current_page()
