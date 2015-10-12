@@ -163,6 +163,7 @@ def main(argv):
 	"""
 
 	# set working directory to current script directory
+	startDir = os.getcwd()
 	os.chdir(os.path.dirname(os.path.realpath(sys.argv[0])))
 	lvExtensions.init()
 
@@ -197,6 +198,9 @@ def main(argv):
 		m.setup()
 		m.show_window()
 		sleep ( 2 )
+
+	# fix user files path due to changing dir to Starling dir
+	userFiles = [os.path.join(startDir, fileName) for fileName in userFiles]
 
 	## initialize the frontend
 	HarpiaFrontend = harpiagcfrontend.S2iHarpiaFrontend(userFiles, batchMode, experimentalMode)
