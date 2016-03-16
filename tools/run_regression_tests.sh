@@ -108,7 +108,7 @@ if [ "$1" = "-win" -o "$OSTYPE" = "win" ]
 then
 	echo "Windows mode selected"
 	WINOS="on" 
-	PYTHONPATH="../../External/python/python.exe"
+	PYTHONPATH="../External/python/python.exe"
 	
 	if [ "$1" = "-win" ]
 	then
