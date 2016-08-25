@@ -32,7 +32,9 @@ import platform
 
 fullOsVersion = platform.platform()
 
-if 'x86_64-with-Ubuntu-14.04' in fullOsVersion:
+if 'x86_64-with-Ubuntu-16.04' in fullOsVersion:
+	shortVersion = 'u1604-64'
+elif 'x86_64-with-Ubuntu-14.04' in fullOsVersion:
 	shortVersion = 'u1404-64'
 elif 'x86_64-with-Ubuntu-12.04' in fullOsVersion:
 	shortVersion = 'u1204-64'
