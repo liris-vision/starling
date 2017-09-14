@@ -351,12 +351,16 @@ int main(void)
 			sourceCode += formatCode(['\tkey = cv::waitKey(0);'], tabs)
 			sourceCode += formatCode(['else'], tabs)
 			sourceCode += formatCode(['\tkey = cv::waitKey(25);'], tabs)
-			sourceCode += formatCode(['if( (key & 255) == \' \' )'], tabs)
-			sourceCode += formatCode(['\tpaused = ! paused;'], tabs)
-			sourceCode += formatCode(['else if( key != -1 )'], tabs)
+			sourceCode += formatCode(['if( (key & 255) == 27 )'], tabs)
 			sourceCode += formatCode(['\tgoOn = false;'], tabs)
+			sourceCode += formatCode(['else if( (key & 255) == \' \' )'], tabs)
+			sourceCode += formatCode(['\tpaused = ! paused;'], tabs)
 		elif isShow:
-			sourceCode += formatCode(['cv::waitKey(0);'], tabs, afterCode='\n')
+			sourceCode += formatCode(['int key = 0;'], tabs)
+			sourceCode += formatCode(['while( (key & 255) != 27 )'], tabs)
+			sourceCode += formatCode(['{'], tabs)
+			sourceCode += formatCode(['\tkey = cv::waitKey(0);'], tabs)
+			sourceCode += formatCode(['}'], tabs, afterCode='\n')
 
 	# if one source is a stream, close loop
 	if isStream: 
