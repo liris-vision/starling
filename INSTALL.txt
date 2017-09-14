@@ -32,6 +32,11 @@ On Fedora 20 (64 bits)
   $ sudo yum install gcc-c++
   $ sudo yum install pygoocanvas opencv-python
 
+On openSUSE 42.2 and 42.3 with Gnome GUI
+  $ sudo zypper install opencv opencv-devel
+  $ sudo zypper install gcc-c++
+  $ sudo zypper install python-goocanvas python-opencv
+
 * Run Starling *
 ----------------
 
