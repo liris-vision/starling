@@ -31,6 +31,7 @@
 import re
 import subprocess
 import os
+import platform
 import sys
 import glob
 import tempfile
@@ -81,11 +82,20 @@ def init():
 
 	# OpenCV directories
 	# values are lists of strings separated by ";"
-	# default values for Linux
+	# default values for Linux with OpenCV 2.4.x
 	opencvIncludeDirs = '/usr/include/opencv'
 	opencvLibrariesDirs = ''
 	opencvDllDirs = ''
 	opencvLibraries = 'opencv_core;opencv_imgproc;opencv_highgui;opencv_ml;opencv_video;opencv_features2d;opencv_calib3d;opencv_objdetect;opencv_contrib;opencv_legacy;opencv_flann'
+
+	if os.name == "posix":
+		distrib = platform.linux_distribution()
+		distrib_name = distrib[0]
+		distrib_version = distrib[1]
+		if "openSUSE" in distrib_name and distrib_version >= "42.2":
+			# OpenSuse >= 42.2 uses OpenCV 3.x
+			opencvLibraries = 'opencv_face;opencv_shape;opencv_stitching;opencv_objdetect;opencv_superres;opencv_videostab;opencv_calib3d;opencv_features2d;opencv_highgui;opencv_videoio;opencv_imgcodecs;opencv_video;opencv_photo;opencv_ml;opencv_imgproc;opencv_flann;opencv_core'
+
 	if os.name == "nt":
 		# default values for Windows
 		opencvDir = '..\\External\\opencv-2.4.8'
