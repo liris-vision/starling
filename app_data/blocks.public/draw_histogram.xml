@@ -30,8 +30,8 @@
 	<!-- legacy block parameters -->	
 
 	<block type='6000' id=''>
-		<property name='_SCALE_' value='2.0' desc='horizontal scale'/>
-		<property name='_HEIGHT_' value='300' desc='height'/>
+		<property name='_SCALE_' value='1.0' desc='horizontal scale'/>
+		<property name='_HEIGHT_' value='150' desc='height'/>
 		<property name='_LEGEND_COLOR_' value='128,128,128' desc='Legend color (B,G,R)'/>
 	</block>
 
