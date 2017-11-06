@@ -27,6 +27,12 @@ On Ubuntu 14.04 amd64
   $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
   $ sudo aptitude install python-opencv
 
+On Ubuntu 16.04 amd64
+  $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
+  $ sudo aptitude install libavcodec-extra
+  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
+  $ sudo aptitude install python-opencv
+
 On Fedora 20 (64 bits)
   $ sudo yum install opencv opencv-devel
   $ sudo yum install gcc-c++
