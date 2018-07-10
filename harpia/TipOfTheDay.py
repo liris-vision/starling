@@ -28,14 +28,13 @@
 #
 #----------------------------------------------------------------------
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 from tips import TIPS
 from tips import TIPS_VER
-
 import os.path
-import gtk
-import random
-
 import xmltree
 
 #i18n
@@ -49,7 +48,7 @@ gettext.textdomain(APP)
 #
 # Class for tip-of-the-day dialogs.
 #
-class TipOfTheDay(gtk.MessageDialog): #, Observable):
+class TipOfTheDay(Gtk.MessageDialog): #, Observable):
 		OBS_TIP = 0
 		OBS_TOGGLED = 1
 
@@ -73,32 +72,32 @@ class TipOfTheDay(gtk.MessageDialog): #, Observable):
 					self.showTips = False
 					return
 
-				gtk.MessageDialog.__init__(self, None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO, gtk.BUTTONS_NONE, "Starling")
+				Gtk.MessageDialog.__init__(self, None, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, Gtk.ButtonsType.NONE, "Starling")
 				self.set_title(_("Tip of the Day"))
 
 				self.connect("response", self.__on_closeBtn)
 
 				self.__label = self.vbox.get_children()[0].get_children()[1]
-				# HACK HACK HACK -- make it work with gtk+-2.6.x
-				if (not isinstance(self.__label, gtk.Label)):
+				# HACK HACK HACK -- make it work with Gtk+-2.6.x
+				if (not isinstance(self.__label, Gtk.Label)):
 						self.__label.remove(self.__label.get_children()[1])
 						self.__label = self.__label.get_children()[0]
 
-				self.__checkbox = gtk.CheckButton(_("Show tips at startup"))
+				self.__checkbox = Gtk.CheckButton(_("Show tips at startup"))
 				self.__checkbox.set_active(True)
 				self.__checkbox.connect("toggled", self.__on_toggleAll)
 				self.__checkbox.show()
 				self.vbox.pack_end(self.__checkbox, 0, 0, 0)
 
-				self.btn_prev = gtk.Button(stock = gtk.STOCK_GO_BACK)
+				self.btn_prev = Gtk.Button(stock = Gtk.STOCK_GO_BACK)
 				self.btn_prev.connect("clicked", self.prev_tip)
 				self.btn_prev.show()
 
-				self.btn_next = gtk.Button(stock = gtk.STOCK_GO_FORWARD)
+				self.btn_next = Gtk.Button(stock = Gtk.STOCK_GO_FORWARD)
 				self.btn_next.connect("clicked", self.next_tip)
 				self.btn_next.show()
 
-				btn_close = gtk.Button(stock = gtk.STOCK_CLOSE)
+				btn_close = Gtk.Button(stock = Gtk.STOCK_CLOSE)
 				btn_close.connect("clicked", self.__on_close)
 				btn_close.show()
 
@@ -107,7 +106,7 @@ class TipOfTheDay(gtk.MessageDialog): #, Observable):
 				self.action_area.add(btn_close)
 
 				# make the close button the default button
-				btn_close.set_flags(gtk.CAN_DEFAULT)
+				#TODO-fix-or-rm  btn_close.set_flags(Gtk.CAN_DEFAULT)
 				self.set_default(btn_close)
 				self.set_focus(btn_close)
 				
@@ -115,7 +114,7 @@ class TipOfTheDay(gtk.MessageDialog): #, Observable):
 
 		def run(self):
 			if self.showTips:
-				gtk.MessageDialog.run(self)
+				Gtk.MessageDialog.run(self)
 
 		def __show_currTip(self):
 			self.__boundIndex2Dict()
@@ -185,7 +184,6 @@ class TipOfTheDay(gtk.MessageDialog): #, Observable):
 			if(len(okTipList) == 0):
 				randTipId = -1
 			else:
-				#randTipId = random.randint(0,len(okTipList)-1)#random tip
 				randTipId = okTipList[0]#next tip in the list
 			return randTipId
 		

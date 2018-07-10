@@ -28,12 +28,18 @@
 #
 #----------------------------------------------------------------------
 
-import gobject
-import gtk
-import math
-import goocanvas
-import sys
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gdk
+gi.require_version('GooCanvas', '2.0')
+from gi.repository import GooCanvas
+gi.require_version('GdkPixbuf', '2.0')
+from gi.repository import GdkPixbuf
+
 import os
+import math
 
 import xmltree
 import s2idirectory
@@ -148,7 +154,7 @@ class GcdBlock():
 		self.Label = self.m_oDictBlock["Label"]
 		self.iconFile = self.m_sDataDir+self.m_oDictBlock["Icon"]
 		
-		self.wGroup = goocanvas.Group(can_focus=True)
+		self.wGroup = GooCanvas.CanvasGroup(can_focus=True)
 		self.ParentDiagram.root_add(self.wGroup)
 		self.wGroup.connect("button-press-event", self.group_event)
 		self.wGroup.connect("button-release-event", self.group_event)
@@ -219,7 +225,7 @@ class GcdBlock():
 		print '*', __file__, 'group_event:', event
 		self.ParentDiagram.displayEvent(event)
 		"""
-		if event.type == gtk.gdk.BUTTON_PRESS:
+		if event.type == Gdk.EventType.BUTTON_PRESS:
 				#print __file__, ', group_event(): BUTTON_PRESS'
 				if event.button == 1:
 					#print 'in', __file__, 'group_event: event.x_root=', event.x_root, ', event.y_root=', event.y_root, ', event.x=', event.x, ', event.y=', event.y
@@ -251,9 +257,9 @@ class GcdBlock():
 					#print "right button at block"
 					self.RightClick(event)
 					return True #explicitly returns true so that diagram won't catch this event
-		elif event.type == gtk.gdk.MOTION_NOTIFY:
+		elif event.type == Gdk.EventType.MOTION_NOTIFY:
 			#print 'in', __file__, 'group_event: MOTION_NOTIFY'
-			if event.state & gtk.gdk.BUTTON1_MASK:
+			if event.state & Gdk.EventType.BUTTON1_MASK:
 				if self.ParentDiagram.m_oCurrConnector == None:
 					new_x = event.x_root
 					new_y = event.y_root
@@ -262,34 +268,34 @@ class GcdBlock():
 					self.remember_y = new_y
 					self.isMoving = True
 					return False
-		elif event.type == gtk.gdk.BUTTON_RELEASE:
+		elif event.type == Gdk.EventType.BUTTON_RELEASE:
 			if event.button == 1 and self.isMoving:
 				# end of moving
 				self.ParentDiagram.onBlockStopMoving(self.m_nBlockCountId)
 				self.isMoving = False
 				return False
-		elif event.type == gtk.gdk._2BUTTON_PRESS:
+		elif event.type == Gdk.EventType._2BUTTON_PRESS:
 			#print 'in', __file__, 'group_event: _2BUTTON_PRESS'
 			#Open up the block's options
 			self.ShowBlockGUI()
 			return True
 		
-		elif event.type == gtk.gdk.ENTER_NOTIFY:
+		elif event.type == Gdk.EventType.ENTER_NOTIFY:
 			#print 'in', __file__, 'group_event: ENTER_NOTIFY'
 			# Make the outline wide.
 			self.setThickBorder(True)
 			return False #pode propagar p/ cima
 		
-		elif event.type == gtk.gdk.LEAVE_NOTIFY:
+		elif event.type == Gdk.EventType.LEAVE_NOTIFY:
 			#print 'in', __file__, 'group_event: LEAVE_NOTIFY'
 			# Make the outline thin.
 			if not self.hasFocus():
 				self.setThickBorder(False)
 			return False #pode passar p/ cima
 		
-		elif event.type == gtk.gdk.KEY_PRESS:
+		elif event.type == Gdk.EventType.KEY_PRESS:
 			#print 'in', __file__, 'group_event: KEY_PRESS'
-			if event.keyval == gtk.keysyms.Delete:
+			if event.keyval == Gtk.keysyms.Delete:
 				# on DELETE key pressed
 				self.DeleteBlock()
 				
@@ -306,17 +312,17 @@ class GcdBlock():
 
 	def _BbRect(self):
 		self.SetBackColor()
-		#w1 = goocanvas.Polyline(points=goocanvas.Points(pf), fill_color_rgba=ColorFromList(self.m_oBackColor), line_width=1)
-		w1 = goocanvas.Rect(width=self.width, height=self.height, fill_color_rgba=ColorFromList(self.m_oBackColor), line_width=1, radius_x=self.m_nRadius, radius_y=self.m_nRadius)
-		self.wGroup.add_child(w1)
+		#w1 = GooCanvas.CanvasPolyline(points=GooCanvas.CanvasPoints(pf), fill_color_rgba=ColorFromList(self.m_oBackColor), line_width=1)
+		w1 = GooCanvas.CanvasRect(width=self.width, height=self.height, fill_color_rgba=ColorFromList(self.m_oBackColor), line_width=1, radius_x=self.m_nRadius, radius_y=self.m_nRadius)
+		self.wGroup.add_child(w1, -1)
 		self.widgets["Rect"] = w1
 		
 	def _BIcon(self):
-		pb = gtk.gdk.pixbuf_new_from_file(self.m_sDataDir+self.m_oDictBlock["Icon"])
+		pb = GdkPixbuf.Pixbuf.new_from_file(self.m_sDataDir+self.m_oDictBlock["Icon"])
 		xpos = self.width/2 - pb.get_width()/2
 		ypos = self.height/2 - pb.get_height()/2
-		icon = goocanvas.Image(pixbuf=pb, x=xpos, y=ypos)
-		self.wGroup.add_child(icon)
+		icon = GooCanvas.CanvasImage(pixbuf=pb, x=xpos, y=ypos)
+		self.wGroup.add_child(icon, -1)
 		self.widgets["pb"] = icon
 	
 	def _BInputs(self):
@@ -336,10 +342,10 @@ class GcdBlock():
 			description = description.replace('>', '&gt;')
 		
 			# display input icon
-			icon = gtk.gdk.pixbuf_new_from_file(self.m_sDataDir + INPUT_ICON_FILE)
-			t_Wid = goocanvas.Image(pixbuf=icon, x=0, y=yIcon)
+			icon = GdkPixbuf.Pixbuf.new_from_file(self.m_sDataDir + INPUT_ICON_FILE)
+			t_Wid = GooCanvas.CanvasImage(pixbuf=icon, x=0, y=yIcon)
 			t_Wid.set_property('tooltip', description)
-			self.wGroup.add_child(t_Wid)
+			self.wGroup.add_child(t_Wid, -1)
 			inPWids.append(t_Wid)
 
 			# display input text (input type)
@@ -348,9 +354,9 @@ class GcdBlock():
 				inputTypeText = inputTypeText[4:]
 			if len(inputTypeText) > 10:
 				inputTypeText = ' ...'
-			label = goocanvas.Text( text=inputTypeText, anchor=gtk.ANCHOR_WEST, x=2, y=(yIcon+16), font=IO_FONT_NAME, fill_color=IO_FONT_COLOR)
+			label = GooCanvas.CanvasText( text=inputTypeText, anchor=GooCanvas.CanvasAnchorType.WEST, x=2, y=(yIcon+16), font=IO_FONT_NAME, fill_color=IO_FONT_COLOR)
 			label.set_property('tooltip', description)
-			self.wGroup.add_child(label)
+			self.wGroup.add_child(label, -1)
 			inPWids.append(label)
 		
 		self.widgets["Inputs"] = inPWids
@@ -373,10 +379,10 @@ class GcdBlock():
 			description = description.replace('>', '&gt;')
 		
 			# display input icon
-			icon = gtk.gdk.pixbuf_new_from_file(self.m_sDataDir + OUTPUT_ICON_FILE)
-			t_Wid = goocanvas.Image(pixbuf=icon, x=xIcon, y=yIcon)
+			icon = GdkPixbuf.Pixbuf.new_from_file(self.m_sDataDir + OUTPUT_ICON_FILE)
+			t_Wid = GooCanvas.CanvasImage(pixbuf=icon, x=xIcon, y=yIcon)
 			t_Wid.set_property('tooltip', description)
-			self.wGroup.add_child(t_Wid)
+			self.wGroup.add_child(t_Wid, -1)
 			outPWids.append(t_Wid)
 
 			# display input text (input type)
@@ -385,16 +391,16 @@ class GcdBlock():
 				outputTypeText = outputTypeText[4:]
 			if len(outputTypeText) > 10:
 				outputTypeText = '... '
-			label = goocanvas.Text( text=outputTypeText, anchor=gtk.ANCHOR_EAST, x=(self.width-2), y=(yIcon+16), font=IO_FONT_NAME, fill_color=IO_FONT_COLOR)
+			label = GooCanvas.CanvasText( text=outputTypeText, anchor=GooCanvas.CanvasAnchorType.EAST, x=(self.width-2), y=(yIcon+16), font=IO_FONT_NAME, fill_color=IO_FONT_COLOR)
 			label.set_property('tooltip', description)
-			self.wGroup.add_child(label)
+			self.wGroup.add_child(label, -1)
 			outPWids.append(label)
 
 		self.widgets["Outputs"] = outPWids
 	
 	def _BLabels(self):
-		label = goocanvas.Text( text=self.m_oDictBlock["Label"], anchor=gtk.ANCHOR_CENTER, x=(self.width/2), y=(self.height-10), font=BLOCKNAME_FONT_NAME, fill_color=BLOCKNAME_FONT_COLOR)
-		self.wGroup.add_child(label)
+		label = GooCanvas.CanvasText( text=self.m_oDictBlock["Label"], anchor=GooCanvas.CanvasAnchorType.CENTER, x=(self.width/2), y=(self.height-10), font=BLOCKNAME_FONT_NAME, fill_color=BLOCKNAME_FONT_COLOR)
+		self.wGroup.add_child(label, -1)
 		textBounds = label.get_bounds()
 		self.TextWidth = textBounds.x2 - textBounds.x1
 		oldX,oldY = ((self.width/2),(self.height-10))
@@ -493,28 +499,28 @@ class GcdBlock():
 			self.widgets["Rect"].set_properties(line_width=1)
 
 	def RightClick(self, a_oEvent):
-		t_oMenu = gtk.Menu()
+		t_oMenu = Gtk.Menu()
 	
-		t_oMenuItem = gtk.MenuItem("Properties")
+		t_oMenuItem = Gtk.MenuItem("Properties")
 		t_oMenuItem.connect("activate", self.ShowBlockGUI )
 		t_oMenu.append(t_oMenuItem)
 		
-		t_oMenuItem = gtk.MenuItem("PrintXML")
+		t_oMenuItem = Gtk.MenuItem("PrintXML")
 		t_oMenuItem.connect("activate", self.PrintXML )
 		t_oMenu.append(t_oMenuItem)
 		
-		t_oMenuItem = gtk.MenuItem("PrintPOS")
+		t_oMenuItem = Gtk.MenuItem("PrintPOS")
 		t_oMenuItem.connect("activate", self.PrintPOS )
 		t_oMenu.append(t_oMenuItem)
 		
-		t_oMenuItem = gtk.SeparatorMenuItem()
+		t_oMenuItem = Gtk.SeparatorMenuItem()
 		t_oMenu.append(t_oMenuItem)
 		
-		t_oMenuItem = gtk.MenuItem("Delete")
+		t_oMenuItem = Gtk.MenuItem("Delete")
 		t_oMenuItem.connect("activate", self.DeleteClicked )
 		t_oMenu.append(t_oMenuItem)
 
-		t_oMenuItem = gtk.SeparatorMenuItem()
+		t_oMenuItem = Gtk.SeparatorMenuItem()
 		t_oMenu.append(t_oMenuItem)
 		
 		# Shows the menu

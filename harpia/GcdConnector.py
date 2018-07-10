@@ -28,13 +28,13 @@
 #
 #----------------------------------------------------------------------
 
-
-import gobject
-import pango
-import gtk
-import math
-import goocanvas
-import sys
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gdk
+gi.require_version('GooCanvas', '2.0')
+from gi.repository import GooCanvas
 
 #sys.path.append('../bin')
 #import s2idirectory
@@ -61,13 +61,13 @@ class GcdConnector():
 		self.m_bFocus = False
 		self.m_bHasFlow = False
 	
-		self.wGroup = goocanvas.Group(can_focus=True)
+		self.wGroup = GooCanvas.CanvasGroup(can_focus=True)
 		# append connector to canvas root at a low level
 		# so that blocks catch events before connectors
 		self.ParentDiagram.root_add(self.wGroup, 1)
 		
-		w1 = goocanvas.Polyline(end_arrow=True, line_width=3)
-		self.wGroup.add_child(w1)
+		w1 = GooCanvas.CanvasPolyline(end_arrow=True, line_width=3)
+		self.wGroup.add_child(w1, -1)
 
 		self.widgets = {}
 		self.widgets["Line"] = w1
@@ -100,7 +100,7 @@ class GcdConnector():
 		self.ParentDiagram.displayEvent(event)
 		"""
 
-		if event.type == gtk.gdk.BUTTON_PRESS:
+		if event.type == Gdk.EventType.BUTTON_PRESS:
 			#print __file__, ', group_event(): BUTTON_PRESS'
 			if event.button == 1:
 				self.grabFocus()
@@ -108,16 +108,16 @@ class GcdConnector():
 			elif event.button == 3:
 				self.RightClick(event)
 
-		elif event.type == gtk.gdk.KEY_PRESS:
-			if event.keyval == gtk.keysyms.Delete:
+		elif event.type == Gdk.EventType.KEY_PRESS:
+			if event.keyval == Gtk.keysyms.Delete:
 				# on DELETE key pressed
 				self.DeleteConnector()
 
-		elif event.type == gtk.gdk.ENTER_NOTIFY:
+		elif event.type == Gdk.EventType.ENTER_NOTIFY:
 				# Make the outline wide.
 				self.setThickBorder(True)
 		
-		elif event.type == gtk.gdk.LEAVE_NOTIFY:
+		elif event.type == Gdk.EventType.LEAVE_NOTIFY:
 				# Make the outline thin.
 				if not self.hasFocus():
 					self.setThickBorder(False)
@@ -129,7 +129,7 @@ class GcdConnector():
 		p = []
 		p.append(self.fromPoint)
 		p.append(newEnd)
-		p = goocanvas.Points(p)
+		p = GooCanvas.CanvasPoints(p)
 		self.widgets["Line"].set_properties(points=p)
 
 
@@ -146,7 +146,7 @@ class GcdConnector():
 		p = []
 		p.append(self.fromPoint)
 		p.append(self.toPoint)
-		p = goocanvas.Points(p)
+		p = GooCanvas.CanvasPoints(p)
 	
 		self.widgets["Line"].set_properties(points=p)
 
@@ -167,23 +167,23 @@ class GcdConnector():
 			self.widgets["Line"].set_properties(fill_color='red', stroke_color='red')
 
 	def RightClick(self, a_oEvent):
-		t_oMenu = gtk.Menu()
+		t_oMenu = Gtk.Menu()
 	
-		t_oMenuItem = gtk.MenuItem("Properties")
+		t_oMenuItem = Gtk.MenuItem("Properties")
 		#t_oMenuItem.connect("activate", self.ShowPropertiesGUI )
 		t_oMenu.append(t_oMenuItem)
 		
 		# Menu separator
-		t_oMenuItem = gtk.SeparatorMenuItem()
+		t_oMenuItem = Gtk.SeparatorMenuItem()
 		t_oMenu.append(t_oMenuItem)
 		
 		# Excluir (delete) item
-		t_oMenuItem = gtk.MenuItem("Delete")
+		t_oMenuItem = Gtk.MenuItem("Delete")
 		t_oMenuItem.connect("activate", self.DeleteClicked )
 		t_oMenu.append(t_oMenuItem)
 
 		# Another separator
-		t_oMenuItem = gtk.SeparatorMenuItem()
+		t_oMenuItem = Gtk.SeparatorMenuItem()
 		t_oMenu.append(t_oMenuItem)
 		# Shows the menu
 		t_oMenu.show_all()

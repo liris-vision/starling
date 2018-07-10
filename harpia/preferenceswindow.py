@@ -27,16 +27,16 @@
 # Manage 'Preferences' window.
 #
 
-import pygtk
-pygtk.require('2.0')
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 import lvExtensions
 
 class PreferencesWindow():
 	def __init__(self, mainWindow, title='Preferences'):
 		self.mainWindow = mainWindow
-		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		self.window = Gtk.Window(Gtk.WINDOW_TOPLEVEL)
 		self.window.set_title(title)
 		self.window.connect("delete_event", self.delete_event)
 		self.window.connect("key-press-event", self.keyPressed)
@@ -46,7 +46,7 @@ class PreferencesWindow():
 		# build window UI
 
 		entries = {}
-		vbox = gtk.VBox(False, 5)
+		vbox = Gtk.VBox(False, 5)
 		self.window.add(vbox)
 
 		# OpenCV configuration
@@ -97,14 +97,14 @@ class PreferencesWindow():
 		# display ok and cancel buttons
 
 		self.newHSeparator(vbox)
-		hbox = gtk.HBox(True, 10)
+		hbox = Gtk.HBox(True, 10)
 		vbox.pack_start(hbox, False, True, 20)
 		# button ok
-		buttonOk = gtk.Button("Ok")
+		buttonOk = Gtk.Button("Ok")
 		hbox.pack_start(buttonOk, False, True, 20)
 		buttonOk.connect("clicked", self.buttonOkClicked, entries)
 		# button cancel
-		buttonCancel = gtk.Button("Cancel")
+		buttonCancel = Gtk.Button("Cancel")
 		hbox.pack_end(buttonCancel, False, True, 20)
 		buttonCancel.connect("clicked", self.buttonCancelClicked)
 		buttonCancel.show()
@@ -116,13 +116,13 @@ class PreferencesWindow():
 
 	def newEntry(self, vbox, entries, name, title, content, tooltip):
 		"""Add a new line [label|text_entry] to the preferences window."""
-		hbox = gtk.HBox(False, 5)
+		hbox = Gtk.HBox(False, 5)
 		# display label
-		label = gtk.Label(title)
+		label = Gtk.Label(title)
 		label.set_alignment(0.0, 0.5)
 		hbox.pack_start(label, False, False, 0)
 		# display entry box
-		entries[name] = gtk.Entry()
+		entries[name] = Gtk.Entry()
 		entries[name].set_tooltip_text(tooltip)
 		entries[name].set_text(content)
 		hbox.pack_start(entries[name], True, True, 0)
@@ -131,13 +131,13 @@ class PreferencesWindow():
 
 
 	def newHSeparator(self, vbox):
-		separator = gtk.HSeparator()
+		separator = Gtk.HSeparator()
 		vbox.pack_start(separator, False, True, 10)
 		return separator
 
 
 	def newTitle(self, vbox, title):
-		label = gtk.Label(title)
+		label = Gtk.Label(title)
 		label.set_alignment(0.0, 0.0)
 		vbox.pack_start(label, False, False, 0)
 		return label
@@ -145,7 +145,7 @@ class PreferencesWindow():
 
 	def keyPressed(self, widget, event):
 		# quit if ESC pressed
-		if event.keyval == gtk.keysyms.Escape:
+		if event.keyval == Gtk.keysyms.Escape:
 			self.window.destroy()
  
 

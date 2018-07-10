@@ -27,16 +27,17 @@
 # Display block properties window.
 #
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
 import collections
-import pygtk
-pygtk.require('2.0')
-import gtk
 
 fileSelectionFolder = ''  # store last file selection folder
 
 class PropertiesWindow():
 	def __init__(self, block, propertiesXML, title='Properties', help=''):
-		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		self.window = Gtk.Window(Gtk.WINDOW_TOPLEVEL)
 		self.window.set_title(title)
 		self.window.connect("delete_event", self.delete_event)
 		self.window.connect("key-press-event", self.keyPressed)
@@ -59,18 +60,18 @@ class PropertiesWindow():
 		# remove 'state' property
 		#self.parameters.pop('state')
 
-		vbox = gtk.VBox(False, 10)
+		vbox = Gtk.VBox(False, 10)
 		self.window.add(vbox)
 
 		# display properties
 
-		label = gtk.Label('Block parameters:')
+		label = Gtk.Label('Block parameters:')
 		label.set_alignment(0.0, 0.0)
 		vbox.pack_start(label, False, False, 0)
 		label.show()
 
 		rowCnt = len(self.parameters)
-		table = gtk.Table(rowCnt, 3, False)
+		table = Gtk.Table(rowCnt, 3, False)
 		#table.set_row_spacings(5)
 		#table.set_col_spacings(5)
 		vbox.pack_start(table, False, False, 0)
@@ -82,11 +83,11 @@ class PropertiesWindow():
 
 			# display property description
 			try:
-				label = gtk.Label(self.parameters[param]['desc'])
+				label = Gtk.Label(self.parameters[param]['desc'])
 			except:
-				label = gtk.Label(param)
+				label = Gtk.Label(param)
 			label.set_alignment(1, 0)
-			table.attach(label, 0, 1, row-1, row, gtk.FILL, 0, 5)
+			table.attach(label, 0, 1, row-1, row, Gtk.FILL, 0, 5)
 			label.show()
 			
 			# display property modification area
@@ -101,12 +102,12 @@ class PropertiesWindow():
 					values = sorted(values)
 					values.insert(0,current)
 
-					comboBox = gtk.combo_box_entry_new_text()
+					comboBox = Gtk.combo_box_entry_new_text()
 					for v in values:
 						comboBox.append_text(v)
 					comboBox.set_active(0)
 					
-					table.attach(comboBox, 1, 2, row-1, row, gtk.EXPAND|gtk.FILL, 0)
+					table.attach(comboBox, 1, 2, row-1, row, Gtk.EXPAND|Gtk.FILL, 0)
 					comboBox.show()
 
 					entries[param] = comboBox.get_child()
@@ -114,15 +115,15 @@ class PropertiesWindow():
 					# force except clause execution
 					raise KeyError
 			except KeyError:
-				entries[param] = gtk.Entry()
+				entries[param] = Gtk.Entry()
 				entries[param].set_text(self.parameters[param]['value'])
-				table.attach(entries[param], 1, 2, row-1, row, gtk.EXPAND|gtk.FILL, 0)
+				table.attach(entries[param], 1, 2, row-1, row, Gtk.EXPAND|Gtk.FILL, 0)
 				entries[param].show()
 
 			# if property is a file name, display a select file button
 			try:
 				if self.parameters[param]['type'] == 'filename':
-					selectButton = gtk.Button("...")
+					selectButton = Gtk.Button("...")
 					table.attach(selectButton, 2, 3, row-1, row, 0, 0)
 					selectButton.connect("clicked", self.selectFile, entries[param])
 					selectButton.show()
@@ -133,19 +134,19 @@ class PropertiesWindow():
 
 		# display ok and cancel buttons
 
-		separator = gtk.HSeparator()
+		separator = Gtk.HSeparator()
 		vbox.pack_start(separator, False, True, 0)
 		separator.show()
 
-		hbox = gtk.HBox(True, 10)
+		hbox = Gtk.HBox(True, 10)
 		vbox.pack_start(hbox, False, True, 0)
 
-		buttonOk = gtk.Button("Ok")
+		buttonOk = Gtk.Button("Ok")
 		hbox.pack_start(buttonOk, False, True, 20)
 		buttonOk.connect("clicked", self.buttonOkClicked, entries)
 		buttonOk.show()
 
-		buttonCancel = gtk.Button("Cancel")
+		buttonCancel = Gtk.Button("Cancel")
 		hbox.pack_end(buttonCancel, False, True, 20)
 		buttonCancel.connect("clicked", self.buttonCancelClicked)
 		buttonCancel.show()
@@ -155,23 +156,23 @@ class PropertiesWindow():
 		# display help
 
 		if help:
-			separator = gtk.HSeparator()
+			separator = Gtk.HSeparator()
 			vbox.pack_start(separator, False, True, 0)
 			separator.show()
 
-			label = gtk.Label('Help:')
+			label = Gtk.Label('Help:')
 			label.set_alignment(0.0, 0.0)
 			vbox.pack_start(label, False, False, 0)
 			label.show()
 
-			sw = gtk.ScrolledWindow()
+			sw = Gtk.ScrolledWindow()
 			vbox.pack_start(sw, True, True, 0)
-			sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-			textview = gtk.TextView()
+			sw.set_policy(Gtk.POLICY_AUTOMATIC, Gtk.POLICY_AUTOMATIC)
+			textview = Gtk.TextView()
 			sw.add_with_viewport(textview)
 			textview.get_buffer().set_text(help)
 			textview.set_editable(False)
-			textview.set_wrap_mode(gtk.WRAP_WORD)
+			textview.set_wrap_mode(Gtk.WRAP_WORD)
 			textview.show()
 			sw.show()
 
@@ -180,7 +181,7 @@ class PropertiesWindow():
 
 	def keyPressed(self, widget, event):
 		# quit if ESC pressed
-		if event.keyval == gtk.keysyms.Escape:
+		if event.keyval == Gtk.keysyms.Escape:
 			self.window.destroy()
  
 	def selectFile(self, widget, entry):
@@ -216,18 +217,18 @@ class FileSelection:
 	def __init__(self, entry):
 		global fileSelectionFolder
 
-		dialog = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-		dialog.set_default_response(gtk.RESPONSE_OK)
+		dialog = Gtk.FileChooserDialog("Open..", None, Gtk.FILE_CHOOSER_ACTION_SAVE, (Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL, Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
+		dialog.set_default_response(Gtk.RESPONSE_OK)
 
 		dialog.set_current_folder(fileSelectionFolder)
 		dialog.set_current_name(entry.get_text())
 		"""
-		filter = gtk.FileFilter()
+		filter = Gtk.FileFilter()
 		filter.set_name("All files")
 		filter.add_pattern("*")
 		dialog.add_filter(filter)
 
-		filter = gtk.FileFilter()
+		filter = Gtk.FileFilter()
 		filter.set_name("Images")
 		filter.add_mime_type("image/png")
 		filter.add_mime_type("image/jpeg")
@@ -241,11 +242,11 @@ class FileSelection:
 		"""
 
 		response = dialog.run()
-		if response == gtk.RESPONSE_OK:
+		if response == Gtk.RESPONSE_OK:
 			entry.set_text(dialog.get_filename())
 			fileSelectionFolder = dialog.get_current_folder()
 		"""
-		elif response == gtk.RESPONSE_CANCEL:
+		elif response == Gtk.RESPONSE_CANCEL:
 			print 'Closed, no files selected'
 		"""
 		dialog.destroy()

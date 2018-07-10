@@ -30,13 +30,13 @@
 #
 #----------------------------------------------------------------------
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
 import time
-import sys
 import os
 import subprocess
-import xmltree
-import glib
-import gtk
 
 import codegenerator
 
@@ -101,8 +101,8 @@ class s2iSessionManager:
 				pass
 
 		# force events processing
-		while gtk.events_pending():
-			gtk.main_iteration()
+		while Gtk.events_pending():
+			Gtk.main_iteration()
 
 	def NewInstance(self , batchModeOn, a_lsXML = ["<harpia></harpia>"]):
 		self.StoreXML(a_lsXML)

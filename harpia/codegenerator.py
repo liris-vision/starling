@@ -28,13 +28,15 @@
 # Convert blocks graph to C/C++ code.
 #
 
+import gi
+from gi.repository import GObject
+
 import re
 import os
 import subprocess
 import threading
 import multiprocessing
 import sys
-import gobject
 
 import lvExtensions
 import blocksgraph
@@ -566,15 +568,15 @@ def monitoringThread(process):
 	# Due to stdout being redirected to GUI,
 	# do NOT call 'print' function here, nor any other gui function
 	# because pygtk has issues with threading.
-	# Use gobject.idle_add(...) to interact with GUI.
+	# Use GObject.idle_add(...) to interact with GUI.
 	# Using 'sys.__stdout__.write()' to write in the real console is also safe.
 	#sys.__stdout__.write('DBG in codegenerator.monitoringThread')
 	while process.poll() is None:
 		chars = process.stdout.read()
 		#sys.__stdout__.write(chars)
-		gobject.idle_add(sys.stdout.write, chars, priority=gobject.PRIORITY_HIGH_IDLE)
+		GObject.idle_add(sys.stdout.write, chars, priority=GObject.PRIORITY_HIGH_IDLE)
 	message = 'Subprocess ' + str(process.pid) + ' stopped\n' 
-	gobject.idle_add(sys.stdout.write, message, priority=gobject.PRIORITY_HIGH_IDLE)
+	GObject.idle_add(sys.stdout.write, message, priority=GObject.PRIORITY_HIGH_IDLE)
 	return
 
 

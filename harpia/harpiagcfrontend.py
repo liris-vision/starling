@@ -32,15 +32,17 @@
 
 
 # Libraries
-from uu import *
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gdk
+from gi.repository import GObject
+
+#rm from uu import *
 import sys
-import gobject
-import pygtk
-import gtk
-import shutil
 import os
 import signal
-import time
 from glob import glob
 
 import xmltree
@@ -93,7 +95,7 @@ class S2iHarpiaFrontend():
 		Constructor. Initializes the GUI, connects the GTK signals, creates a dictionary for the Blocks and BlocksProperties and loads the configurations.
 		"""
 	
-		gobject.threads_init()
+		GObject.threads_init()
 		self.batchModeOn = batchModeOn
 		s2idirectory.setExperimentalMode(experimentalMode)
 		lvExtensions.loadConfiguration()
@@ -136,7 +138,7 @@ class S2iHarpiaFrontend():
 		topWindowName = 'HarpiaFrontend'
 		
 		# Initializes the GUI
-		builder = gtk.Builder()
+		builder = Gtk.Builder()
 		builder.add_from_file(UIFilename)
 		builder.connect_signals(self)
 		self.gtkTopWindow = builder.get_object(topWindowName)
@@ -186,7 +188,7 @@ class S2iHarpiaFrontend():
 			# release resources and quit
 			self.on_QuitMenuBar_activate()
 			#self.top_window.emit("destroy")
-			#gtk.window().emit("destroy")
+			#Gtk.window().emit("destroy")
 		else:
 			# open all user files given on command line
 			for fileName in userFiles :
@@ -199,8 +201,10 @@ class S2iHarpiaFrontend():
 
 		# initialize console text view
 		self.consoleTextView = self.widgets['ConsoleTextView']
-		self.consoleTextView.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('black'))
-		self.consoleTextView.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('white'))
+		color_black = Gdk.RGBA(0,0,0).to_color()
+		self.consoleTextView.modify_base(Gtk.StateType.NORMAL, color_black)
+		color_white = Gdk.RGBA(1,1,1).to_color()
+		self.consoleTextView.modify_text(Gtk.StateType.NORMAL, color_white)
 		self.captureStdout()
 		
 	#----------------------------------------------------------------------
@@ -215,9 +219,9 @@ class S2iHarpiaFrontend():
 		Display the top_window widget
 		"""
 		if center:
-			self.gtkTopWindow.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+			self.gtkTopWindow.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
 		else:
-			self.gtkTopWindow.set_position(gtk.WIN_POS_NONE)
+			self.gtkTopWindow.set_position(Gtk.WindowPosition.NONE)
 		self.gtkTopWindow.show()
 
 	#---------------------------------------------------------------------- 
@@ -232,7 +236,7 @@ class S2iHarpiaFrontend():
 
 		# build GTK TreeStore, to store blocks list for the menu 
 
-		t_oTreeStore = gtk.TreeStore(gobject.TYPE_STRING)
+		t_oTreeStore = Gtk.TreeStore(GObject.TYPE_STRING)
 
 		# self.Blocks.keys() is a list of blocks-group
 		# = [ 'Filtering', 'Features' ... ]
@@ -253,36 +257,38 @@ class S2iHarpiaFrontend():
 
 			# create column
 
-			t_oTextRender = gtk.CellRendererText()
+			t_oTextRender = Gtk.CellRendererText()
 			t_oTextRender.set_property( 'editable', False )
-			t_oColumn = gtk.TreeViewColumn(_("Available Blocks"), t_oTextRender, text=0)
+			t_oColumn = Gtk.TreeViewColumn(_("Available Blocks"), t_oTextRender, text=0)
 			self.widgets['BlocksTreeView'].append_column( t_oColumn )
 
 			# set drag&drop
 
 			#		TARGETS = [
-			#			('MY_TREE_MODEL_ROW', gtk.TARGET_SAME_WIDGET, 0),
+			#			('MY_TREE_MODEL_ROW', Gtk.TARGET_SAME_WIDGET, 0),
 			#			('text/plain', 0, 1),
 			#			('TEXT', 0, 2),
 			#			('STRING', 0, 3),
 			#			]
 
-			#drag......
-			self.widgets['BlocksTreeView'].enable_model_drag_source( 
-				gtk.gdk.BUTTON1_MASK,
-				[('text/plain', gtk.TARGET_SAME_APP, 1)],
-				gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
-			self.widgets['BlocksTreeView'].connect( "drag-data-get",
-				self.drag_data_get_cb)
+			#TODO-fix-beg
+			##drag......
+			#self.widgets['BlocksTreeView'].enable_model_drag_source( 
+			#	Gdk.ModifierType.BUTTON1_MASK,
+			#	[('text/plain', Gtk.TARGET_SAME_APP, 1)],
+			#	Gtk.gdk.ACTION_DEFAULT | Gtk.gdk.ACTION_COPY)
+			#self.widgets['BlocksTreeView'].connect( "drag-data-get",
+			#	self.drag_data_get_cb)
 
-			#........'n'drop
-			self.widgets['WorkArea'].connect( "drag_data_received",
-				self.drag_data_received)
-			self.widgets['WorkArea'].drag_dest_set(
-				gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT |
-					gtk.DEST_DEFAULT_DROP,
-				[('text/plain', gtk.TARGET_SAME_APP, 1)],
-				gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
+			##........'n'drop
+			#self.widgets['WorkArea'].connect( "drag_data_received",
+			#	self.drag_data_received)
+			#self.widgets['WorkArea'].drag_dest_set(
+			#	Gtk.DEST_DEFAULT_MOTION | Gtk.DEST_DEFAULT_HIGHLIGHT |
+			#		Gtk.DEST_DEFAULT_DROP,
+			#	[('text/plain', Gtk.TARGET_SAME_APP, 1)],
+			#	Gtk.gdk.ACTION_DEFAULT | Gtk.gdk.ACTION_COPY)
+			#TODO-fix-end
 
 		#ELtry use GtkTreeView internal search
 		#ELself.widgets['BlocksTreeView'].set_enable_search(True)
@@ -306,7 +312,7 @@ class S2iHarpiaFrontend():
 
 	def make_pb(self, tvcolumn, cell, model, iter):
 		stock = model.get_value(iter, 1)
-		pb = self.widgets["BlocksTreeView"].render_icon(stock, gtk.ICON_SIZE_MENU, None)
+		pb = self.widgets["BlocksTreeView"].render_icon(stock, Gtk.ICON_SIZE_MENU, None)
 		cell.set_property('pixbuf', pb)
 		return
 
@@ -478,15 +484,15 @@ class S2iHarpiaFrontend():
 		#maybe pass to a s2iView base class
 		t_oNewDiagram = GcDiagram.GcDiagram()#created new diagram
 
-		scrolled_win = gtk.ScrolledWindow()
-		scrolled_win.set_shadow_type(gtk.SHADOW_IN)
+		scrolled_win = Gtk.ScrolledWindow()
+		scrolled_win.set_shadow_type(Gtk.ShadowType.IN)
 		scrolled_win.add(t_oNewDiagram)
 		scrolled_win.show_all()
 		
 		t_nCurrentPage = self.widgets['WorkArea'].get_current_page()
 
 		#tab label
-		t_oLabel = gtk.Label(_("Unnamed ") + str(t_nCurrentPage+1) + "[*]" )
+		t_oLabel = Gtk.Label(_("Unnamed ") + str(t_nCurrentPage+1) + "[*]" )
 		
 		self.widgets['WorkArea'].set_show_tabs( True )
 		self.widgets['WorkArea'].append_page(scrolled_win, t_oLabel)
@@ -505,30 +511,30 @@ class S2iHarpiaFrontend():
 	def on_OpenToolBar_clicked(self, *args):
 		#Opens a dialog for file selection and opens the file.
 
-		t_oDialog = gtk.FileChooserDialog(_("Open..."),
+		t_oDialog = Gtk.FileChooserDialog(_("Open..."),
 										None,
-										gtk.FILE_CHOOSER_ACTION_OPEN,
-										(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-										gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+										Gtk.FILE_CHOOSER_ACTION_OPEN,
+										(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL,
+										Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
 
-		t_oDialog.set_default_response(gtk.RESPONSE_OK)
+		t_oDialog.set_default_response(Gtk.RESPONSE_OK)
 
 		if os.name == 'posix':
 			t_oDialog.set_current_folder(os.path.expanduser("~"))
 
-		t_oFilter = gtk.FileFilter()
+		t_oFilter = Gtk.FileFilter()
 		t_oFilter.set_name(_("All Archives"))
 		t_oFilter.add_pattern("*")
 		t_oDialog.add_filter(t_oFilter)
 
-		t_oFilter = gtk.FileFilter()
+		t_oFilter = Gtk.FileFilter()
 		t_oFilter.set_name(_("Harpia Files"))
 		t_oFilter.add_pattern("*.hrp")
 		t_oDialog.add_filter(t_oFilter)
 
 		t_oResponse = t_oDialog.run()
 	
-		if t_oResponse == gtk.RESPONSE_OK:
+		if t_oResponse == Gtk.RESPONSE_OK:
 			fileName = t_oDialog.get_filename()
 			t_oDialog.destroy()
 			self.openFile(fileName)
@@ -547,29 +553,29 @@ class S2iHarpiaFrontend():
 			if t_oGcDiagram.GetFilename() is None or self.SaveAs:
 				self.SaveAs = False
 			
-				t_oDialog = gtk.FileChooserDialog(_("Save..."),
+				t_oDialog = Gtk.FileChooserDialog(_("Save..."),
 												None,
-												gtk.FILE_CHOOSER_ACTION_SAVE,
-												(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-												gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+												Gtk.FILE_CHOOSER_ACTION_SAVE,
+												(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL,
+												Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
 			
-				t_oDialog.set_default_response(gtk.RESPONSE_OK)
+				t_oDialog.set_default_response(Gtk.RESPONSE_OK)
 
 				if os.name == 'posix':
 					t_oDialog.set_current_folder(os.path.expanduser("~"))
 
-				t_oFilter = gtk.FileFilter()
+				t_oFilter = Gtk.FileFilter()
 				t_oFilter.set_name(_("All Archives"))
 				t_oFilter.add_pattern("*")
 				t_oDialog.add_filter(t_oFilter)
 
-				t_oFilter = gtk.FileFilter()
+				t_oFilter = Gtk.FileFilter()
 				t_oFilter.set_name(_("Harpia Files"))
 				t_oFilter.add_pattern("*.hrp")
 				t_oDialog.add_filter(t_oFilter)
 			
 				t_oResponse = t_oDialog.run()
-				if t_oResponse == gtk.RESPONSE_OK:
+				if t_oResponse == Gtk.RESPONSE_OK:
 					t_oGcDiagram.SetFilename( t_oDialog.get_filename() )
 					
 				t_oDialog.destroy()
@@ -616,14 +622,14 @@ class S2iHarpiaFrontend():
 							10: _("Code Saved")}
 
 		#if a_nStatus == 7 or a_nStatus == 10:
-			#self.widgets['ProcessImage'].set_from_stock( gtk.STOCK_YES, gtk.ICON_SIZE_MENU)
+			#self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_YES, Gtk.ICON_SIZE_MENU)
 		#else:
-			#self.widgets['ProcessImage'].set_from_stock( gtk.STOCK_NO, gtk.ICON_SIZE_MENU  )
+			#self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_NO, Gtk.ICON_SIZE_MENU  )
 			
 		self.widgets['StatusLabel'].set_text(t_oStatusMessage[a_nStatus])
 		
-		while gtk.events_pending():
-			gtk.main_iteration(False)
+		while Gtk.events_pending():
+			Gtk.main_iteration(False)
 
 	#----------------------------------------------------------------------
 	def SetStatusMessage(self, a_sStatus, a_bGood):
@@ -632,12 +638,12 @@ class S2iHarpiaFrontend():
 		"""
 		#print a_bGood
 		if a_bGood:
-			self.widgets['ProcessImage'].set_from_stock( gtk.STOCK_YES, gtk.ICON_SIZE_MENU  )
+			self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_YES, Gtk.ICON_SIZE_MENU  )
 		else:
-			self.widgets['ProcessImage'].set_from_stock( gtk.STOCK_NO, gtk.ICON_SIZE_MENU  )
+			self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_NO, Gtk.ICON_SIZE_MENU  )
 		self.widgets['StatusLabel'].set_text(a_sStatus)
-		while gtk.events_pending():
-			gtk.main_iteration(False)
+		while Gtk.events_pending():
+			Gtk.main_iteration(False)
 
 	#----------------------------------------------------------------------
 
@@ -685,7 +691,7 @@ class S2iHarpiaFrontend():
 		
 		#######################################################################
 		# We have two choices here, we could run with delays so all the numb info is displayed in the GUI
-		#id2 = gobject.timeout_add(200,self.on_ProcessToolBar_clickedGenerator(self).next) #remember to uncomment the yield at line 842
+		#id2 = GObject.timeout_add(200,self.on_ProcessToolBar_clickedGenerator(self).next) #remember to uncomment the yield at line 842
 		#
 		# OORR
 		# we could just iterate through it as fast as possible
@@ -723,7 +729,7 @@ class S2iHarpiaFrontend():
 		self.on_CodeToolBar_clickedIneer()
 		self.widgets['ProcessToolBar'].set_sensitive(True)
 		self.widgets['CodeToolBar'].set_sensitive(True)
-		#id3 = gobject.timeout_add(1000,self.on_CodeToolBar_clickedGenerator(self, *args).next)
+		#id3 = GObject.timeout_add(1000,self.on_CodeToolBar_clickedGenerator(self, *args).next)
 
 
 	#----------------------------------------------------------------------
@@ -766,9 +772,9 @@ class S2iHarpiaFrontend():
 		"""
 		pass
 
-		#t_oCloseHarpia = gtk.Dialog(title=_("Harpia Update"), parent=self.widgets['HarpiaFrontend'], flags=gtk.DIALOG_MODAL, buttons=('gtk-yes',gtk.RESPONSE_YES,'gtk-no',gtk.RESPONSE_NO) )
+		#t_oCloseHarpia = Gtk.Dialog(title=_("Harpia Update"), parent=self.widgets['HarpiaFrontend'], flags=Gtk.DIALOG_MODAL, buttons=('Gtk-yes',Gtk.RESPONSE_YES,'Gtk-no',Gtk.RESPONSE_NO) )
 
-		#t_oLabel=gtk.Label(_("\nHarpia must be closed in order to update.\nDo you want to exit and continue update?\n"))
+		#t_oLabel=Gtk.Label(_("\nHarpia must be closed in order to update.\nDo you want to exit and continue update?\n"))
 
 		#t_oCloseHarpia.set_border_width(5)
 		
@@ -779,7 +785,7 @@ class S2iHarpiaFrontend():
 		
 		#t_nResponse=t_oCloseHarpia.run()
 
-		#if t_nResponse == gtk.RESPONSE_YES:
+		#if t_nResponse == Gtk.RESPONSE_YES:
 
 			#import xmlrpclib
 
@@ -818,18 +824,18 @@ class S2iHarpiaFrontend():
 		if self.m_oGcDiagrams.has_key( self.widgets['WorkArea'].get_current_page() ): 
 
 			t_oGcDiagram = self.m_oGcDiagrams[self.widgets['WorkArea'].get_current_page()]
-			t_oDialog = gtk.FileChooserDialog(_("Export Diagram to PNG..."),
+			t_oDialog = Gtk.FileChooserDialog(_("Export Diagram to PNG..."),
 											None,
-											gtk.FILE_CHOOSER_ACTION_SAVE,
-											(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-											gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+											Gtk.FILE_CHOOSER_ACTION_SAVE,
+											(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL,
+											Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
 		
-			t_oDialog.set_default_response(gtk.RESPONSE_OK)
+			t_oDialog.set_default_response(Gtk.RESPONSE_OK)
 
 			if os.name == 'posix':
 				t_oDialog.set_current_folder(os.path.expanduser("~"))
 
-			t_oFilter = gtk.FileFilter()
+			t_oFilter = Gtk.FileFilter()
 			t_oFilter.set_name(_("Png files"))
 			t_oFilter.add_pattern("*.png")
 			t_oDialog.add_filter(t_oFilter)
@@ -841,7 +847,7 @@ class S2iHarpiaFrontend():
 				filename += ".png"
 			t_oDialog.destroy()
 			
-			if t_oResponse == gtk.RESPONSE_OK and filename:
+			if t_oResponse == Gtk.RESPONSE_OK and filename:
 				t_oGcDiagram.Export2Png(filename)
 	
 	#----------------------------------------------------------------------
@@ -982,7 +988,7 @@ class S2iHarpiaFrontend():
 
 			for x in s2idirectory.block:
 				if s2idirectory.block[x]["Label"] == t_sBlockName :
-					t_oTextBuffer = gtk.TextBuffer()
+					t_oTextBuffer = Gtk.TextBuffer()
 					t_oTextBuffer.set_text(s2idirectory.block[x]["Description"])
 					self.widgets['BlockDescription'].set_buffer(t_oTextBuffer)
 					break
@@ -1013,7 +1019,7 @@ class S2iHarpiaFrontend():
 
 		if not abort and not self.batchModeOn:
 			# quit
-			gtk.main_quit()
+			Gtk.main_quit()
 
 		return True  # required for 'delete-event' signal processing
 		
@@ -1047,10 +1053,10 @@ class S2iHarpiaFrontend():
 		# check if diagram has been modified
 		if self.m_oGcDiagrams[t_nCurrentTabIndex].HasChanged():
 			# the diagram has changed since last save, ask for confirmation 
-			dialog = gtk.MessageDialog(self.widgets['HarpiaFrontend'], gtk.DIALOG_MODAL, gtk.MESSAGE_WARNING, gtk.BUTTONS_OK_CANCEL, "The current processing chain has been modified. Do you really want to close WITHOUT saving ?")
+			dialog = Gtk.MessageDialog(self.widgets['HarpiaFrontend'], Gtk.DIALOG_MODAL, Gtk.MESSAGE_WARNING, Gtk.BUTTONS_OK_CANCEL, "The current processing chain has been modified. Do you really want to close WITHOUT saving ?")
 			response = dialog.run()
 			dialog.destroy()
-			if response == gtk.RESPONSE_CANCEL:
+			if response == Gtk.RESPONSE_CANCEL:
 				return False# abort closing
 
 		# close tab
@@ -1107,7 +1113,7 @@ class S2iHarpiaFrontend():
 		self.widgets.pop('fake_separator')
 		
 		for example in t_lListOfExamples:
-			t_oMenuItem = gtk.MenuItem(example.split("/").pop())
+			t_oMenuItem = Gtk.MenuItem(example.split("/").pop())
 			self.widgets['examples_menu'].append(t_oMenuItem)
 			t_oMenuItem.connect("activate", self.LoadExample)
 			self.widgets['examples_menu'].show_all()
@@ -1214,6 +1220,6 @@ class S2iHarpiaFrontend():
 	def setTabName(self, nPage, fileName):
 		t_oChild= self.widgets['WorkArea'].get_nth_page(nPage)
 		t_sNewLabel = os.path.basename(fileName)
-		t_oLabel= gtk.Label(str(t_sNewLabel))
+		t_oLabel= Gtk.Label(str(t_sNewLabel))
 		self.widgets['WorkArea'].set_tab_label(t_oChild, t_oLabel)
 

@@ -28,11 +28,16 @@
 #
 #----------------------------------------------------------------------
 
-import goocanvas
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gdk
+gi.require_version('GooCanvas', '2.0')
+from gi.repository import GooCanvas
+
 import GcdBlock
 import GcdConnector
-import gtk
-import sys
 import time
 import tempfile
 import os
@@ -46,11 +51,11 @@ import lvExtensions
 
 UNDO_LEVELS_CNT = 20
 
-class GcDiagram( goocanvas.Canvas ):
+class GcDiagram( GooCanvas.Canvas ):
 
 	def __init__( self ):
-		self.__gobject_init__()
-		goocanvas.Canvas.__init__(self)
+		#TODO-fix self.__gobject_init__()
+		GooCanvas.Canvas.__init__(self)
 
 		# canvas size
 		canvasWidth = 2000   
@@ -69,7 +74,7 @@ class GcDiagram( goocanvas.Canvas ):
 		
 		self.show()
 		
-		#self.set_flags(gtk.CAN_FOCUS)
+		#self.set_flags(Gtk.CAN_FOCUS)
 		#self.grab_focus(self)
 		#self.get_root_item().connect("event", self.canvas_root_event)#tem q ser o root() se nao ele pega os eventos antes de todu mundo! =]
 
@@ -78,15 +83,15 @@ class GcDiagram( goocanvas.Canvas ):
 		# canvas receives events before its children, so we need to use
 		# a group as root item, so that its receives events after blocks
 		# and connectors
-		self.wGroup = goocanvas.Group()
-		self.get_root_item().add_child(self.wGroup)
+		self.wGroup = GooCanvas.CanvasGroup()
+		self.get_root_item().add_child(self.wGroup, -1)
 		self.wGroup.connect("button-press-event", self.group_event)
 		self.wGroup.connect("button-release-event", self.group_event)
 		self.wGroup.connect("motion-notify-event", self.group_event)
 		# add a rectangle as 'group background', else group will not
 		# receive interior events
-		#linedash = goocanvas.LineDash([3.0])
-		self.root_add(goocanvas.Rect(width=canvasWidth, height=canvasHeight, pointer_events=goocanvas.EVENTS_ALL, stroke_color='gray')) 
+		#linedash = GooCanvas.CanvasLineDash([3.0])
+		self.root_add(GooCanvas.CanvasRect(width=canvasWidth, height=canvasHeight, pointer_events=GooCanvas.CanvasPointerEvents.ALL, stroke_color='gray')) 
 
 		self.m_sFilename = None
 		self.createWorkingDir()
@@ -110,14 +115,14 @@ class GcDiagram( goocanvas.Canvas ):
 		print '*', __file__, 'group_event:'
 		self.displayEvent(event)
 		"""
-		if event.type == gtk.gdk.MOTION_NOTIFY:
+		if event.type == Gdk.EventType.MOTION_NOTIFY:
 			#print __file__, ', group_event(): MOTION_NOTIFY'
 			if self.m_oCurrConnector <> None:
 				t_Point = (event.x_root, event.y_root)
 				#print __file__, ', group_event(): t_Point=', t_Point
 				self.m_oCurrConnector.UpdateTracking(t_Point)
 
-		if event.type == gtk.gdk.BUTTON_PRESS:
+		if event.type == Gdk.EventType.BUTTON_PRESS:
 			#print __file__, ', group_event(): BUTTON_PRESS'
 			if event.button == 1:
 				# abort eventual current connection
@@ -713,7 +718,7 @@ class GcDiagram( goocanvas.Canvas ):
 	def Export2Png(self, filepath="diagrama.png"):
 		(x,y,t_nWidth,t_nHeight,t_nDepth) = self.window.get_geometry()
 		
-		t_oPixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB,False,8,t_nWidth,t_nHeight)
+		t_oPixbuf = Gtk.gdk.Pixbuf(Gtk.gdk.COLORSPACE_RGB,False,8,t_nWidth,t_nHeight)
 		t_oBuffer = t_oPixbuf.get_from_drawable(self.window, self.get_colormap(),0, 0, 0, 0, t_nWidth, t_nHeight)
 		# get_from_drawable(GdkWindow src, GdkColormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
 		t_oBuffer.save(filepath, "png")
@@ -745,24 +750,24 @@ class GcDiagram( goocanvas.Canvas ):
 
 	#def RightClick(self, a_oEvent):
 		#pass
-		#t_oMenu = gtk.Menu()
+		#t_oMenu = Gtk.Menu()
 	
-		#t_oMenuItem = gtk.MenuItem("Save Diagram")
+		#t_oMenuItem = Gtk.MenuItem("Save Diagram")
 		#t_oMenuItem.connect("activate", self.SaveFromPopup)
 		#t_oMenu.append(t_oMenuItem)
 
-		#t_oMenuItem = gtk.MenuItem("Load Diagram")
+		#t_oMenuItem = Gtk.MenuItem("Load Diagram")
 		#t_oMenuItem.connect("activate", self.LoadFromPopup)
 		#t_oMenu.append(t_oMenuItem)
 		
-		#t_oMenuItem = gtk.SeparatorMenuItem()
+		#t_oMenuItem = Gtk.SeparatorMenuItem()
 		#t_oMenu.append(t_oMenuItem)
 		
-		#t_oMenuItem = gtk.MenuItem("Delete Diagram")
+		#t_oMenuItem = Gtk.MenuItem("Delete Diagram")
 		#t_oMenuItem.connect("activate", self.SaveFromPopup)
 		#t_oMenu.append(t_oMenuItem)
 
-		#t_oMenuItem = gtk.SeparatorMenuItem()
+		#t_oMenuItem = Gtk.SeparatorMenuItem()
 		#t_oMenu.append(t_oMenuItem)
 		
 		## Shows the menu
@@ -770,7 +775,7 @@ class GcDiagram( goocanvas.Canvas ):
 		#t_oMenu.popup(None, None, None, a_oEvent.button, a_oEvent.time)
 
 	def root_add(self, item, position=-1):
-		#self.get_root_item().add_child(item)
+		#self.get_root_item().add_child(item) #TODO-rm
 		self.wGroup.add_child(item, position)
 
 	"""
@@ -799,20 +804,20 @@ class GcDiagram( goocanvas.Canvas ):
 	Display event info to help debugging.
 	"""
 	def displayEvent(self, event):
-		if event.type == gtk.gdk.BUTTON_PRESS:
+		if event.type == Gdk.EventType.BUTTON_PRESS:
 			print 'event.type= BUTTON_PRESS'
 			print '     .button=', event.button
-		elif event.type == gtk.gdk.MOTION_NOTIFY:
+		elif event.type == Gdk.EventType.MOTION_NOTIFY:
 			print 'event.type= MOTION_NOTIFY'
-		elif event.type == gtk.gdk.BUTTON_RELEASE:
+		elif event.type == Gdk.EventType.BUTTON_RELEASE:
 			print 'event.type= BUTTON_RELEASE, button=', event.button
-		elif event.type == gtk.gdk._2BUTTON_PRESS:
+		elif event.type == Gdk.EventType._2BUTTON_PRESS:
 			print 'event.type= _2BUTTON_PRESS'
-		elif event.type == gtk.gdk.ENTER_NOTIFY:
+		elif event.type == Gdk.EventType.ENTER_NOTIFY:
 			print 'event.type= ENTER_NOTIFY'
-		elif event.type == gtk.gdk.LEAVE_NOTIFY:
+		elif event.type == Gdk.EventType.LEAVE_NOTIFY:
 			print 'event.type= LEAVE_NOTIFY'
-		elif event.type == gtk.gdk.KEY_PRESS:
+		elif event.type == Gdk.EventType.KEY_PRESS:
 			print 'event.type= KEY_PRESS'
 			print '     .keyval=', event.keyval
 		else:

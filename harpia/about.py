@@ -30,8 +30,11 @@
 #
 #----------------------------------------------------------------------
 
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
 import os
-import gtk
 
 ## Implements the about window in the Frontend.
 class About():
@@ -49,8 +52,8 @@ class About():
 		UIFilename = self.m_sDataDir+'gui/about.xml'
 		windowName = 'about'
 	
-		# build gtk window
-		builder = gtk.Builder()
+		# build Gtk window
+		builder = Gtk.Builder()
 		builder.add_from_file(UIFilename)
 		self.gtkWindow = builder.get_object(windowName)
 

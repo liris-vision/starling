@@ -31,8 +31,9 @@
 #----------------------------------------------------------------------
 
 # Imported Libraries
-import gtk
-import gobject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 
 #i18n
@@ -76,13 +77,13 @@ class S2iCommonProperties:
 
 		if self.m_oColorSelectionDlg == None:
 			
-			self.m_oColorSelectionDlg = gtk.ColorSelectionDialog(_("Color selection"))
+			self.m_oColorSelectionDlg = Gtk.ColorSelectionDialog(_("Color selection"))
 
 		t_oColorSelection = self.m_oColorSelectionDlg.colorsel
 		
 		t_oResponse = self.m_oColorSelectionDlg.run()
 
-		if t_oResponse == gtk.RESPONSE_OK:
+		if t_oResponse == Gtk.RESPONSE_OK:
 
 			t_oColor = t_oColorSelection.get_current_color()
 

@@ -31,8 +31,9 @@
 #----------------------------------------------------------------------
 
 # Libraries
-#import diacanvas
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 ## Export the diagram to a .png file
 class S2iPNGExport:
@@ -46,25 +47,25 @@ class S2iPNGExport:
 		"""
 		This function gets the blocks chain and saves as a .png file by print screen.
 		"""
-		if gtk.gtk_version < (2, 4, 0):
-			t_oFilesel = gtk.FileSelection('Exportar cadeia para imagem tipo .png')
+		if Gtk.gtk_version < (2, 4, 0):
+			t_oFilesel = Gtk.FileSelection('Exportar cadeia para imagem tipo .png')
 		else:
-			t_oFilesel = gtk.FileChooserDialog(title='Exportar cadeia para imagem tipo .png',
-											action=gtk.FILE_CHOOSER_ACTION_SAVE,
-											buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,
-														gtk.STOCK_SAVE,gtk.RESPONSE_OK))
+			t_oFilesel = Gtk.FileChooserDialog(title='Exportar cadeia para imagem tipo .png',
+											action=Gtk.FILE_CHOOSER_ACTION_SAVE,
+											buttons=(Gtk.STOCK_CANCEL,Gtk.RESPONSE_CANCEL,
+														Gtk.STOCK_SAVE,Gtk.RESPONSE_OK))
 
 
 #Scotti
 		if os.name == 'posix':
 			t_oFilesel.set_current_folder(os.path.expanduser("~"))
 #Scotti
-		t_oFilter = gtk.FileFilter()
+		t_oFilter = Gtk.FileFilter()
 		t_oFilter.set_name(_("PNG Image (*.png)"))
 		t_oFilter.add_pattern("*.png")
 		t_oFilesel.add_filter(t_oFilter)
 
-		t_oFilter = gtk.FileFilter()
+		t_oFilter = Gtk.FileFilter()
 		t_oFilter.set_name(_("Todos os arquivos"))
 		t_oFilter.add_pattern("*")
 		t_oFilesel.add_filter(t_oFilter)
@@ -77,7 +78,7 @@ class S2iPNGExport:
 		
 		print t_sFilename
 		
-		#if t_oResponse == gtk.RESPONSE_OK:
+		#if t_oResponse == Gtk.RESPONSE_OK:
 			
 			#if t_sFilename and len(t_sFilename) > 0:
 				
@@ -87,7 +88,7 @@ class S2iPNGExport:
 				
 				#(x,y,t_nWidth,t_nHeight,t_nDepth) = t_oWindow.get_geometry()
 				
-				#t_oPixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB,False,8,t_nWidth,t_nHeight)
+				#t_oPixbuf = Gtk.gdk.Pixbuf(Gtk.gdk.COLORSPACE_RGB,False,8,t_nWidth,t_nHeight)
 				
 				#t_oBuffer = t_oPixbuf.get_from_drawable(t_oWindow, t_oView.get_colormap(),
 														#0, 0, 0, 0, t_nWidth, t_nHeight)
