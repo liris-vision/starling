@@ -258,8 +258,9 @@ class GcdBlock():
 					self.RightClick(event)
 					return True #explicitly returns true so that diagram won't catch this event
 		elif event.type == Gdk.EventType.MOTION_NOTIFY:
-			#print 'in', __file__, 'group_event: MOTION_NOTIFY'
-			if event.state & Gdk.EventType.BUTTON1_MASK:
+			# moving block with the mouse (left button down + move)
+			#DBG print 'in', __file__, 'group_event: MOTION_NOTIFY'
+			if event.state & Gdk.ModifierType.BUTTON1_MASK:
 				if self.ParentDiagram.m_oCurrConnector == None:
 					new_x = event.x_root
 					new_y = event.y_root
@@ -295,7 +296,8 @@ class GcdBlock():
 		
 		elif event.type == Gdk.EventType.KEY_PRESS:
 			#print 'in', __file__, 'group_event: KEY_PRESS'
-			if event.keyval == Gtk.keysyms.Delete:
+			dummy, keyval = event.get_keyval()
+			if keyval == Gdk.KEY_Delete:
 				# on DELETE key pressed
 				self.DeleteBlock()
 				

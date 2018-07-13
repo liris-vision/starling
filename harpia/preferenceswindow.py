@@ -145,7 +145,8 @@ class PreferencesWindow():
 
 	def keyPressed(self, widget, event):
 		# quit if ESC pressed
-		if event.keyval == Gtk.keysyms.Escape:
+		dummy, keyval = event.get_keyval()
+		if keyval == Gdk.KEY_Escape:
 			self.window.destroy()
  
 

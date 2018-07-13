@@ -36,8 +36,6 @@ from gi.repository import Gdk
 gi.require_version('GooCanvas', '2.0')
 from gi.repository import GooCanvas
 
-#sys.path.append('../bin')
-#import s2idirectory
 
 class GcdConnector():
 	def __init__( self, diagram, a_nConnectorCountId=1, a_nFrom=-1, a_nFromOut=-1):#a_nInputs, a_nOutputs, a_nBlockType ):
@@ -49,7 +47,7 @@ class GcdConnector():
 		self.fromBlock = a_nFrom
 		self.fromBlockOut = a_nFromOut
 		
-		self.fromPoint = self.ParentDiagram.m_oBlocks[self.fromBlock].GetOutputPos(self.fromBlockOut) #pegando o ponto verdadeiro de onde sai o conector
+		self.fromPoint = self.ParentDiagram.m_oBlocks[self.fromBlock].GetOutputPos(self.fromBlockOut)
 
 		self.ConnBoundary = 16.0
 
@@ -67,6 +65,10 @@ class GcdConnector():
 		self.ParentDiagram.root_add(self.wGroup, 1)
 		
 		w1 = GooCanvas.CanvasPolyline(end_arrow=True, line_width=3)
+		# create the begin and end points of the connector
+		# see GooCanvas.CanvasPoints API
+		self.canvas_points = GooCanvas.CanvasPoints.new(2)
+		w1.props.points = self.canvas_points
 		self.wGroup.add_child(w1, -1)
 
 		self.widgets = {}
@@ -76,6 +78,9 @@ class GcdConnector():
 
 	def __del__(self):
 		print "GC: deleting GcdConnector:",self.m_nCountId
+		# free the begin and end points of the connector
+		# see GooCanvas.CanvasPoints API
+		self.canvas_points.unref()
 
 
 	"""
@@ -109,7 +114,8 @@ class GcdConnector():
 				self.RightClick(event)
 
 		elif event.type == Gdk.EventType.KEY_PRESS:
-			if event.keyval == Gtk.keysyms.Delete:
+			dummy, keyval = event.get_keyval()
+			if keyval == Gdk.KEY_Delete:
 				# on DELETE key pressed
 				self.DeleteConnector()
 
@@ -126,12 +132,13 @@ class GcdConnector():
 
 	def UpdateTracking(self, newEnd=None):
 		#print 'newEnd=', newEnd
-		p = []
-		p.append(self.fromPoint)
-		p.append(newEnd)
-		p = GooCanvas.CanvasPoints(p)
-		self.widgets["Line"].set_properties(points=p)
-
+	
+		# update connector ends coordinates
+		# note: self.widgets["Line"].props.points.set_point(...) doesn't change
+		#       the point coordinates
+		self.canvas_points.set_point(0, self.fromPoint[0], self.fromPoint[1])
+		self.canvas_points.set_point(1, newEnd[0], newEnd[1])
+		self.widgets["Line"].props.points = self.canvas_points
 
 
 	"""
@@ -140,15 +147,18 @@ class GcdConnector():
 	"""
 	def UpdateConnector(self):
 		
-		self.fromPoint = self.ParentDiagram.m_oBlocks[self.fromBlock].GetOutputPos(self.fromBlockOut) #pegando o ponto verdadeiro de onde sai o conector
-		self.toPoint = self.ParentDiagram.m_oBlocks[self.toBlock].GetInputPos(self.toBlockIn) #pegando o ponto verdadeiro de onde sai o conector
+		self.fromPoint = self.ParentDiagram.m_oBlocks[self.fromBlock].GetOutputPos(self.fromBlockOut)
+		self.toPoint = self.ParentDiagram.m_oBlocks[self.toBlock].GetInputPos(self.toBlockIn)
 	
-		p = []
-		p.append(self.fromPoint)
-		p.append(self.toPoint)
-		p = GooCanvas.CanvasPoints(p)
-	
-		self.widgets["Line"].set_properties(points=p)
+		# update connector ends coordinates
+		# note: self.widgets["Line"].props.points.set_point(...) doesn't change
+		#       the point coordinates
+		self.canvas_points.set_point(0, self.fromPoint[0], self.fromPoint[1])
+		self.canvas_points.set_point(1, self.toPoint[0], self.toPoint[1])
+		self.widgets["Line"].props.points = self.canvas_points
+		print '(b) self.widgets["Line"].props.points =', self.widgets["Line"].props.points
+		print '(b) self.widgets["Line"].props.points.get_point(0) =', self.widgets["Line"].props.points.get_point(0)
+		print '(b) self.widgets["Line"].props.points.get_point(1) =', self.widgets["Line"].props.points.get_point(1)
 
 	def setThickBorder(self, thick):
 		if thick:
