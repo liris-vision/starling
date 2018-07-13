@@ -156,9 +156,6 @@ class GcdConnector():
 		self.canvas_points.set_point(0, self.fromPoint[0], self.fromPoint[1])
 		self.canvas_points.set_point(1, self.toPoint[0], self.toPoint[1])
 		self.widgets["Line"].props.points = self.canvas_points
-		print '(b) self.widgets["Line"].props.points =', self.widgets["Line"].props.points
-		print '(b) self.widgets["Line"].props.points.get_point(0) =', self.widgets["Line"].props.points.get_point(0)
-		print '(b) self.widgets["Line"].props.points.get_point(1) =', self.widgets["Line"].props.points.get_point(1)
 
 	def setThickBorder(self, thick):
 		if thick:

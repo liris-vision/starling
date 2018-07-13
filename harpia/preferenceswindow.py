@@ -30,13 +30,15 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gdk
 
 import lvExtensions
 
 class PreferencesWindow():
 	def __init__(self, mainWindow, title='Preferences'):
 		self.mainWindow = mainWindow
-		self.window = Gtk.Window(Gtk.WINDOW_TOPLEVEL)
+		self.window = Gtk.Window(Gtk.WindowType.TOPLEVEL)
 		self.window.set_title(title)
 		self.window.connect("delete_event", self.delete_event)
 		self.window.connect("key-press-event", self.keyPressed)

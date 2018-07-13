@@ -629,7 +629,7 @@ class S2iHarpiaFrontend():
 		self.widgets['StatusLabel'].set_text(t_oStatusMessage[a_nStatus])
 		
 		while Gtk.events_pending():
-			Gtk.main_iteration(False)
+			Gtk.main_iteration_do(False)
 
 	#----------------------------------------------------------------------
 	def SetStatusMessage(self, a_sStatus, a_bGood):
@@ -643,7 +643,7 @@ class S2iHarpiaFrontend():
 			self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_NO, Gtk.ICON_SIZE_MENU  )
 		self.widgets['StatusLabel'].set_text(a_sStatus)
 		while Gtk.events_pending():
-			Gtk.main_iteration(False)
+			Gtk.main_iteration_do(False)
 
 	#----------------------------------------------------------------------
 
