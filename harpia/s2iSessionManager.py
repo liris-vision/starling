@@ -102,7 +102,7 @@ class s2iSessionManager:
 
 		# force events processing
 		while Gtk.events_pending():
-			Gtk.main_iteration_do()
+			Gtk.main_iteration_do(True)
 
 	def NewInstance(self , batchModeOn, a_lsXML = ["<harpia></harpia>"]):
 		self.StoreXML(a_lsXML)
