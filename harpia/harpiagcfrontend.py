@@ -915,13 +915,15 @@ class S2iHarpiaFrontend():
 		if response[1] is None:
 			# response is a blocks-group name
 			self.widgets['BlocksTreeView'].collapse_all()
-			self.widgets['BlocksTreeView'].expand_row(response[0], True)
-			self.widgets['BlocksTreeView'].set_cursor(response[0])
+			tree_path = Gtk.TreePath.new_from_indices([response[0]])
+			self.widgets['BlocksTreeView'].expand_row(tree_path, True)
+			self.widgets['BlocksTreeView'].set_cursor(tree_path)
 		else:
 			# response is a block name
 			self.widgets['BlocksTreeView'].collapse_all()
-			self.widgets['BlocksTreeView'].expand_to_path(response)
-			self.widgets['BlocksTreeView'].set_cursor(response)
+			tree_path = Gtk.TreePath.new_from_indices(response)
+			self.widgets['BlocksTreeView'].expand_to_path(tree_path)
+			self.widgets['BlocksTreeView'].set_cursor(tree_path)
 
 	#------------------------------------------------------------------
 	#VERY WEIRD!!!!!
