@@ -513,11 +513,11 @@ class S2iHarpiaFrontend():
 
 		t_oDialog = Gtk.FileChooserDialog(_("Open..."),
 										None,
-										Gtk.FILE_CHOOSER_ACTION_OPEN,
-										(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL,
-										Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
+										Gtk.FileChooserAction.OPEN,
+										(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+										Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
 
-		t_oDialog.set_default_response(Gtk.RESPONSE_OK)
+		t_oDialog.set_default_response(Gtk.ResponseType.OK)
 
 		if os.name == 'posix':
 			t_oDialog.set_current_folder(os.path.expanduser("~"))
@@ -534,7 +534,7 @@ class S2iHarpiaFrontend():
 
 		t_oResponse = t_oDialog.run()
 	
-		if t_oResponse == Gtk.RESPONSE_OK:
+		if t_oResponse == Gtk.ResponseType.OK:
 			fileName = t_oDialog.get_filename()
 			t_oDialog.destroy()
 			self.openFile(fileName)
@@ -555,11 +555,11 @@ class S2iHarpiaFrontend():
 			
 				t_oDialog = Gtk.FileChooserDialog(_("Save..."),
 												None,
-												Gtk.FILE_CHOOSER_ACTION_SAVE,
-												(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL,
-												Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
+												Gtk.FileChooserAction.SAVE,
+												(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+												Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
 			
-				t_oDialog.set_default_response(Gtk.RESPONSE_OK)
+				t_oDialog.set_default_response(Gtk.ResponseType.OK)
 
 				if os.name == 'posix':
 					t_oDialog.set_current_folder(os.path.expanduser("~"))
@@ -575,7 +575,7 @@ class S2iHarpiaFrontend():
 				t_oDialog.add_filter(t_oFilter)
 			
 				t_oResponse = t_oDialog.run()
-				if t_oResponse == Gtk.RESPONSE_OK:
+				if t_oResponse == Gtk.ResponseType.OK:
 					t_oGcDiagram.SetFilename( t_oDialog.get_filename() )
 					
 				t_oDialog.destroy()
