@@ -254,21 +254,6 @@ class S2iHarpiaFrontend():
 			t_oColumn = Gtk.TreeViewColumn(_("Available Blocks"), t_oTextRender, text=0)
 			self.widgets['BlocksTreeView'].append_column( t_oColumn )
 
-	def drag_data_received(self, widget, context, x, y, selection, targetType,time):
-		self.on_BlocksTreeView_row_activated_pos( self.widgets['BlocksTreeView'], self.g_sTreeViewPath, 0, x-5, y-30)
-		
-		return
-
-	#----------------------------------------------------------------------
-
-	def drag_data_get_cb(self, treeview, context, selection, target_id,etime):
-		treeselection = treeview.get_selection()
-		model, iterac = treeselection.get_selected()
-		self.g_sTreeViewPath = model.get_path(iterac)
-		selection.set('text/plain', 8, "test")
-		#necessary in order to the notebook receive the drag:
-		return
-
 	#----------------------------------------------------------------------
 
 	def on_NewMenuBar_activate(self, *args):		
