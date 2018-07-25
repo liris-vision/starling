@@ -392,18 +392,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="tip_of_the_day1">
-                        <property name="label" translatable="yes">_Tip Of The Day</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">False</property>
-                        <accelerator key="T" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_tip_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkImageMenuItem" id="AboutMenuBar">
                         <property name="label" translatable="yes">_About</property>
                         <property name="visible">True</property>

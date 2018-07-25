@@ -58,7 +58,6 @@ import GcdBlock
 import GcDiagram
 
 import s2iSessionManager
-import TipOfTheDay
 import about
 
 import lvExtensions
@@ -127,7 +126,7 @@ class S2iHarpiaFrontend():
 			'on_BlocksTreeView_cursor_changed','on_HarpiaFrontend_destroy',
 			'on_ZoomDefaultToolBar_clicked',   'on_Preferences_clicked',
 			'on_CloseMenuBar_activate',
-			'on_UpdateToolBar_clicked',        'on_tip_activate',
+			'on_UpdateToolBar_clicked',
 			'on_user_guide_activate',
 			'on_developer_guide_activate',     'on_Reload_blocks_clicked',
 			'on_UndoMenuBar_activate',         'on_RedoMenuBar_activate',
@@ -170,10 +169,6 @@ class S2iHarpiaFrontend():
 
 		self.on_NewToolBar_clicked() #creating blank page
 		
-		#Tip of The Day code
-		tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
-		tipOfTheDayWind.run()
-
 		# catch SIGTERM signal to destroy subprocesses if starling is killed 
 		signal.signal(signal.SIGTERM, self.sigTERM)
 
@@ -349,18 +344,6 @@ class S2iHarpiaFrontend():
 		self.on_HarpiaFrontend_destroy()
 
 	#----------------------------------------------------------------------
-
-	def on_tip_activate(self, *args):
-		# enable tip display
-		tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
-		tipOfTheDayWind.GenerateBlankConf()
-		# display tip
-		tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
-		tipOfTheDayWind.run()
-	
-	#ELrm def on_reset_tip_activate(self, *args):
-	#ELrm 	tipOfTheDayWind = TipOfTheDay.TipOfTheDay()
-	#ELrm 	tipOfTheDayWind.GenerateBlankConf()
 
 	def on_user_guide_activate(self, *args):
 		lvExtensions.openDocumentation('user')
