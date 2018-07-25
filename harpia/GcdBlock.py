@@ -598,7 +598,7 @@ class GcdBlock():
 	
 	def GetPos(self):
 		transform = self.wGroup.get_simple_transform()
-		return transform[0], transform[1]
+		return transform[1], transform[2]
 
 	
 	def PrintPOS(self, *args):
