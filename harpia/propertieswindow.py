@@ -89,7 +89,7 @@ class PropertiesWindow():
 			except:
 				label = Gtk.Label(param)
 			label.set_alignment(1, 0)
-			table.attach(label, 0, 1, row-1, row, Gtk.FILL, 0, 5)
+			table.attach(label, 0, 1, row-1, row, Gtk.AttachOptions.FILL, 0, 5)
 			label.show()
 			
 			# display property modification area
@@ -104,12 +104,12 @@ class PropertiesWindow():
 					values = sorted(values)
 					values.insert(0,current)
 
-					comboBox = Gtk.combo_box_entry_new_text()
+					comboBox = Gtk.ComboBoxText.new_with_entry()
 					for v in values:
 						comboBox.append_text(v)
 					comboBox.set_active(0)
 					
-					table.attach(comboBox, 1, 2, row-1, row, Gtk.EXPAND|Gtk.FILL, 0)
+					table.attach(comboBox, 1, 2, row-1, row, Gtk.AttachOptions.EXPAND|Gtk.AttachOptions.FILL, 0)
 					comboBox.show()
 
 					entries[param] = comboBox.get_child()
@@ -119,7 +119,7 @@ class PropertiesWindow():
 			except KeyError:
 				entries[param] = Gtk.Entry()
 				entries[param].set_text(self.parameters[param]['value'])
-				table.attach(entries[param], 1, 2, row-1, row, Gtk.EXPAND|Gtk.FILL, 0)
+				table.attach(entries[param], 1, 2, row-1, row, Gtk.AttachOptions.EXPAND|Gtk.AttachOptions.FILL, 0)
 				entries[param].show()
 
 			# if property is a file name, display a select file button
@@ -169,12 +169,12 @@ class PropertiesWindow():
 
 			sw = Gtk.ScrolledWindow()
 			vbox.pack_start(sw, True, True, 0)
-			sw.set_policy(Gtk.POLICY_AUTOMATIC, Gtk.POLICY_AUTOMATIC)
+			sw.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
 			textview = Gtk.TextView()
 			sw.add_with_viewport(textview)
 			textview.get_buffer().set_text(help)
 			textview.set_editable(False)
-			textview.set_wrap_mode(Gtk.WRAP_WORD)
+			textview.set_wrap_mode(Gtk.WrapMode.WORD)
 			textview.show()
 			sw.show()
 
@@ -220,8 +220,8 @@ class FileSelection:
 	def __init__(self, entry):
 		global fileSelectionFolder
 
-		dialog = Gtk.FileChooserDialog("Open..", None, Gtk.FILE_CHOOSER_ACTION_SAVE, (Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL, Gtk.STOCK_OPEN, Gtk.RESPONSE_OK))
-		dialog.set_default_response(Gtk.RESPONSE_OK)
+		dialog = Gtk.FileChooserDialog("Open..", None, Gtk.FileChooserAction.SAVE, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+		dialog.set_default_response(Gtk.ResponseType.OK)
 
 		dialog.set_current_folder(fileSelectionFolder)
 		dialog.set_current_name(entry.get_text())
@@ -245,11 +245,11 @@ class FileSelection:
 		"""
 
 		response = dialog.run()
-		if response == Gtk.RESPONSE_OK:
+		if response == Gtk.ResponseType.OK:
 			entry.set_text(dialog.get_filename())
 			fileSelectionFolder = dialog.get_current_folder()
 		"""
-		elif response == Gtk.RESPONSE_CANCEL:
+		elif response == Gtk.ResponseType.CANCEL:
 			print 'Closed, no files selected'
 		"""
 		dialog.destroy()
