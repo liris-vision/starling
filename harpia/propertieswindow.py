@@ -188,7 +188,7 @@ class PropertiesWindow():
 			self.window.destroy()
  
 	def selectFile(self, widget, entry):
-		FileSelection(entry)
+		FileSelection(self.window, entry)
 
 	"""
 	Called when the user click the 'ok' button of the properties window.
@@ -217,10 +217,10 @@ class PropertiesWindow():
 class FileSelection:
 	global fileSelectionFolder
 
-	def __init__(self, entry):
+	def __init__(self, parent, entry):
 		global fileSelectionFolder
 
-		dialog = Gtk.FileChooserDialog("Open..", None, Gtk.FileChooserAction.SAVE, ("_Cancel", Gtk.ResponseType.CANCEL, "_Open", Gtk.ResponseType.OK))
+		dialog = Gtk.FileChooserDialog("Open..", parent, Gtk.FileChooserAction.SAVE, ("_Cancel", Gtk.ResponseType.CANCEL, "_Open", Gtk.ResponseType.OK))
 		dialog.set_default_response(Gtk.ResponseType.OK)
 
 		dialog.set_current_folder(fileSelectionFolder)

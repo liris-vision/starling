@@ -494,7 +494,7 @@ class S2iHarpiaFrontend():
 		#Opens a dialog for file selection and opens the file.
 
 		t_oDialog = Gtk.FileChooserDialog(_("Open..."),
-										None,
+										self.gtkTopWindow,
 										Gtk.FileChooserAction.OPEN,
 										("_Cancel", Gtk.ResponseType.CANCEL,
 										"_Open", Gtk.ResponseType.OK))
@@ -536,7 +536,7 @@ class S2iHarpiaFrontend():
 				self.SaveAs = False
 			
 				t_oDialog = Gtk.FileChooserDialog(_("Save..."),
-												None,
+												self.gtkTopWindow,
 												Gtk.FileChooserAction.SAVE,
 												("_Cancel", Gtk.ResponseType.CANCEL,
 												"_Save", Gtk.ResponseType.OK))
