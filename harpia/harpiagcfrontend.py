@@ -108,7 +108,7 @@ class S2iHarpiaFrontend():
 			'BlockDescription',        'WorkArea',
 			'BlocksTreeView',          'StatusLabel',
 			'ProcessImage',            'ProcessToolBar',       'CodeToolBar',
-			'UpdateToolBar', 'toolbar1', 'examples_menu', 'fake_separator',
+			'toolbar1', 'examples_menu', 'fake_separator',
 			'ConsoleTextView'
 			]
 
@@ -126,7 +126,6 @@ class S2iHarpiaFrontend():
 			'on_BlocksTreeView_cursor_changed','on_HarpiaFrontend_destroy',
 			'on_ZoomDefaultToolBar_clicked',   'on_Preferences_clicked',
 			'on_CloseMenuBar_activate',
-			'on_UpdateToolBar_clicked',
 			'on_user_guide_activate',
 			'on_developer_guide_activate',     'on_Reload_blocks_clicked',
 			'on_UndoMenuBar_activate',         'on_RedoMenuBar_activate',
@@ -687,47 +686,6 @@ class S2iHarpiaFrontend():
 		if self.m_oGcDiagrams.has_key( t_nPage ) :
 			t_oGcDiagram = self.m_oGcDiagrams[ t_nPage ]
 			t_oGcDiagram.ZoomOrig()
-
-	#----------------------------------------------------------------------
-
-	def on_UpdateToolBar_clicked(self, *args):
-		"""
-		Callback function called when Update is clicked. Update this Harpia version with the last in the server.
-		"""
-		pass
-
-		#t_oCloseHarpia = Gtk.Dialog(title=_("Harpia Update"), parent=self.widgets['HarpiaFrontend'], flags=Gtk.DIALOG_MODAL, buttons=('Gtk-yes',Gtk.RESPONSE_YES,'Gtk-no',Gtk.RESPONSE_NO) )
-
-		#t_oLabel=Gtk.Label(_("\nHarpia must be closed in order to update.\nDo you want to exit and continue update?\n"))
-
-		#t_oCloseHarpia.set_border_width(5)
-		
-		#t_oCloseHarpia.vbox.pack_start(t_oLabel, True, True, 0)
-
-
-		#t_oLabel.show()
-		
-		#t_nResponse=t_oCloseHarpia.run()
-
-		#if t_nResponse == Gtk.RESPONSE_YES:
-
-			#import xmlrpclib
-
-			#t_oServer = xmlrpclib.Server('http://localhost:8376',allow_none=True)
-
-			#if os.name=="nt":
-				#t_oServer.StartApplication(os.getenv('HARPIAINSTALLDIR')+'/lib/python24/pythonw.exe', 'HRPUpdate.py')		
-
-				##Here we have a bug. See s2iharpiasuperserver.py RegisterPID method for explanation.
-				#t_oServer.StopApplication(os.getenv('HARPIAINSTALLDIR')+'/lib/python24/pythonw.exe', 'Harpia-Frontend.py')
-			#else:
-				#t_oServer.StartApplication('/usr/bin/python', 'HRPUpdate.py')		
-
-				#t_oServer.StopApplication('/usr/bin/python', 'Harpia-Frontend.py')
-
-		#else:
-			#t_oCloseHarpia.destroy()
-		
 
 	#----------------------------------------------------------------------
 	
