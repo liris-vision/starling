@@ -57,7 +57,7 @@ PORT_SENSITIVITY = 12
 BLOCKNAME_FONT_NAME = 'sans bold condensed 9'
 if os.name == 'nt':
 	BLOCKNAME_FONT_NAME = 'Sans Not-Rotated 9'
-BLOCKNAME_FONT_COLOR = 'dark-blue'
+BLOCKNAME_FONT_COLOR = 'darkblue'
 
 # font used to display input/ouput types
 IO_FONT_NAME = 'sans condensed 7'
