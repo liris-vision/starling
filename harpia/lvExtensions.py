@@ -582,10 +582,11 @@ def loadConfiguration():
 	global workingDirsPlace
 
 	if not os.path.exists(configurationFileName):
-		print 'Failed to read configuration file \'' + configurationFileName + '\'.'
 		return # do nothing
 
 	# read configuration file
+
+	print 'Configuration file \'' + configurationFileName + '\' found, loading preferences...'
 	
 	tree = xmltree.xmlTree()
 	tree.load(configurationFileName)
