@@ -51,9 +51,9 @@ class S2iPNGExport:
 			t_oFilesel = Gtk.FileSelection('Exportar cadeia para imagem tipo .png')
 		else:
 			t_oFilesel = Gtk.FileChooserDialog(title='Exportar cadeia para imagem tipo .png',
-											action=Gtk.FILE_CHOOSER_ACTION_SAVE,
-											buttons=(Gtk.STOCK_CANCEL,Gtk.RESPONSE_CANCEL,
-														Gtk.STOCK_SAVE,Gtk.RESPONSE_OK))
+											action=Gtk.FileChooserAction.SAVE,
+											buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+														Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
 
 
 #Scotti
@@ -78,7 +78,7 @@ class S2iPNGExport:
 		
 		print t_sFilename
 		
-		#if t_oResponse == Gtk.RESPONSE_OK:
+		#if t_oResponse == Gtk.ResponseType.OK:
 			
 			#if t_sFilename and len(t_sFilename) > 0:
 				

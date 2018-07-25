@@ -83,7 +83,7 @@ class S2iCommonProperties:
 		
 		t_oResponse = self.m_oColorSelectionDlg.run()
 
-		if t_oResponse == Gtk.RESPONSE_OK:
+		if t_oResponse == Gtk.ResponseType.OK:
 
 			t_oColor = t_oColorSelection.get_current_color()
 

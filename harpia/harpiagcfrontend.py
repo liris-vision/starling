@@ -310,11 +310,11 @@ class S2iHarpiaFrontend():
 		#necessary in order to the notebook receive the drag:
 		return
 
-	def make_pb(self, tvcolumn, cell, model, iter):
-		stock = model.get_value(iter, 1)
-		pb = self.widgets["BlocksTreeView"].render_icon(stock, Gtk.ICON_SIZE_MENU, None)
-		cell.set_property('pixbuf', pb)
-		return
+	#TODO-rm  def make_pb(self, tvcolumn, cell, model, iter):
+	#TODO-rm  	stock = model.get_value(iter, 1)
+	#TODO-rm  	pb = self.widgets["BlocksTreeView"].render_icon(stock, Gtk.ICON_SIZE_MENU, None)
+	#TODO-rm  	cell.set_property('pixbuf', pb)
+	#TODO-rm  	return
 
 
 	def on_NewMenuBar_activate(self, *args):		
@@ -636,11 +636,13 @@ class S2iHarpiaFrontend():
 		"""
 		Receives a status message and shows it in the StatusBar.
 		"""
+		# ELO note 2018/07/25: probably useless function (update status line text)
+		#                      and status icon (bottom right), almost never used
 		#print a_bGood
 		if a_bGood:
-			self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_YES, Gtk.ICON_SIZE_MENU  )
+			self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_YES, Gtk.IconSize.MENU  )
 		else:
-			self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_NO, Gtk.ICON_SIZE_MENU  )
+			self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_NO, Gtk.IconSize.MENU )
 		self.widgets['StatusLabel'].set_text(a_sStatus)
 		while Gtk.events_pending():
 			Gtk.main_iteration_do(False)
@@ -826,11 +828,11 @@ class S2iHarpiaFrontend():
 			t_oGcDiagram = self.m_oGcDiagrams[self.widgets['WorkArea'].get_current_page()]
 			t_oDialog = Gtk.FileChooserDialog(_("Export Diagram to PNG..."),
 											None,
-											Gtk.FILE_CHOOSER_ACTION_SAVE,
-											(Gtk.STOCK_CANCEL, Gtk.RESPONSE_CANCEL,
-											Gtk.STOCK_SAVE, Gtk.RESPONSE_OK))
+											Gtk.FileChooserAction.SAVE,
+											(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+											Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
 		
-			t_oDialog.set_default_response(Gtk.RESPONSE_OK)
+			t_oDialog.set_default_response(Gtk.ResponseType.OK)
 
 			if os.name == 'posix':
 				t_oDialog.set_current_folder(os.path.expanduser("~"))
@@ -847,7 +849,7 @@ class S2iHarpiaFrontend():
 				filename += ".png"
 			t_oDialog.destroy()
 			
-			if t_oResponse == Gtk.RESPONSE_OK and filename:
+			if t_oResponse == Gtk.ResponseType.OK and filename:
 				t_oGcDiagram.Export2Png(filename)
 	
 	#----------------------------------------------------------------------
@@ -1055,10 +1057,10 @@ class S2iHarpiaFrontend():
 		# check if diagram has been modified
 		if self.m_oGcDiagrams[t_nCurrentTabIndex].HasChanged():
 			# the diagram has changed since last save, ask for confirmation 
-			dialog = Gtk.MessageDialog(self.widgets['HarpiaFrontend'], Gtk.DIALOG_MODAL, Gtk.MESSAGE_WARNING, Gtk.BUTTONS_OK_CANCEL, "The current processing chain has been modified. Do you really want to close WITHOUT saving ?")
+			dialog = Gtk.MessageDialog(self.widgets['HarpiaFrontend'], Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, Gtk.ButtonsType.OK_CANCEL, "The current processing chain has been modified. Do you really want to close WITHOUT saving ?")
 			response = dialog.run()
 			dialog.destroy()
-			if response == Gtk.RESPONSE_CANCEL:
+			if response == Gtk.ResponseType.CANCEL:
 				return False# abort closing
 
 		# close tab
