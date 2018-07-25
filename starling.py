@@ -47,7 +47,6 @@ import sys
 import os
 import argparse
 import locale
-import cairo
 
 from harpia import harpiagcfrontend
 from harpia import lvExtensions
