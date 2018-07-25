@@ -220,7 +220,7 @@ class FileSelection:
 	def __init__(self, entry):
 		global fileSelectionFolder
 
-		dialog = Gtk.FileChooserDialog("Open..", None, Gtk.FileChooserAction.SAVE, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+		dialog = Gtk.FileChooserDialog("Open..", None, Gtk.FileChooserAction.SAVE, ("_Cancel", Gtk.ResponseType.CANCEL, "_Open", Gtk.ResponseType.OK))
 		dialog.set_default_response(Gtk.ResponseType.OK)
 
 		dialog.set_current_folder(fileSelectionFolder)

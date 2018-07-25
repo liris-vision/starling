@@ -496,8 +496,8 @@ class S2iHarpiaFrontend():
 		t_oDialog = Gtk.FileChooserDialog(_("Open..."),
 										None,
 										Gtk.FileChooserAction.OPEN,
-										(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-										Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+										("_Cancel", Gtk.ResponseType.CANCEL,
+										"_Open", Gtk.ResponseType.OK))
 
 		t_oDialog.set_default_response(Gtk.ResponseType.OK)
 
@@ -538,8 +538,8 @@ class S2iHarpiaFrontend():
 				t_oDialog = Gtk.FileChooserDialog(_("Save..."),
 												None,
 												Gtk.FileChooserAction.SAVE,
-												(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-												Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+												("_Cancel", Gtk.ResponseType.CANCEL,
+												"_Save", Gtk.ResponseType.OK))
 			
 				t_oDialog.set_default_response(Gtk.ResponseType.OK)
 
@@ -603,11 +603,6 @@ class S2iHarpiaFrontend():
 							9: _("Save error"),
 							10: _("Code Saved")}
 
-		#if a_nStatus == 7 or a_nStatus == 10:
-			#self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_YES, Gtk.ICON_SIZE_MENU)
-		#else:
-			#self.widgets['ProcessImage'].set_from_stock( Gtk.STOCK_NO, Gtk.ICON_SIZE_MENU  )
-			
 		self.widgets['StatusLabel'].set_text(t_oStatusMessage[a_nStatus])
 		
 		while Gtk.events_pending():
