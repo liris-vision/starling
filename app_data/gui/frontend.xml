@@ -93,17 +93,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="exportar_gráfico1">
-                        <property name="label" translatable="yes">Export _diagram as PNG</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_Export_clicked" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkSeparatorMenuItem" id="sep_reload_blocks">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

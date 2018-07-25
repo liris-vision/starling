@@ -51,7 +51,6 @@ import commands
 
 # Harpia
 
-#import s2ipngexport
 import s2idirectory
 
 import GcdConnector
@@ -127,7 +126,7 @@ class S2iHarpiaFrontend():
 			'on_SearchButton_clicked',         'on_BlocksTreeView_row_activated',
 			'on_BlocksTreeView_cursor_changed','on_HarpiaFrontend_destroy',
 			'on_ZoomDefaultToolBar_clicked',   'on_Preferences_clicked',
-			'on_Export_clicked',               'on_CloseMenuBar_activate',
+			'on_CloseMenuBar_activate',
 			'on_UpdateToolBar_clicked',        'on_tip_activate',
 			'on_user_guide_activate',
 			'on_developer_guide_activate',     'on_Reload_blocks_clicked',
@@ -816,42 +815,6 @@ class S2iHarpiaFrontend():
 		from harpia import preferenceswindow
 		prefs = preferenceswindow.PreferencesWindow(self)
 
-	#----------------------------------------------------------------------
-
-	def on_Export_clicked(self, *args):
-		"""
-		Callback function called when Export is clicked. Calls the Execute function in s2ipngexport class, that saves a blocks diagram in a .png file.
-		"""
-
-		if self.m_oGcDiagrams.has_key( self.widgets['WorkArea'].get_current_page() ): 
-
-			t_oGcDiagram = self.m_oGcDiagrams[self.widgets['WorkArea'].get_current_page()]
-			t_oDialog = Gtk.FileChooserDialog(_("Export Diagram to PNG..."),
-											None,
-											Gtk.FileChooserAction.SAVE,
-											(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-											Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
-		
-			t_oDialog.set_default_response(Gtk.ResponseType.OK)
-
-			if os.name == 'posix':
-				t_oDialog.set_current_folder(os.path.expanduser("~"))
-
-			t_oFilter = Gtk.FileFilter()
-			t_oFilter.set_name(_("Png files"))
-			t_oFilter.add_pattern("*.png")
-			t_oDialog.add_filter(t_oFilter)
-			
-			t_oResponse = t_oDialog.run()
-			filename = t_oDialog.get_filename()
-			
-			if filename and not filename.endswith(".png"):
-				filename += ".png"
-			t_oDialog.destroy()
-			
-			if t_oResponse == Gtk.ResponseType.OK and filename:
-				t_oGcDiagram.Export2Png(filename)
-	
 	#----------------------------------------------------------------------
 
 	def on_SearchButton_clicked(self, *args):

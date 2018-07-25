@@ -715,18 +715,6 @@ class GcDiagram( GooCanvas.Canvas ):
 			dirName = tempfile.mkdtemp(prefix=dirNamePattern)
 		self.setDirName(dirName)
 
-	def Export2Png(self, filepath="diagrama.png"):
-		(x,y,t_nWidth,t_nHeight,t_nDepth) = self.window.get_geometry()
-		
-		t_oPixbuf = Gtk.gdk.Pixbuf(Gtk.gdk.COLORSPACE_RGB,False,8,t_nWidth,t_nHeight)
-		t_oBuffer = t_oPixbuf.get_from_drawable(self.window, self.get_colormap(),0, 0, 0, 0, t_nWidth, t_nHeight)
-		# get_from_drawable(GdkWindow src, GdkColormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
-		t_oBuffer.save(filepath, "png")
-		#bugs:
-		# *nao considera o que estiver fora do scroll region
-		# *da um printScreen somente então pega qlqr outra coisa q estiver no caminho (incluindo o proprio menu ali do FILE)
-		# *aparentemente é a maneira errada.
-
 	def SetErrorLog(self, a_sErrorLog):
 		self.m_sErrorLog = a_sErrorLog
 	
