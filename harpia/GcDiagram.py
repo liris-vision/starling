@@ -54,7 +54,6 @@ UNDO_LEVELS_CNT = 20
 class GcDiagram( GooCanvas.Canvas ):
 
 	def __init__( self ):
-		#TODO-fix self.__gobject_init__()
 		GooCanvas.Canvas.__init__(self)
 
 		# canvas size
@@ -74,12 +73,6 @@ class GcDiagram( GooCanvas.Canvas ):
 		
 		self.show()
 		
-		#self.set_flags(Gtk.CAN_FOCUS)
-		#self.grab_focus(self)
-		#self.get_root_item().connect("event", self.canvas_root_event)#tem q ser o root() se nao ele pega os eventos antes de todu mundo! =]
-
-		#self.connect("event", self.canvas_event)
-
 		# canvas receives events before its children, so we need to use
 		# a group as root item, so that its receives events after blocks
 		# and connectors
@@ -90,7 +83,6 @@ class GcDiagram( GooCanvas.Canvas ):
 		self.wGroup.connect("motion-notify-event", self.group_event)
 		# add a rectangle as 'group background', else group will not
 		# receive interior events
-		#linedash = GooCanvas.CanvasLineDash([3.0])
 		self.root_add(GooCanvas.CanvasRect(width=canvasWidth, height=canvasHeight, pointer_events=GooCanvas.CanvasPointerEvents.ALL, stroke_color='gray')) 
 
 		self.m_sFilename = None
@@ -347,7 +339,6 @@ class GcDiagram( GooCanvas.Canvas ):
 	
 	def __BlockXMLOut(self, t_oBlockIdx, Properties, Network, a_bKeepNonFlowing=False):
 		if self.m_oBlocks[t_oBlockIdx].GetState() or a_bKeepNonFlowing:
-				#Properties += self.m_oBlocks[t_oBlockIdx].GetPropertiesXML().toString('./block') + "\n  "
 				Properties += self.m_oBlocks[t_oBlockIdx].GetPropertiesXML().toString() + "\n  "
 				Network += '<block type="' + str(self.m_oBlocks[t_oBlockIdx].GetType()) + '" id="' + str(self.m_oBlocks[t_oBlockIdx].GetId()) + '">\n'
 				Network += "<inputs>\n"
@@ -362,7 +353,7 @@ class GcDiagram( GooCanvas.Canvas ):
 						# skip connector in progress
 						continue
 					if t_oConnector.fromBlock == self.m_oBlocks[t_oBlockIdx].GetId() and (self.m_oBlocks[t_oConnector.toBlock].GetState() or a_bKeepNonFlowing):
-						Network += '<output id="' + str(t_oConnector.fromBlockOut+1) + '" inBlock="' + str(t_oConnector.toBlock) + '" input="' + str(t_oConnector.toBlockIn+1) + '"/>\n' #+1 pois o range eh de 0..x (precisamos do id 1...x+1)
+						Network += '<output id="' + str(t_oConnector.fromBlockOut+1) + '" inBlock="' + str(t_oConnector.toBlock) + '" input="' + str(t_oConnector.toBlockIn+1) + '"/>\n'
 						t_dConnectedOuts[t_oConnector.fromBlockOut] = 1
 				for Output in range(self.m_oBlocks[t_oBlockIdx].m_oDictBlock["Outputs"]):
 					if not t_dConnectedOuts.has_key(Output):
@@ -396,12 +387,6 @@ class GcDiagram( GooCanvas.Canvas ):
 
 	def GetFilename( self ):
 		return self.m_sFilename
-
-	"""ELunused
-	def LoadFromPopup(self, *args):
-		filename = str(raw_input("Xunxo; Enter Filename:"))
-		self.loadFromFile(filename)
-	"""
 
 	"""
 	Reset diagram.
@@ -736,34 +721,7 @@ class GcDiagram( GooCanvas.Canvas ):
 		self.m_fPixels_per_unit = 1.0
 		self.set_pixels_per_unit(self.m_fPixels_per_unit)
 
-	#def RightClick(self, a_oEvent):
-		#pass
-		#t_oMenu = Gtk.Menu()
-	
-		#t_oMenuItem = Gtk.MenuItem("Save Diagram")
-		#t_oMenuItem.connect("activate", self.SaveFromPopup)
-		#t_oMenu.append(t_oMenuItem)
-
-		#t_oMenuItem = Gtk.MenuItem("Load Diagram")
-		#t_oMenuItem.connect("activate", self.LoadFromPopup)
-		#t_oMenu.append(t_oMenuItem)
-		
-		#t_oMenuItem = Gtk.SeparatorMenuItem()
-		#t_oMenu.append(t_oMenuItem)
-		
-		#t_oMenuItem = Gtk.MenuItem("Delete Diagram")
-		#t_oMenuItem.connect("activate", self.SaveFromPopup)
-		#t_oMenu.append(t_oMenuItem)
-
-		#t_oMenuItem = Gtk.SeparatorMenuItem()
-		#t_oMenu.append(t_oMenuItem)
-		
-		## Shows the menu
-		#t_oMenu.show_all()
-		#t_oMenu.popup(None, None, None, a_oEvent.button, a_oEvent.time)
-
 	def root_add(self, item, position=-1):
-		#self.get_root_item().add_child(item) #TODO-rm
 		self.wGroup.add_child(item, position)
 
 	"""

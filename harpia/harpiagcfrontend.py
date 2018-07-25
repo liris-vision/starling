@@ -246,48 +246,13 @@ class S2iHarpiaFrontend():
 
 		self.widgets['BlocksTreeView'].set_model(t_oTreeStore)
 
-		# create the column and set drag&drop just one time 
+		# create the column
 		if not self.widgets['BlocksTreeView'].get_column(0):
-
 			# create column
-
 			t_oTextRender = Gtk.CellRendererText()
 			t_oTextRender.set_property( 'editable', False )
 			t_oColumn = Gtk.TreeViewColumn(_("Available Blocks"), t_oTextRender, text=0)
 			self.widgets['BlocksTreeView'].append_column( t_oColumn )
-
-			# set drag&drop
-
-			#		TARGETS = [
-			#			('MY_TREE_MODEL_ROW', Gtk.TARGET_SAME_WIDGET, 0),
-			#			('text/plain', 0, 1),
-			#			('TEXT', 0, 2),
-			#			('STRING', 0, 3),
-			#			]
-
-			#TODO-fix-beg
-			##drag......
-			#self.widgets['BlocksTreeView'].enable_model_drag_source( 
-			#	Gdk.ModifierType.BUTTON1_MASK,
-			#	[('text/plain', Gtk.TARGET_SAME_APP, 1)],
-			#	Gtk.gdk.ACTION_DEFAULT | Gtk.gdk.ACTION_COPY)
-			#self.widgets['BlocksTreeView'].connect( "drag-data-get",
-			#	self.drag_data_get_cb)
-
-			##........'n'drop
-			#self.widgets['WorkArea'].connect( "drag_data_received",
-			#	self.drag_data_received)
-			#self.widgets['WorkArea'].drag_dest_set(
-			#	Gtk.DEST_DEFAULT_MOTION | Gtk.DEST_DEFAULT_HIGHLIGHT |
-			#		Gtk.DEST_DEFAULT_DROP,
-			#	[('text/plain', Gtk.TARGET_SAME_APP, 1)],
-			#	Gtk.gdk.ACTION_DEFAULT | Gtk.gdk.ACTION_COPY)
-			#TODO-fix-end
-
-		#ELtry use GtkTreeView internal search
-		#ELself.widgets['BlocksTreeView'].set_enable_search(True)
-		#ELself.widgets['BlocksTreeView'].set_search_column(0)
-
 
 	def drag_data_received(self, widget, context, x, y, selection, targetType,time):
 		self.on_BlocksTreeView_row_activated_pos( self.widgets['BlocksTreeView'], self.g_sTreeViewPath, 0, x-5, y-30)
@@ -304,12 +269,7 @@ class S2iHarpiaFrontend():
 		#necessary in order to the notebook receive the drag:
 		return
 
-	#TODO-rm  def make_pb(self, tvcolumn, cell, model, iter):
-	#TODO-rm  	stock = model.get_value(iter, 1)
-	#TODO-rm  	pb = self.widgets["BlocksTreeView"].render_icon(stock, Gtk.ICON_SIZE_MENU, None)
-	#TODO-rm  	cell.set_property('pixbuf', pb)
-	#TODO-rm  	return
-
+	#----------------------------------------------------------------------
 
 	def on_NewMenuBar_activate(self, *args):		
 
@@ -1048,12 +1008,6 @@ class S2iHarpiaFrontend():
 		t_lListOfExamples = glob(self.m_sDataDir+"examples.*/*")
 		t_lListOfExamples.sort(key=os.path.basename)
 
-		##ALG to prevent using filenames with _ on the menus
-		#t_lNewL = []
-		#for s in t_lListOfExamples:
-			#t_lNewL.append(s.replace("_","-"))
-		#t_lListOfExamples = t_lNewL
-		
 		self.widgets['fake_separator'].destroy()
 		self.widgets.pop('fake_separator')
 		
