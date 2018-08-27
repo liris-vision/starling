@@ -30,7 +30,7 @@
 
 	<block type='2' id=''>
 		<property name='_PARAM1_' value='block_BLOCKID_' desc='window name'/>
-		<property name='_SCALING_' value='Auto' desc='scaling' type='selector' values='None;Auto;Manual'/>
+		<property name='_SCALING_' value='None' desc='scaling' type='selector' values='None;Auto;Manual'/>
 		<property name='_SCALINGMIN_' value='0' desc='scaling min'/>
 		<property name='_SCALINGMAX_' value='255' desc='scaling max'/>
 	</block>

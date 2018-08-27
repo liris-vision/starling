@@ -1,0 +1,480 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='8002' id=''>
+        <property name='_MAXSTDDEV_' value='5.8' desc='standard deviation homogeneity criterion'/>
+        <property name='_PROGRESSWINDOW_' value='true' desc='display a progression window'/>
+        <property name='_GREEDYMODE_' value='true' desc='enable greedy mode'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Second step of the split and merge segmentation method.
+
+During the merge step, contiguous sub-images are merged if they satisfy some homogeneity criterion. CAN NOT BE USED WITHOUT THE 'SegmentationSplit' BLOCK.
+
+Parameters:	
+ - standard deviation homogeneity criterion (double): if the standard deviation of the pixels values of two adjacent regions is less than this parameter, then the two regions are merged
+ - progress window (bool): display a window that show merging progress
+ - greedy mode (bool): the merge step is run either using a greedy strategy (one region grows until it can't grow anymore), or using a scattered strategy (several regions grow in parallel until they join)
+
+Inputs/outputs:
+ - input1: original image (before split step).
+ - input2: set of regions after the split step.
+ - output1: set of regions resulting of the merge.
+ - output2: merged image (visualization of the regions).
+ - output3: segmented image.
+	</help>
+
+    <!-- block description -->    
+
+    <label>Segmentation Merge</label>
+    <input id='1' type='cv::Mat' desc='original image'/>
+    <input id='2' type='Region' desc='regions after split step'/>
+    <output id='1' type='Region' desc='merged regions'/>
+    <output id='2' type='cv::Mat' desc='visualization of the merged regions'/>
+    <output id='3' type='cv::Mat' desc='segmented image'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Segmentation merge</description>
+    <treegroup>Segmentation</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+#include <vector>
+#include <list>
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+// result of the fusion of elementary regions
+// created during merge step
+struct SuperRegion
+{
+	std::vector<const Region*> regions;
+	float mean;
+	cv::Scalar bgr_color;
+};
+
+//---------- computing mean and standard deviation
+
+// compute the mean of the pixel values of the super region
+float computeMean(const SuperRegion& sra, const SuperRegion& srb)
+{
+	float sum = 0.0f;
+	uint pixnbr = 0;
+
+	std::vector<const Region*>::const_iterator reg_it;
+
+	for(reg_it = sra.regions.begin(); reg_it != sra.regions.end(); ++reg_it)
+	{
+		sum += computeSum(**reg_it);
+		pixnbr += computePixelNbr(**reg_it);
+	}
+
+	for(reg_it = srb.regions.begin(); reg_it != srb.regions.end(); ++reg_it)
+	{
+		sum += computeSum(**reg_it);
+		pixnbr += computePixelNbr(**reg_it);
+	}
+
+	return sum / pixnbr;
+}
+
+// compute the standard deviation of the pixel values of the super region
+float computeStdDev(const SuperRegion& sra, const SuperRegion& srb, float mergedMean)
+{
+	float sum_sq_diff = 0.0f; // sum of square difference to mean
+	uint pixnbr = 0;
+
+	std::vector<const Region*>::const_iterator reg_it;
+
+	// loop over the regions of the 1st super region
+	for(reg_it = sra.regions.begin(); reg_it != sra.regions.end(); ++reg_it)
+	{
+		sum_sq_diff += computeSumSqDiff(**reg_it, mergedMean);
+		pixnbr += computePixelNbr(**reg_it);
+	}
+
+	// loop over the regions of the 2nd super region
+	for(reg_it = srb.regions.begin(); reg_it != srb.regions.end(); ++reg_it)
+	{
+		sum_sq_diff += computeSumSqDiff(**reg_it, mergedMean);
+		pixnbr += computePixelNbr(**reg_it);
+	}
+
+	float stddev = std::sqrt(sum_sq_diff / pixnbr);
+
+	return stddev;
+}
+
+//---------- drawing
+
+void draw_super_region(cv::Mat& img, const SuperRegion& sr)
+{
+	cv::Scalar color;
+	if( img.channels() == 3 )
+	{
+		// color image
+		color = sr.bgr_color;
+	}
+	else
+	{
+		// grey image
+		color = cv::Scalar(sr.mean);
+	}
+
+	std::vector<const Region*>::const_iterator  rit;
+	for(rit = sr.regions.begin(); rit != sr.regions.end(); rit++)
+	{
+		//dbg  std::cout << "  region " << (*rit)->roi.x << " " << (*rit)->roi.y << " " << (*rit)->roi.width << " " << (*rit)->roi.height << std::endl;
+		cv::rectangle(img, (*rit)->roi, color, CV_FILLED);
+	}
+}
+
+//---------- merging
+
+// find the quad tree leaves and add it to a list of super regions
+void findquadtreeleaves(const Region& region, std::list<SuperRegion>& superregions)
+{
+	static cv::RNG rng(12345);
+
+	if( region.childs.empty() )
+	{
+		// no childs, this is a leaf
+
+		// create a super region
+		SuperRegion sr;
+		sr.regions.push_back(&region);
+		sr.mean = region.mean;
+		sr.bgr_color = cv::Scalar(rng.uniform(0,255), rng.uniform(0,255), rng.uniform(0,255));
+
+		// add the super region to the list
+		superregions.push_back(sr);
+	}
+	else
+	{
+		// this is not a leaf, process the childs
+		findquadtreeleaves(region.childs[0], superregions);
+		findquadtreeleaves(region.childs[1], superregions);
+		findquadtreeleaves(region.childs[2], superregions);
+		findquadtreeleaves(region.childs[3], superregions);
+	}
+}
+
+// Are two super regions adjacent ?
+bool areAdjacent(const SuperRegion& sra, const SuperRegion& srb)
+{
+	// Super regions A and B are adjacent if one region of A
+	// is adjacent to one region of B
+
+	// loop over regions of super region A
+	std::vector<const Region*>::const_iterator  r_ita, r_itb;
+	for(r_ita = sra.regions.begin(); r_ita != sra.regions.end(); r_ita++)
+	{
+		int xa_min = (*r_ita)->roi.x;
+		int ya_min = (*r_ita)->roi.y;
+		int xa_max = xa_min + (*r_ita)->roi.width;
+		int ya_max = ya_min + (*r_ita)->roi.height;
+
+		// loop over regions of super region B
+		for(r_itb = srb.regions.begin(); r_itb != srb.regions.end(); r_itb++)
+		{
+			int xb_min = (*r_itb)->roi.x;
+			int yb_min = (*r_itb)->roi.y;
+			int xb_max = xb_min + (*r_itb)->roi.width;
+			int yb_max = yb_min + (*r_itb)->roi.height;
+
+			// some cases below are redundant and could be merged
+			// but it's clear as it is
+
+			if( xa_max == xb_min )
+			{
+				//   +----+          +----+  
+				//   |    |          |    |
+				// +-+    |          |    +-+
+				// |a|  b |    or    |  a |b|
+				// +-+    |          |    +-+
+				//   |    |          |    |
+				//   +----+          +----+
+
+				if( yb_min <= ya_min && ya_max <= yb_max )
+					return true;
+				else if( ya_min <= yb_min && yb_max <= ya_max  )
+					return true;
+			}
+			else if( xb_max == xa_min )
+			{
+				//   +----+          +----+  
+				//   |    |          |    |
+				// +-+    |          |    +-+
+				// |b|  a |    or    |  b |a|
+				// +-+    |          |    +-+
+				//   |    |          |    |
+				//   +----+          +----+
+
+				if( ya_min <= yb_min && yb_max <= ya_max  )
+					return true;
+				else if( yb_min <= ya_min && ya_max <= yb_max )
+					return true;
+			}
+			else if( ya_max == yb_min )
+			{
+				//    +-+            +-----+
+				//    |a|            |  a  |
+				//  +-+-+-+    or    +-+-+-+
+				//  |  b  |            |b|
+				//  +-----+            +-+
+
+				if( xb_min <= xa_min && xa_max <= xb_max )
+					return true;
+				else if( xa_min <= xb_min && xb_max <= xa_max  )
+					return true;
+			}
+			else if( yb_max == ya_min )
+			{
+				//    +-+            +-----+
+				//    |b|            |  b  |
+				//  +-+-+-+    or    +-+-+-+
+				//  |  a  |            |a|
+				//  +-----+            +-+
+
+				if( xa_min <= xb_min && xb_max <= xa_max  )
+					return true;
+				else if( xb_min <= xa_min && xa_max <= xb_max )
+					return true;
+			}
+		}
+	}
+
+	// the super regions are not adjacent
+	return false;
+}
+
+// Try to merge 2 super regions
+// Return true if the merge is successfull
+bool merge2superregions(const SuperRegion& sra, const SuperRegion& srb, SuperRegion& sr_merged, float maxstddev)
+{
+	// to be merged, the 2 super regions must be adjacent
+	// and the resulting super region standard deviation
+	// must be lower than a threshold
+
+	if( ! areAdjacent(sra, srb) )
+	{
+		//dbg std::cout << "not adjacent" << std::endl;
+		return false;
+	}
+
+	// test standard deviation criterion
+	// note: no need to test that the means are close,
+	//       because if the means are very different,
+	//       the standard deviation will be high.
+
+	float mergedMean = computeMean(sra, srb);
+	float mergedStdDev = computeStdDev(sra, srb, mergedMean);
+	if( mergedStdDev > maxstddev )
+	{
+		//dbg std::cout << "standard deviation too high  " << mergedStdDev << std::endl;
+		return false;
+	}
+
+	//dbg std::cout << "standard deviation " << mergedStdDev << " <= " << maxstddev << ", merging" << std::endl;
+
+	// everything is ok, populate the new merged super region 
+	sr_merged.regions = sra.regions;
+	sr_merged.regions.insert(sr_merged.regions.end(), srb.regions.begin(), srb.regions.end());
+	sr_merged.mean = mergedMean;
+	sr_merged.bgr_color = sra.bgr_color;
+
+	return true;
+}
+
+/*
+ * Try to merge the regions of an image fulfilling a standard deviation
+ * condition.
+ * Two regions are merged if the standard deviation of the pixel values
+ * of the resulting merged region is lower than a threshold.
+ * 
+ * @param   maxmeandist  how close the means must be.
+ * @param   maxstddev    maximum standard deviation for the merged region ;
+ *                       if the standard deviation of the potential merged
+ *                       region is greater than this threshold, then the
+ *                       merge does not occur.
+ * @param   in1          the imput image.
+ * @param   in2          the regions of the input image, stored in a quadtree
+ * @param   out1         list of super-regions resulting of the merge
+ * @param   out2         merged image.
+ * @param   out3         segmented image.
+ *
+ */
+void segmentation_merge(bool debug_display, bool greedy_mode, float maxstddev, const cv::Mat& in1, const Region& in2, Region& out1, cv::Mat& out2, cv::Mat& out3)
+{
+	std::cout << "---------- begin merge -------------" << std::endl;
+
+	// preprocessing on image type and size
+
+	// convert input image to gray if needed
+	cv::Mat img;
+	if( in1.channels() == 1 )
+		img = in1.clone();
+	else
+		cv::cvtColor(in1, img, CV_BGR2GRAY, 0);
+
+	// round (down) to the nearest power of 2 .. quadtree dimension is a pow of 2.
+	int exponent = log(std::min(img.cols, img.rows)) / log (2);
+	int s = pow(2.0, (double)exponent);
+	cv::Rect square = cv::Rect(0,0, s,s);
+	img = img(square).clone();
+	//dbg std::cout << "img.cols=" << img.cols << "  img.rows=" << img.rows << std::endl;
+
+	Region regionsroot = in2;
+
+	// beginning of the merge algo
+
+	// initialize the super region list with all elementary regions
+	std::list<SuperRegion> superregions;
+	findquadtreeleaves(regionsroot, superregions);
+	//dbg std::cout << "superregions.size() = " << superregions.size() << std::endl;
+
+	// start merging super regions ; each time a merge occurs,
+	// restart from the beginning of the super regions list
+	cv::Mat merging_progress;
+	if( debug_display )
+	{
+		// convert 1 channel img to 3 channels
+		cv::merge(std::vector<cv::Mat>(3, img), merging_progress);
+	}
+
+	while( true )
+	{
+		bool mergeDone = false;
+
+		// loop over the super regions
+		std::list<SuperRegion>::iterator sr_ita = superregions.begin();
+		for(; sr_ita != superregions.end(); sr_ita++)
+		{
+			// look for another super region to merge with
+			std::list<SuperRegion>::iterator sr_itb = sr_ita;
+			sr_itb++;
+			for(; sr_itb != superregions.end(); sr_itb++)
+			{
+				SuperRegion sr_merged; // result of the merge if successfull
+				if( merge2superregions(*sr_ita, *sr_itb, sr_merged, maxstddev) )
+				{
+					// merging successfull
+					
+					if( debug_display )
+					{
+						draw_super_region(merging_progress, *sr_ita);
+						draw_super_region(merging_progress, *sr_itb);
+						cv::imshow("Merging in progress", merging_progress);
+						cv::waitKey(200);
+					}
+
+					// remove the 2 super regions, add the new merged super region
+					superregions.erase(sr_ita);
+					superregions.erase(sr_itb);
+					if( greedy_mode )
+						superregions.push_front(sr_merged); // favor a few greedy super regions
+					else
+						superregions.push_back(sr_merged); // favor several super regions of same size
+
+					if( debug_display )
+						draw_super_region(merging_progress, sr_merged);
+					mergeDone = true;
+					break;
+				}
+			}
+
+			if( mergeDone )
+				break;
+		}
+
+		//dbg std::cout << "mergeDone = " << mergeDone << std::endl;
+
+		if( ! mergeDone )
+			break;
+	}
+
+	if( debug_display )
+		cv::destroyWindow("Merging in progress");
+
+	// draw output images
+
+	cv::Mat imgMerge;
+	cv::merge(std::vector<cv::Mat>(3, img), imgMerge);
+
+	cv::Mat imgSegmented = img.clone();
+
+	// loop over the super regions
+	std::list<SuperRegion>::iterator sr_it = superregions.begin();
+	for(; sr_it != superregions.end(); ++sr_it)
+	{
+		draw_super_region(imgMerge, *sr_it);
+		draw_super_region(imgSegmented, *sr_it);
+	}
+
+	std::cout << "---------- end merge -------------" << std::endl;
+
+	out1 = regionsroot;
+	out2 = imgMerge;
+	out3 = imgSegmented;
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+segmentation_merge( _PROGRESSWINDOW_, _GREEDYMODE_, _MAXSTDDEV_, *(_INPUT1_), *(_INPUT2_), *(_OUTPUT1_), *(_OUTPUT2_), *(_OUTPUT3_));
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

@@ -1,0 +1,93 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='8004' id=''>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+Applies an automatic thresholding to each array element.
+Determines the optimal threshold value using the Otsu’s algorithm (derived from Fisher method).
+	</help>
+
+    <!-- block description -->    
+
+    <label>Automatic thresholding</label>
+    <input id='1' type='cv::Mat'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Threshold</description>
+    <treegroup>Image transformations</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void tipAutomaticThreshold( const cv::Mat *in, cv::Mat *out, int blockid)
+{
+	double threshold = cv::threshold( *in, *out, -1.0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+	printf("automatic threshold block #%d = %f\n", blockid, threshold);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+tipAutomaticThreshold( _INPUT1_, _OUTPUT1_, _BLOCKID_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+
+

@@ -1,0 +1,279 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters -->    
+
+    <block type='8001' id=''>
+        <property name='_MAXSTDDEV_' value='5.8' desc='standard deviation homogeneity criterion'/>
+        <property name='_MINSIZE_' value='8*8' desc='minimum region size'/>
+    </block>
+
+    <!-- help -->    
+
+    <help>
+First step of the split and merge segmentation method.
+
+During the split step, the image is recursively splitted in sub-images until each sub-image is homogeneous.
+
+Parameters:	
+ - standard deviation homogeneity criterion (double): if the standard deviation of the pixels values inside a region is greater than this parameter, then the region is splitted in 4 parts
+ - minimum region size (int): if the number of pixels of the region is below this value, then the region is not splitted
+
+Inputs/outputs:
+ - input1: input image.
+ - output1: set of regions resulting of the split.
+ - output2: splitted image (visualization of the regions).
+	</help>
+
+    <!-- block description -->    
+
+    <label>Segmentation Split</label>
+    <input id='1' type='cv::Mat'/>
+    <output id='1' type='Region' desc='splitted regions'/>
+    <output id='2' type='cv::Mat' desc='Visualization of the splitted regions'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Segmentation split</description>
+    <treegroup>Segmentation</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+#include <numeric>
+#include <vector>
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+// square elementary region
+// created during split step
+struct Region
+{
+	// tree data structure
+	std::vector<Region> childs;
+
+	// tree for split&merge procedure
+	cv::Rect roi; // area of the region in the full image
+	cv::Mat m; // the sub-image corresponding to the region
+	float mean; // mean of the values of the region's pixels
+};
+
+//---------- computing mean and standard deviation
+
+// compute the sum of the pixel values of the region
+float computeSum(const Region& r)
+{
+	cv::MatConstIterator_<uchar> beg = r.m.begin<uchar>();
+	cv::MatConstIterator_<uchar> end = r.m.end<uchar>();
+	float sum = std::accumulate(beg, end, 0.0);
+
+	return sum;
+}
+
+// compute the number of pixels of the region
+float computePixelNbr(const Region& r)
+{
+	return (r.m.rows * r.m.cols);
+}
+
+// compute the mean of the pixel values of the region
+float computeMean(const Region& r)
+{
+	//dbg std::cout << __func__ << ":  r.m.rows = " << r.m.rows << "   r.m.cols = " << r.m.cols << std::endl;
+	float sum = computeSum(r);
+	float mean = sum / (r.m.rows * r.m.cols);
+
+	return mean;
+}
+
+// compute the sum of the square of the difference of 
+// the pixel values of the region to a given value
+float computeSumSqDiff(const Region& r, float value)
+{
+	float sum_sq_diff = 0.0f; // sum of square difference to value
+
+	cv::MatConstIterator_<uchar> beg = r.m.begin<uchar>();
+	cv::MatConstIterator_<uchar> end = r.m.end<uchar>();
+	cv::MatConstIterator_<uchar> pix_it;
+	for(pix_it = beg; pix_it != end; ++pix_it)
+		sum_sq_diff += (*pix_it - value)*(*pix_it - value);
+
+	return sum_sq_diff;
+}
+
+// compute the standard deviation of the pixel values of the region
+float computeStdDev(const Region& r, float mean)
+{
+	//dbg std::cout << __func__ << ":  r.m.rows = " << r.m.rows << "   r.m.cols = " << r.m.cols << std::endl;
+	float sum_sq_diff = computeSumSqDiff(r, mean);
+	uint pixnbr = computePixelNbr(r);
+
+	float stddev = std::sqrt(sum_sq_diff / pixnbr);
+
+	return stddev;
+}
+
+//---------- drawing
+
+void draw_rect(cv::Mat& img, const Region& r)
+{
+	cv::Scalar color;
+	if( img.channels() == 3 )
+	{
+		// color image
+		color = cv::Scalar(0, 0, 100);
+	}
+	else
+	{
+		// grey image
+		color = cv::Scalar(50);
+	}
+
+	if( r.childs.empty() ) 
+		rectangle(img, r.roi, color, 1);
+
+	for(size_t i = 0; i < r.childs.size(); i++)
+	{
+		draw_rect(img, r.childs[i]);
+	}
+}
+
+void draw_region(cv::Mat& img, const Region& r)
+{
+	if( r.childs.empty() ) 
+		rectangle(img, r.roi, cv::Scalar(r.mean), CV_FILLED);
+
+	for(size_t i = 0; i < r.childs.size(); i++)
+		draw_region(img, r.childs[i]);
+}
+
+//---------- quadtree splitting
+
+Region split(const cv::Mat& src, cv::Rect roi, float maxstddev, int minsize)
+{
+	Region r;
+
+	r.roi = roi;
+	r.m = src;
+	r.mean = computeMean(r); 
+
+	float regStdDev = computeStdDev(r, r.mean);
+
+	// if region is big enough and not homogeneous,
+	// then split it ; else let it as it is
+	if( src.rows*src.cols > minsize  &&  regStdDev > maxstddev )
+	{
+		// region is NOT homogeneous, split it in 4 parts
+		//
+		//     +--+--+
+		//     |r1|r2|
+		//     +--+--+
+		//     |r3|r4|
+		//     +--+--+
+
+		int w = src.cols/2;
+		int h = src.rows/2;
+		Region r1 = split(src(cv::Rect(0,0, w,h)), cv::Rect(roi.x, roi.y, w,h), maxstddev, minsize);
+		Region r2 = split(src(cv::Rect(w,0, w,h)), cv::Rect(roi.x+w, roi.y, w,h), maxstddev, minsize);
+		Region r3 = split(src(cv::Rect(0,h, w,h)), cv::Rect(roi.x, roi.y+h, w,h), maxstddev, minsize);
+		Region r4 = split(src(cv::Rect(w,h, w,h)), cv::Rect(roi.x+w, roi.y+h, w,h), maxstddev, minsize);
+		r.childs.push_back( r1 );
+		r.childs.push_back( r2 );
+		r.childs.push_back( r3 );
+		r.childs.push_back( r4 );
+	}
+
+	return r;
+}
+
+void segmentation_split(float maxstddev, int minsize, const cv::Mat& in, Region& out1, cv::Mat& out2)
+{
+	std::cout << "---------- begin split -------------" << std::endl;
+
+	// convert input image to gray if needed
+	cv::Mat img;
+	if( in.channels() == 1 )
+		img = in.clone();
+	else
+		cv::cvtColor(in, img, CV_BGR2GRAY, 0);
+
+	// round (down) to the nearest power of 2 .. quadtree dimension is a pow of 2.
+	int exponent = log(std::min(img.cols, img.rows)) / log (2);
+	int s = pow(2.0, (double)exponent);
+	cv::Rect square = cv::Rect(0,0, s,s);
+	img = img(square).clone();
+	std::cout << __func__ << ":  img.cols=" << img.cols << "  img.rows=" << img.rows << std::endl;
+
+	//dbg std::cout << "now try to split.." << std::endl;
+	Region r = split(img, cv::Rect(0,0,img.cols,img.rows), maxstddev, minsize);
+
+	//dbg std::cout << "splitted" << std::endl;
+
+	// draw splitted image
+	cv::Mat imgRect;
+	std::vector<cv::Mat> channels;
+    channels.push_back(img);
+    channels.push_back(img);
+    channels.push_back(img);
+    cv::merge(channels, imgRect);
+	draw_rect(imgRect, r);
+
+	std::cout << "---------- end split -------------" << std::endl;
+
+	out1 = r;
+	out2 = imgRect;
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+segmentation_split( _MAXSTDDEV_, _MINSIZE_, *(_INPUT1_), *(_OUTPUT1_), *(_OUTPUT2_));
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+

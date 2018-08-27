@@ -1,0 +1,115 @@
+<!--
+#
+# STARLING PROJECT 
+#
+# LIRIS - Laboratoire d'InfoRmatique en Image et Systèmes d'information 
+#
+# Copyright: 2012 - 2015 Eric Lombardi (eric.lombardi@liris.cnrs.fr), LIRIS (liris.cnrs.fr), CNRS (www.cnrs.fr)
+#
+#
+#    This program is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License version 3, as published
+#    by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranties of
+#    MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+#    PURPOSE.  See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    For further information, check the COPYING file distributed with this software.
+#
+-->    
+
+
+<properties>
+    <!-- block parameters --> 
+
+    <block type='8003' id=''>
+    </block>
+
+    <!-- help -->
+
+    <help>
+Calculates the logarithmic transformation of a 8-bits gray image.
+
+Inputs/Outputs:
+ - input1: image to be transformed; must be 8 bits, 1 channel
+ - output1: transformed image (8 bits, channel)
+    </help>
+
+    <!-- block description -->    
+
+    <label>Logarithmic transformation</label>
+    <input id='1' type='cv::Mat'/>
+    <output id='1' type='cv::Mat'/>
+    <isstream>false</isstream>
+    <icon>images/opencv.png</icon>
+    <color>50:100:200:150</color>
+    <description>Logarithmic transformation</description>
+    <treegroup>Histograms</treegroup>
+    
+    <!-- informations for code generation -->    
+
+    <includepath path=''/>
+
+    <library name=''/>
+
+    <librarypath path=''/>
+
+    <includes>
+        <![CDATA[
+        ]]>
+    </includes>
+
+    <functions>
+        <![CDATA[
+void tipLogarithmicTransformation( const cv::Mat *in, cv::Mat *out)
+{
+	// compute ln(1 + pixelVal)
+	// then normalize between 0 and 255
+
+	// input image must be 1 channel, 8 bits
+	if( in == NULL || in->depth() != CV_8U || in->channels() != 1 )
+		return;
+
+	// convert image to float
+	cv::Mat tmpImg;
+	in->convertTo( tmpImg, CV_32F);
+
+	// compute ln(1 + x)
+	cv::add( tmpImg, 1.0, tmpImg);
+	cv::log( tmpImg, tmpImg);
+
+	// normalize between 0 and 255
+	cv::normalize( tmpImg, tmpImg, 255.0, 0.0, cv::NORM_MINMAX);
+
+	// convert to 8 bits
+	tmpImg.convertTo( *out, CV_8U);
+}
+        ]]>
+    </functions>
+    
+    <initializations>
+        <![CDATA[
+        ]]>
+    </initializations>
+
+    <processings>
+        <![CDATA[
+tipLogarithmicTransformation( _INPUT1_, _OUTPUT1_);
+        ]]>
+    </processings>
+
+    <cleanings>
+        <![CDATA[
+        ]]>
+    </cleanings>
+</properties>
+
+
+
+
+
