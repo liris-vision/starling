@@ -47,6 +47,11 @@ On openSUSE 42.2 and 42.3 with Gnome GUI
   $ sudo zypper install gcc-c++
   $ sudo zypper install python-goocanvas python-opencv
 
+On openSUSE Leap 15.0 with Gnome GUI
+  $ sudo zypper install gcc-c++
+  $ sudo zypper install opencv opencv-devel
+  $ sudo zypper install typelib-1_0-GooCanvas-2_0
+
 * Run Starling *
 ----------------
 
