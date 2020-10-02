@@ -10,29 +10,6 @@ This file gives instructions to install and launch Starling on Linux, MacOS and 
 * Install dependencies *
 ------------------------
 
-On Ubuntu 11.10 amd64
-  $ sudo aptitude install libcv-dev libhighgui-dev libcvaux-dev
-  $ sudo aptitude install libavcodec-extra-53
-  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
-
-On Ubuntu 12.04 amd64
-  $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
-  $ sudo aptitude install libavcodec-extra-53
-  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
-  $ sudo aptitude install python-opencv
-
-On Ubuntu 14.04 amd64
-  $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
-  $ sudo aptitude install libavcodec-extra-54
-  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
-  $ sudo aptitude install python-opencv
-
-On Ubuntu 16.04 amd64
-  $ sudo aptitude install libopencv-dev libcv-dev libhighgui-dev libcvaux-dev
-  $ sudo aptitude install libavcodec-extra
-  $ sudo aptitude install python-gnome2 python-pyorbit python-pygoocanvas
-  $ sudo aptitude install python-opencv
-
 On Ubuntu 18.04 amd64
   $ sudo apt install libopencv-dev
   $ sudo apt install python-gi gir1.2-goocanvas-2.0 gir1.2-gdkpixbuf-2.0
@@ -52,12 +29,16 @@ On openSUSE Leap 15.0 with Gnome GUI
   $ sudo zypper install opencv opencv-devel
   $ sudo zypper install typelib-1_0-GooCanvas-2_0
 
+On Debian 10 Buster amd64 with Gnome desktop
+  $ sudo apt install libopencv-dev
+  $ sudo apt install python-gi gir1.2-goocanvas-2.0 gir1.2-gdkpixbuf-2.0
+
 * Run Starling *
 ----------------
 
 In a terminal, run commands:
   $ cd path_to_starling_directory
-  $ ./starling.py
+  $ python2 ./starling.py
 
 
 2) MacOS

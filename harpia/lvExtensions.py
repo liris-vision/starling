@@ -100,6 +100,10 @@ def init():
 			# Ubuntu >= 18.04 uses OpenCV 3.x
 			opencvLibraries = 'opencv_shape;opencv_stitching;opencv_superres;opencv_videostab;opencv_aruco;opencv_bgsegm;opencv_bioinspired;opencv_ccalib;opencv_datasets;opencv_dpm;opencv_face;opencv_freetype;opencv_fuzzy;opencv_hdf;opencv_line_descriptor;opencv_optflow;opencv_video;opencv_plot;opencv_reg;opencv_saliency;opencv_stereo;opencv_structured_light;opencv_phase_unwrapping;opencv_rgbd;opencv_viz;opencv_surface_matching;opencv_text;opencv_ximgproc;opencv_calib3d;opencv_features2d;opencv_flann;opencv_xobjdetect;opencv_objdetect;opencv_ml;opencv_xphoto;opencv_highgui;opencv_videoio;opencv_imgcodecs;opencv_photo;opencv_imgproc;opencv_core'
 
+		elif "debian" in distrib_name and distrib_version >= "10":
+			# Debian >= 10 uses OpenCV 3.x
+			opencvLibraries = 'opencv_shape;opencv_stitching;opencv_superres;opencv_videostab;opencv_aruco;opencv_bgsegm;opencv_bioinspired;opencv_ccalib;opencv_datasets;opencv_dpm;opencv_face;opencv_freetype;opencv_fuzzy;opencv_hdf;opencv_line_descriptor;opencv_optflow;opencv_video;opencv_plot;opencv_reg;opencv_saliency;opencv_stereo;opencv_structured_light;opencv_phase_unwrapping;opencv_rgbd;opencv_viz;opencv_surface_matching;opencv_text;opencv_ximgproc;opencv_calib3d;opencv_features2d;opencv_flann;opencv_xobjdetect;opencv_objdetect;opencv_ml;opencv_xphoto;opencv_highgui;opencv_videoio;opencv_imgcodecs;opencv_photo;opencv_imgproc;opencv_core'
+
 		elif not distrib_name and not distrib_version:
 			# this is the case for OpenSUSE Leap 15
 			opencvLibraries = 'opencv_dnn;opencv_face;opencv_ml;opencv_objdetect;opencv_shape;opencv_stitching;opencv_superres;opencv_videostab;opencv_calib3d;opencv_features2d;opencv_highgui;opencv_videoio;opencv_imgcodecs;opencv_video;opencv_photo;opencv_imgproc;opencv_flann;opencv_core'
