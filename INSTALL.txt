@@ -1,11 +1,8 @@
 
-Starling depends on Python, GTK+, g++ (clang on MacOS, Visual C++ 2010 on Windows), and OpenCV.
+Starling depends on Python, GTK+, g++, and OpenCV.
 
-This file gives instructions to install and launch Starling on Linux, MacOS and Windows OSs.
+This file gives instructions to install and launch Starling on Linux.
 
-
-1) LINUX
---------
 
 * Install dependencies *
 ------------------------
@@ -40,61 +37,3 @@ In a terminal, run commands:
   $ cd path_to_starling_directory
   $ python2 ./starling.py
 
-
-2) MacOS
---------
-
-Tested on MacOSX Yosemite 10.10.2.
-
-* Install dependencies *
-------------------------
-
-- install xquartz (X server for MacOS)
-  from http://xquartz.macosforge.org/landing/
-
-- install macports 
-  from https://www.macports.org/install.php
-
-- install python 2.7 and required modules:
-  $ sudo port install python27
-  $ sudo port install py27-gobject
-  $ sudo port install py27-pygtk
-  $ sudo port install py27-goocanvas
-  $ sudo port select python python27
-
-- install OpenCV 2.x from opencv.org
-  add OpenCV libraries directory to the DYLD_LIBRARY_PATH variable 
-
-* Run Starling *
-----------------
-
-In a terminal, run commands:
-  $ cd path_to_starling_directory
-  $ python ./starling.py
-    # the first time you use Starling, set OpenCV include and library directories in the "Preferences"
-
-
-3) WINDOWS Seven
-----------------
-
-* Install dependencies *
-------------------------
-
-- install 32 bits python interpreter 2.7.3 
-  from http://www.python.org/download
-
-- install PyGTK for Windows using all-in-one installer
-  http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.24/pygtk-all-in-one-2.24.2.win32-py2.6.msi 
-
-- install OpenCV 2.x from opencv.org
-
-- install Visual C++ 2010 (Express version is sufficient).
-
-* Run Starling *
-----------------
-
-In a terminal, run commands:
-  $ cd path_to_starling_directory
-  $	path_to_python_2.7.3\python.exe starling.py
-    # the first time you use Starling, set OpenCV include and library directories in the "Preferences"
-  
