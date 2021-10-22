@@ -12,4 +12,4 @@ It's a fork of the [Harpia project](http://s2i.das.ufsc.br/harpia/en/home.html).
 
 It can also be used for OpenCV experimenting and learning.
 
-Starling runs on Linux, MacOS and Windows. A Debian package for Ubuntu is available [here](http://liris.cnrs.fr/liris-vision).
+Starling runs on Linux, see `INSTALL.txt` file.
